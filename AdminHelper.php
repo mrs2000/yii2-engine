@@ -59,7 +59,7 @@ class AdminHelper
     public static function columnEdit($attribute = 'title', $attributeID = 'id')
     {
         return [
-            'class' => 'app\modules\admin\components\EditColumn',
+            'class' => EditColumn::className(),
             'attribute' => $attribute,
             'attributeID' => $attributeID,
         ];
@@ -68,7 +68,7 @@ class AdminHelper
     public static function columnSerial()
     {
         return [
-            'class' => 'yii\grid\SerialColumn',
+            'class' => \yii\grid\SerialColumn::className(),
             'header' => '№',
             'headerOptions' => ['class' => 'column-small'],
             'contentOptions' => ['class' => 'center column-small'],
@@ -78,7 +78,7 @@ class AdminHelper
     public static function columnCheckbox()
     {
         return [
-            'class' => 'yii\grid\CheckboxColumn',
+            'class' => \yii\grid\CheckboxColumn::className(),
             'checkboxOptions' => ['class' => 'select-on-check'],
             'contentOptions' => ['class' => 'center'],
             'headerOptions' => ['class' => 'center column-small'],
@@ -97,7 +97,7 @@ class AdminHelper
     public static function columnPublic()
     {
         return [
-            'class' => 'app\modules\admin\components\SwitchColumn',
+            'class' => SwitchColumn::className(),
         ];
     }
 
@@ -130,7 +130,7 @@ class AdminHelper
     public static function columnPosition()
     {
         return [
-            'class' => 'app\modules\admin\components\PositionColumn',
+            'class' => PositionColumn::className(),
         ];
     }
 
