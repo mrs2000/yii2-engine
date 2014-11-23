@@ -1,5 +1,5 @@
 <?
-namespace mrssoft\engine;
+namespace mrssoft\engine\helpers;
 
 class AdminHelper
 {
@@ -59,7 +59,7 @@ class AdminHelper
     public static function columnEdit($attribute = 'title', $attributeID = 'id')
     {
         return [
-            'class' => EditColumn::className(),
+            'class' => \mrssoft\engine\columns\EditColumn::className(),
             'attribute' => $attribute,
             'attributeID' => $attributeID,
         ];
@@ -97,7 +97,7 @@ class AdminHelper
     public static function columnPublic()
     {
         return [
-            'class' => SwitchColumn::className(),
+            'class' => \mrssoft\engine\columns\SwitchColumn::className(),
         ];
     }
 
@@ -130,7 +130,7 @@ class AdminHelper
     public static function columnPosition()
     {
         return [
-            'class' => PositionColumn::className(),
+            'class' => \mrssoft\engine\columns\PositionColumn::className(),
         ];
     }
 
@@ -158,8 +158,9 @@ class AdminHelper
 
     public static function getView($view)
     {
-        $pathTableView = \Yii::getAlias('@app/modules/admin/views/'.\Yii::$app->controller->id.'/'.$view.'.php');
-        return is_file($pathTableView) ? $view : '/layouts/_'.$view;
+        $alias = '@app/modules/admin/views/'.\Yii::$app->controller->id.'/'.$view;
+        $pathTableView = \Yii::getAlias($alias.'.php');
+        return is_file($pathTableView) ? $alias : '/layouts/_'.$view;
     }
 
 }

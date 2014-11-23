@@ -1,5 +1,5 @@
 <?php
-namespace mrssoft\engine;
+namespace mrssoft\engine\behaviors;
 
 use Yii;
 use yii\db\ActiveRecord;
@@ -82,15 +82,15 @@ class FileBehavior extends \yii\base\Behavior
     }
 
     /**
-     * @return \app\components\ImageFunctions|null
+     * @return \mrssoft\engine\behaviors\ImageFunctions|null
      */
     private function getImageFunctionsBehavior()
     {
         foreach ($this->owner->behaviors() as $name => $behaviorOptions)
         {
-            if ($behaviorOptions['class'] == \app\components\ImageFunctions::className())
+            if ($behaviorOptions['class'] == \mrssoft\engine\behaviors\ImageFunctions::className())
             {
-                /** @var \app\components\ImageFunctions $imageFunctions */
+                /** @var \mrssoft\engine\behaviors\ImageFunctions $imageFunctions */
                 $imageFunctions = $this->owner->getBehavior($name);
                 if ($imageFunctions->attribute == $this->attribute)
                 {

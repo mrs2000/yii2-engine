@@ -1,5 +1,5 @@
 <?php
-namespace mrssoft\engine;
+namespace mrssoft\engine\widgets;
 
 use Yii;
 use yii\base\Widget;

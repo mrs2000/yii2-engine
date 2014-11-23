@@ -4,10 +4,8 @@ namespace mrssoft\engine;
 
 use Yii;
 use yii\helpers\Url;
-use yii\web\Controller;
 use yii\web\HttpException;
-use yii\filters\AccessControl;
-use app\components\ActiveRecord;
+use mrssoft\engine\helpers\AdminHelper;
 
 /**
  * @property mixed urlParams
@@ -29,20 +27,11 @@ class AdminController extends \yii\web\Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => \yii\filters\AccessControl::className(),
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['login', 'error', 'logout'],
-                        'roles' => ['*'],
-                    ],
-                    [
-                        'allow' => true,
-                        'roles' => ['admin'],
-                    ],
-                    [
-                        'allow' => false,
-                        'roles' => ['*'],
+                        'roles' => ['moderator'],
                     ],
                 ],
                 'denyCallback' => function ($rule, $action) {
@@ -60,6 +49,11 @@ class AdminController extends \yii\web\Controller
         return parent::beforeAction($action);
     }
 
+    public function render($view, $params = [])
+    {
+        return parent::render(AdminHelper::getView($view), $params);
+    }
+
     /**
      * Таблица записей
      * @return string
@@ -72,15 +66,15 @@ class AdminController extends \yii\web\Controller
         $model = new $class(['scenario' => 'search']);
 
         $model->load(Yii::$app->request->get());
-        $model->attachBehavior('search', Search::className());
+        $model->attachBehavior('search', \mrssoft\engine\behaviors\Search::className());
 
         if (Yii::$app->request->isAjax)
         {
-            return $this->renderPartial('grid', array('model' => $model));
+            return $this->renderPartial('grid', ['model' => $model]);
         }
         else
         {
-            return $this->render(AdminHelper::getView('table'), [
+            return $this->render('table', [
                 'model' => $model,
                 'title' => $this->title,
                 'buttons' => $this->buttons,
@@ -247,7 +241,7 @@ class AdminController extends \yii\web\Controller
     }
 
     /**
-     * Изменене состояния поля
+     * Изменене состояния атрибута
      * @param string $attribute - название поля
      * @param string $state - новое состояние
      */
@@ -275,7 +269,7 @@ class AdminController extends \yii\web\Controller
      */
     public function actionChangeposition()
     {
-        /* @var $model PositionBehavior */
+        /* @var $model \mrssoft\engine\behaviors\Position */
 
         $position = Yii::$app->request->post('position');
         $id = Yii::$app->request->post('selection')[0];
@@ -349,7 +343,7 @@ class AdminController extends \yii\web\Controller
 
     /**
      * @param int $id
-     * @return \app\components\ActiveRecord
+     * @return \mrssoft\engine\ActiveRecord
      */
     protected function getModel($id = 0)
     {

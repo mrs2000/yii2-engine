@@ -1,5 +1,5 @@
 <?
-namespace mrssoft\engine;
+namespace mrssoft\engine\behaviors;
 
 /**
  * Поведение добавляет функции поиска

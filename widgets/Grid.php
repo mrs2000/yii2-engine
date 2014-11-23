@@ -1,12 +1,13 @@
 <?
-namespace mrssoft\engine;
+namespace mrssoft\engine\widgets;
+use mrssoft\engine\helpers\AdminHelper;
 
 /**
  *
  */
 class Grid extends \yii\base\Widget
 {
-    /** @var \app\components\ActiveRecord */
+    /** @var \mrssoft\engine\ActiveRecord */
     public $model;
 
     /** @var array */

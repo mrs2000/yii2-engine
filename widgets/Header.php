@@ -1,11 +1,10 @@
 <?php
-namespace mrssoft\engine;
+namespace mrssoft\engine\widgets;
 
 use Yii;
 use yii\base\Exception;
 use yii\base\Widget;
 use yii\helpers\Html;
-use yii\helpers\Url;
 
 /**
  * Вывод шапки

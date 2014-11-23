@@ -1,6 +1,6 @@
 <?php
 
-namespace mrssoft\engine;
+namespace mrssoft\engine\behaviors;
 
 use Yii;
 use yii\base\Behavior;
@@ -13,7 +13,7 @@ use yii\db\Query;
  *
  * @property \yii\db\ActiveRecord $owner
  */
-class PositionBehavior extends Behavior
+class Position extends Behavior
 {
     public $attribute = 'position';
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace mrssoft\engine;
+namespace mrssoft\engine\columns;
 
 use Yii;
 use yii\grid\DataColumn;
