@@ -1,0 +1,21 @@
+{
+    "name": "mrssoft/yii2-engine",
+    "description": "Engine",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Melnikov Ruslan",
+            "email": "mrs2000@inbox.ru"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "mrssoft\\engine\\": ""
+        }
+    }
+}
