@@ -5,7 +5,7 @@
  */
 
 $this->title = 'Панель управления';
-\mrssoft\engine\AdminAsset::register($this);
+\mrssoft\engine\Asset::register($this);
 ?>
 
 <?php $this->beginPage() ?>

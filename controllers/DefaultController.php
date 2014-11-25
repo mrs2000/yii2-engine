@@ -3,9 +3,9 @@
 namespace mrssoft\engine\controllers;
 
 use Yii;
-use mrssoft\engine\AdminController;
+use mrssoft\engine\Controller;
 
-class DefaultController extends AdminController
+class DefaultController extends Controller
 {
     public function actions()
     {

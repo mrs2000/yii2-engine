@@ -6,7 +6,7 @@ use Yii;
 use yii\grid\DataColumn;
 use yii\helpers\Html;
 
-class EditColumn extends DataColumn
+class Edit extends DataColumn
 {
     public $attribute = 'title';
 

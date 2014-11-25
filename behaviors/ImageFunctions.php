@@ -214,17 +214,17 @@ class ImageFunctions extends Behavior
 
     /**
      * Создать эскиз изображения
-     * @param null|\app\components\ImageHandler $imageHandler
+     * @param null|\mrssoft\image\ImageHandler $imageHandler
      * @param bool $adaptive
      * @param bool $proportional
-     * @return \app\components\ImageHandler
+     * @return \mrssoft\image\ImageHandler
      * @throws \yii\base\Exception
      */
     public function createThumb($imageHandler = null, $adaptive = true, $proportional = true)
     {
         if ($imageHandler === null)
         {
-            $imageHandler = new \app\components\ImageHandler();
+            $imageHandler = new \mrssoft\image\ImageHandler();
             $imageHandler->load('.' . $this->getImage());
         }
 
@@ -249,14 +249,14 @@ class ImageFunctions extends Behavior
      * Изменение размера изображения
      * @param null $imageHandler
      * @param bool $proportional
-     * @return \app\components\ImageHandler
+     * @return \mrssoft\image\ImageHandler
      * @throws \yii\base\Exception
      */
     public function resize($imageHandler = null, $proportional = true)
     {
         if ($imageHandler === null)
         {
-            $imageHandler = new \app\components\ImageHandler();
+            $imageHandler = new \mrssoft\image\ImageHandler();
             $imageHandler->load('.' . $this->getImage());
         }
 

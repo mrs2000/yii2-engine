@@ -6,7 +6,7 @@ use Yii;
 use yii\grid\DataColumn;
 use yii\helpers\Html;
 
-class ImageThumbColumn extends DataColumn
+class ImageThumb extends DataColumn
 {
     public $attribute = 'image';
 

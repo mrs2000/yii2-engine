@@ -6,7 +6,7 @@
  * @var array $buttons
  */
 
-use mrssoft\engine\helpers\AdminHelper;
+use mrssoft\engine\helpers\Admin;
 use mrssoft\engine\widgets\TableForm;
 
 TableForm::begin([
@@ -15,7 +15,7 @@ TableForm::begin([
 ]);
 
 echo $this->render(
-    AdminHelper::getView('grid'),
+    Admin::getView('grid'),
     ['model' => $model],
     Yii::$app->controller
 );

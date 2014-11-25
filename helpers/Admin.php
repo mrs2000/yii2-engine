@@ -1,7 +1,7 @@
 <?
 namespace mrssoft\engine\helpers;
 
-class AdminHelper
+class Admin
 {
     /**
      * Вывод сообщения об успешном выполнении операции
@@ -59,7 +59,7 @@ class AdminHelper
     public static function columnEdit($attribute = 'title', $attributeID = 'id')
     {
         return [
-            'class' => \mrssoft\engine\columns\EditColumn::className(),
+            'class' => \mrssoft\engine\columns\Edit::className(),
             'attribute' => $attribute,
             'attributeID' => $attributeID,
         ];
@@ -97,7 +97,7 @@ class AdminHelper
     public static function columnPublic()
     {
         return [
-            'class' => \mrssoft\engine\columns\SwitchColumn::className(),
+            'class' => \mrssoft\engine\columns\Switcher::className(),
         ];
     }
 
@@ -130,7 +130,7 @@ class AdminHelper
     public static function columnPosition()
     {
         return [
-            'class' => \mrssoft\engine\columns\PositionColumn::className(),
+            'class' => \mrssoft\engine\columns\Position::className(),
         ];
     }
 

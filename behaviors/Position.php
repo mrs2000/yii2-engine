@@ -15,8 +15,14 @@ use yii\db\Query;
  */
 class Position extends Behavior
 {
+    /**
+     * @var string аттрибут модели
+     */
     public $attribute = 'position';
 
+    /**
+     * @var array позиция относительно указанных полей
+     */
     public $relativeAttributes = [];
 
     public function events()
@@ -27,11 +33,13 @@ class Position extends Behavior
         ];
     }
 
+    /**
+     * Максимальное значение позиции
+     * @return int
+     */
     public function getMaxPosition()
     {
-        $query = new Query();
-        $query->select('MAX('.$this->attribute.') AS maxColumn');
-        $query->from($this->owner->tableName());
+        $query = (new Query())->select('MAX('.$this->attribute.') AS maxColumn')->from($this->owner->tableName());
         foreach ($this->relativeAttributes as $name)
         {
             $query->andWhere($name.'=:'.$name, [':'.$name => $this->owner->{$name}]);
@@ -40,6 +48,11 @@ class Position extends Behavior
         return $query->scalar();
     }
 
+    /**
+     * Изменение позиции
+     * @param $value
+     * @throws \Exception
+     */
     public function changePosition($value)
     {
         $where = [];
@@ -92,11 +105,17 @@ class Position extends Behavior
         $cmd->execute();
     }
 
+    /**
+     * Создание модели
+     */
     public function beforeInsert()
     {
         $this->owner->{$this->attribute} = $this->getMaxPosition() + 1;
     }
 
+    /**
+     * Удаление модели
+     */
     public function afterDelete()
     {
         $this->executeCommand(

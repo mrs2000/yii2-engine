@@ -6,7 +6,7 @@ use Yii;
 use yii\grid\DataColumn;
 use yii\helpers\Html;
 
-class PositionColumn extends DataColumn
+class Position extends DataColumn
 {
     public $attribute = 'position';
 

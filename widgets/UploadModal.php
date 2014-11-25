@@ -5,7 +5,6 @@ use Yii;
 use yii\base\Widget;
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
-use yii\validators\ImageValidator;
 use yii\web\View;
 
 class UploadModal extends Widget
@@ -25,11 +24,6 @@ class UploadModal extends Widget
      */
     public $title = 'Загрузка изображений';
 
-    /**
-     * @var bool
-     */
-    private $multiple = false;
-
     public function run()
     {
         $buttons = Html::submitButton('Загрузить', ['class' => 'btn btn-primary btn-upload']).
@@ -48,13 +42,19 @@ class UploadModal extends Widget
             echo $demands;
         }
 
+        $prop = 'multiple';
+        $multiple = $this->model->hasProperty($prop) && $this->model->{$prop};
+
         echo Html::activeFileInput(
             $this->model,
             $this->attribute.'[]',
-            ['multiple' => $this->model->multiple ? 'on' : 'off', 'required' => 'on']
+            ['multiple' => $multiple ? 'on' : 'off', 'required' => 'on']
         );
 
         Modal::end();
+
+        \mrssoft\mrs2000box\Asset::register($this->view);
+        $errImgPath = Yii::$app->assetManager->getPublishedUrl('@vendor/mrssoft/yii2-mrs2000box/assets').'/err-img.gif';
 
         $script = "$(document).ready(function() {
             $('.btn-show-upload').click(function (e) {
@@ -69,7 +69,7 @@ class UploadModal extends Widget
 
             function init_mrs2000box() {
                 if (typeof $.fn.mrs2000box === 'function') {
-                    $('.mrs2000box').mrs2000box();
+                    $('.mrs2000box').mrs2000box({err_img_path:'".$errImgPath."'});
                 }
             }
             init_mrs2000box();
@@ -77,8 +77,6 @@ class UploadModal extends Widget
         });";
 
         $this->view->registerJs($script, View::POS_END);
-
-        \app\assets\mrs2000boxAsset::register($this->view);
     }
 
     /**
@@ -87,6 +85,7 @@ class UploadModal extends Widget
      */
     public function getDemands()
     {
-        return $this->model->getDemands();
+        $method = 'getDemands';
+        return $this->model->hasMethod($method) ? $this->model->{$method}() : '';
     }
 }

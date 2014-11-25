@@ -1,6 +1,6 @@
 <?
 namespace mrssoft\engine\widgets;
-use mrssoft\engine\helpers\AdminHelper;
+use mrssoft\engine\helpers\Admin;
 
 /**
  *
@@ -20,20 +20,20 @@ class Grid extends \yii\base\Widget
         if ($this->addCommonRows)
         {
             $startColumns = [
-                AdminHelper::columnSerial(),
-                AdminHelper::columnCheckbox()
+                Admin::columnSerial(),
+                Admin::columnCheckbox()
             ];
 
             if (empty($this->columns))
             {
-                $this->columns = [AdminHelper::columnEdit()];
+                $this->columns = [Admin::columnEdit()];
             }
 
             $endColumns = [];
-            if ($this->model->hasAttribute('public')) $endColumns[] = AdminHelper::columnPublic();
-            if ($this->model->hasAttribute('position')) $endColumns[] = AdminHelper::columnPosition();
-            if ($this->model->hasAttribute('date')) $endColumns[] = AdminHelper::columnDate();
-            $endColumns[] = AdminHelper::columnID();
+            if ($this->model->hasAttribute('public')) $endColumns[] = Admin::columnPublic();
+            if ($this->model->hasAttribute('position')) $endColumns[] = Admin::columnPosition();
+            if ($this->model->hasAttribute('date')) $endColumns[] = Admin::columnDate();
+            $endColumns[] = Admin::columnID();
 
             $this->columns = array_merge($startColumns, $this->columns, $endColumns);
         }

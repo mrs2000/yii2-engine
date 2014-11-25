@@ -6,7 +6,7 @@ use Yii;
 use yii\grid\DataColumn;
 use yii\helpers\Html;
 
-class SwitchColumn extends DataColumn
+class Switcher extends DataColumn
 {
     public $attribute = 'public';
 

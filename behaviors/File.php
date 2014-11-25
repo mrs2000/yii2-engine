@@ -7,7 +7,7 @@ use yii\db\ActiveRecord;
 /**
  * Обработка загрузки файлов
  */
-class FileBehavior extends \yii\base\Behavior
+class File extends \yii\base\Behavior
 {
     /**
      * @var string Path to upload

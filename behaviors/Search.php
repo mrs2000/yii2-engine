@@ -11,6 +11,11 @@ class Search extends \yii\base\Behavior
      */
     public $owner;
 
+    /**
+     * @var array
+     */
+    public $defaultOrder = null;
+
     private $searchAttributes = [
         'title' => true,
         'public' => false,
@@ -23,24 +28,28 @@ class Search extends \yii\base\Behavior
      */
     public function search()
     {
-        $defaultOrder = ['id' => SORT_ASC];
+        if ($this->defaultOrder === null)
+        {
+            $this->defaultOrder = ['id' => SORT_ASC];
 
-        if ($this->owner->hasAttribute('position')) {
-            $defaultOrder = ['position' => SORT_ASC];
-        }
-        elseif ($this->owner->hasAttribute('date'))
-        {
-            $defaultOrder = ['date' => SORT_DESC];
-        }
-        elseif ($this->owner->hasAttribute('title'))
-        {
-            $defaultOrder = ['title' => SORT_ASC];
+            if ($this->owner->hasAttribute('position'))
+            {
+                $this->defaultOrder = ['position' => SORT_ASC];
+            }
+            elseif ($this->owner->hasAttribute('date'))
+            {
+                $this->defaultOrder = ['date' => SORT_DESC];
+            }
+            elseif ($this->owner->hasAttribute('title'))
+            {
+                $this->defaultOrder = ['title' => SORT_ASC];
+            }
         }
 
         $query = $this->owner->find();
         $dataProvider = new \yii\data\ActiveDataProvider([
             'query' => $query,
-            'sort' => ['defaultOrder' => $defaultOrder]
+            'sort' => ['defaultOrder' => $this->defaultOrder]
         ]);
 
         if (\Yii::$app->request->get())

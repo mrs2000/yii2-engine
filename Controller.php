@@ -5,13 +5,13 @@ namespace mrssoft\engine;
 use Yii;
 use yii\helpers\Url;
 use yii\web\HttpException;
-use mrssoft\engine\helpers\AdminHelper;
+use mrssoft\engine\helpers\Admin;
 
 /**
  * @property mixed urlParams
  */
 
-class AdminController extends \yii\web\Controller
+class Controller extends \yii\web\Controller
 {
     protected $title = '';
 
@@ -34,7 +34,7 @@ class AdminController extends \yii\web\Controller
                         'roles' => ['moderator'],
                     ],
                 ],
-                'denyCallback' => function ($rule, $action) {
+                'denyCallback' => function () { //($rule, $action)
                     $this->redirect(Yii::$app->user->loginUrl);
                 }
             ],
@@ -51,7 +51,7 @@ class AdminController extends \yii\web\Controller
 
     public function render($view, $params = [])
     {
-        return parent::render(AdminHelper::getView($view), $params);
+        return parent::render(Admin::getView($view), $params);
     }
 
     /**
@@ -113,7 +113,7 @@ class AdminController extends \yii\web\Controller
             {
                 if ($model->save())
                 {
-                    AdminHelper::success('Данные успешно сохранены.');
+                    Admin::success('Данные успешно сохранены.');
                     $result['result'] = true;
                 }
             }
@@ -174,7 +174,7 @@ class AdminController extends \yii\web\Controller
                 $copy->setAttributes($attributes, false);
                 if (!$copy->save())
                 {
-                    AdminHelper::error($copy);
+                    Admin::error($copy);
                     break;
                 }
             }
@@ -198,11 +198,11 @@ class AdminController extends \yii\web\Controller
                 $model = $this->getModel($id);
                 if (!$model->delete())
                 {
-                    AdminHelper::error($model);
+                    Admin::error($model);
                     $this->redir();
                 }
             }
-            AdminHelper::success('Данные успешно удалены.');
+            Admin::success('Данные успешно удалены.');
         }
         else
         {
@@ -236,7 +236,7 @@ class AdminController extends \yii\web\Controller
     protected function actionChangeState($field, $state)
     {
         $this->changeState($field, $state);
-        AdminHelper::success('Статус успешно изменён.');
+        Admin::success('Статус успешно изменён.');
         $this->redir();
     }
 
@@ -259,7 +259,7 @@ class AdminController extends \yii\web\Controller
             $obj->{$attribute} = $state;
             if (!$obj->save())
             {
-                AdminHelper::error($obj);
+                Admin::error($obj);
             }
         }
     }
@@ -291,11 +291,11 @@ class AdminController extends \yii\web\Controller
     {
         if ($action->error)
         {
-            AdminHelper::error($action->error);
+            Admin::error($action->error);
         }
         else
         {
-            AdminHelper::success('Фотографии успешно загружены.');
+            Admin::success('Фотографии успешно загружены.');
         }
 
         $this->redir();
@@ -358,7 +358,7 @@ class AdminController extends \yii\web\Controller
             $model = $model::findOne($id);
             if (empty($model))
             {
-                AdminHelper::error('Запись с идентификатором '.$id.' не найдена.');
+                Admin::error('Запись с идентификатором '.$id.' не найдена.');
                 $this->redir();
             }
         }
@@ -366,11 +366,14 @@ class AdminController extends \yii\web\Controller
         return $model;
     }
 
+    /**
+     * Отмеченные позиции
+     * @return array
+     */
     protected function getSelectedItems()
     {
         return Yii::$app->request->post('selection', []);
     }
-
 
     /**
      * Редирект после действия
