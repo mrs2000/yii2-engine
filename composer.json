@@ -12,7 +12,10 @@
         }
     ],
     "require": {
-        "yiisoft/yii2": "*"
+        "yiisoft/yii2": "*",
+        "mrssoft/yii2-image": "*",
+        "mrssoft/yii2-mrs2000box": "*",
+        "mihaildev/yii2-ckeditor": "*"
     },
     "autoload": {
         "psr-4": {

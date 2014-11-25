@@ -54,6 +54,11 @@ class Controller extends \yii\web\Controller
         return parent::render(Admin::getView($view), $params);
     }
 
+    public function renderPartial($view, $params = [])
+    {
+        return parent::renderPartial(Admin::getView($view), $params);
+    }
+
     /**
      * Таблица записей
      * @return string

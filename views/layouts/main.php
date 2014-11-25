@@ -21,7 +21,7 @@ $this->title = 'Панель управления';
 <body>
     <?php $this->beginBody() ?>
     <div class="wrap">
-        <?php if (Yii::$app->user->can('cp')) echo $this->render('menu'); ?>
+        <?php if (Yii::$app->user->can('cp')) echo $this->render('@app/modules/admin/views/layouts/menu'); ?>
         <div class="container">
             <?=\mrssoft\engine\widgets\MessageWidget::widget();?>
             <?=$content;?>
