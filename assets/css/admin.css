@@ -115,3 +115,22 @@ h1 {
 .filters .form-control {
     min-width: 60px;
 }
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-file input[type="file"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    cursor: inherit;
+    display: block;
+}
