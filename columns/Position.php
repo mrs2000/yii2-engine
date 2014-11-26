@@ -4,7 +4,6 @@ namespace mrssoft\engine\columns;
 
 use Yii;
 use yii\grid\DataColumn;
-use yii\helpers\Html;
 
 class Position extends DataColumn
 {
@@ -33,7 +32,7 @@ class Position extends DataColumn
             }
         }
 
-        return Html::dropDownList(
+        return \yii\helpers\Html::dropDownList(
             'position['.$model->primaryKey.']',
             $model->{$this->attribute},
             $this->list,

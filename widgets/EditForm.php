@@ -18,6 +18,7 @@ class EditForm extends Widget
     public $model;
     public $buttons;
     public $enctype;
+    public $parentKeys;
 
     /**
      * @param array $config
@@ -46,6 +47,21 @@ class EditForm extends Widget
 
         echo Html::hiddenInput('urlParams', http_build_query(Yii::$app->controller->urlParams));
 
+        if (isset($config['parentKeys']))
+        {
+            if (!is_array($config['parentKeys']))
+                $config['parentKeys'] = [$config['parentKeys']];
+
+            foreach ($config['parentKeys'] as $attribute)
+            {
+                if (empty($config['model']->{$attribute}))
+                {
+                    $config['model']->{$attribute} = Yii::$app->request->get($attribute);
+                    echo Html::activeHiddenInput($config['model'], $attribute);
+                }
+            }
+        }
+
         //Заголовок и кнопки
         echo Header::widget([
             'title' => $config['title'],
@@ -55,7 +71,6 @@ class EditForm extends Widget
         //Ошибки
         if (!is_array($config['model']) && !empty($config['model']))
         {
-            //echo CAdmin::formatModelErrors($this->model, true);
             echo Html::errorSummary($config['model'], ['class' => 'alert alert-danger', 'header' => false]);
         }
 

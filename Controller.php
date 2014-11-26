@@ -94,7 +94,7 @@ class Controller extends \yii\web\Controller
      */
     public function actionEdit($id = 0)
     {
-        $model = $this->getModel($id);
+        $model = $this->getModel($id, 'create');
         if ($model)
         {
             return $this->render('edit', ['model' => $model]);
@@ -113,7 +113,8 @@ class Controller extends \yii\web\Controller
         $result['result'] = false;
         if (Yii::$app->request->isPost)
         {
-            $model = $this->getModel(Yii::$app->request->post('id'));
+            $id = Yii::$app->request->post('id');
+            $model = $this->getModel($id);
             if ($model->load(Yii::$app->request->post()))
             {
                 if ($model->save())
@@ -348,11 +349,12 @@ class Controller extends \yii\web\Controller
 
     /**
      * @param int $id
+     * @param string|null $scenario
      * @return \mrssoft\engine\ActiveRecord
      */
-    protected function getModel($id = 0)
+    protected function getModel($id = 0, $scenario = null)
     {
-        $options = empty($id) ? ['scenario' => 'create'] : null;
+        $options = empty($scenario) ? null :['scenario' => $scenario];
 
         /** @var \yii\db\ActiveRecord $model */
         $class = $this->getModelClass();

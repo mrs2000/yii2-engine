@@ -61,7 +61,7 @@ class Admin
         return [
             'class' => \mrssoft\engine\columns\Edit::className(),
             'attribute' => $attribute,
-            'attributeID' => $attributeID,
+            'attributeID' => $attributeID
         ];
     }
 
@@ -116,7 +116,7 @@ class Admin
         return [
             'attribute' => $attribute,
             'value' => function ($model, $attribute) {
-                return \app\helpers\Date::datetime($model->{$attribute});
+                return \Yii::$app->formatter->asDate($model->{$attribute}, 'long');
             },
             'contentOptions' => ['class' => 'center'],
             'headerOptions' => ['class' => 'center'],
@@ -125,15 +125,18 @@ class Admin
 
     /**
      * Описание колонки "Позиция" для таблицы
+     * @param string $attribute
      * @return array
      */
-    public static function columnPosition()
+    public static function columnPosition($attribute = 'position')
     {
         return [
             'class' => \mrssoft\engine\columns\Position::className(),
+            'attribute' => $attribute
         ];
     }
 
+    // TODO not used
     public static function CKEditorOptions()
     {
         $options['height'] = 300;
@@ -156,6 +159,13 @@ class Admin
         return $options;
     }
 
+    /**
+     * Путь к отображению
+     * Вначале ищет файл в @app/modules/admin/views/
+     * Если файла нет возвращает /layouts/_xxxxx
+     * @param $view
+     * @return string
+     */
     public static function getView($view)
     {
         $alias = '@app/modules/admin/views/'.\Yii::$app->controller->id.'/'.$view;

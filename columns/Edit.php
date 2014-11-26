@@ -22,6 +22,6 @@ class Edit extends DataColumn
             Yii::$app->controller->urlParams
         );
 
-        return Html::a($model->{$this->attribute}, $url);
+        return Html::a($this->getDataCellValue($model, $key, $index), $url);
     }
 }
