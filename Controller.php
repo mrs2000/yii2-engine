@@ -226,65 +226,45 @@ class Controller extends \yii\web\Controller
     }
 
     /**
-     * Вкыл / выкл элементов в таблице контроллера
-     */
-    public function actionChangepublic()
-    {
-        $state = Yii::$app->request->get('state');
-        $this->actionChangeState('public', $state);
-    }
-
-    /**
-     * Изменене состояния поля
-     * @param string $field - название поля
-     * @param string $state - новое состояние
-     */
-    protected function actionChangeState($field, $state)
-    {
-        $this->changeState($field, $state);
-        Admin::success('Статус успешно изменён.');
-        $this->redir();
-    }
-
-    /**
      * Изменене состояния атрибута
      * @param string $attribute - название поля
-     * @param string $state - новое состояние
+     * @param string $value - новое состояние
      */
-    protected function changeState($attribute, $state)
+    public function actionState($attribute, $value)
     {
         /* @var $model ActiveRecord */
 
         $modelName = $this->getModelClass();
         $model = new $modelName;
-        $state = ($state == 'on') ? 1 : 0;
 
         foreach ($this->getSelectedItems() as $id)
         {
             $obj = $model->findOne($id);
-            $obj->{$attribute} = $state;
+            $obj->{$attribute} = $value;
             if (!$obj->save())
             {
                 Admin::error($obj);
+                $this->redir();
             }
         }
+
+        Admin::success('Статус успешно изменён.');
+        $this->redir();
     }
 
     /**
      * Изменение позиции
      */
-    public function actionChangeposition()
+    public function actionPosition()
     {
-        /* @var $model \mrssoft\engine\behaviors\Position */
-
         $position = Yii::$app->request->post('position');
-        $id = Yii::$app->request->post('selection')[0];
+        $id = $this->getSelectedItems()[0];
 
         if (!empty($id))
         {
-            if ($model = $this->getModel($id))
+            if (($model = $this->getModel($id)) && $model->hasMethod('changePosition'))
             {
-                $model->changePosition($position[$id]);
+                call_user_func([$model, 'changePosition'], $position[$id]);
             }
         }
         $this->redir();

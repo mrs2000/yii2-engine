@@ -44,7 +44,7 @@ class ImageDemands extends \yii\base\Behavior
                 }
                 if (!empty($validator->maxFiles))
                 {
-                    $demands[] = Html::tag('li', 'Одновременно можно выбрать: '.$validator->maxFiles.' фалов(а)');
+                    $demands[] = Html::tag('li', 'Одновременно можно выбрать: '.$validator->maxFiles.' файлов');
                 }
                 if (!(empty($validator->minWidth) && empty($validator->minHeight)))
                 {

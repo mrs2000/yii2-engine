@@ -45,11 +45,11 @@ class UploadModal extends Widget
         $prop = 'multiple';
         $multiple = $this->model->hasProperty($prop) && $this->model->{$prop};
 
-        echo Html::activeFileInput(
-            $this->model,
-            $this->attribute.'[]',
-            ['multiple' => $multiple ? 'on' : 'off', 'required' => 'on']
-        );
+        echo FileInput::widget([
+            'model' => $this->model,
+            'attribute' => $this->attribute.'[]',
+            'inputOptions' => ['multiple' => $multiple ? 'on' : 'off', 'required' => 'on']
+        ]);
 
         Modal::end();
 

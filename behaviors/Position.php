@@ -76,8 +76,30 @@ class Position extends Behavior
     }
 
     /**
-     * @param array Query
-     * @param $direction int
+     * Переместить на одну позицию вверх
+     */
+    public function moveUp()
+    {
+        if ($this->owner->{$this->attribute} > 1)
+        {
+            $this->changePosition($this->owner->{$this->attribute} - 1);
+        }
+    }
+
+    /**
+     * Переместить на одну позицию вниз
+     */
+    public function moveDown()
+    {
+        if ($this->owner->{$this->attribute} < $this->getMaxPosition())
+        {
+            $this->changePosition($this->owner->{$this->attribute} + 1);
+        }
+    }
+
+    /**
+     * @param array $where
+     * @param string $direction
      */
     private function executeCommand($where, $direction)
     {

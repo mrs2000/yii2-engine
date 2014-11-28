@@ -117,20 +117,24 @@ $(document).ready(function() {
      */
     $commandForm.on('change', '.position', function () {
         var id = $(this).attr('data-id');
-        $('.select-on-check[value="' + id + '"]').prop('checked', true);
-        change_action_and_submit('changeposition');
+        selectItem(id);
+        change_action_and_submit('position');
     });
 
     /**
      * Смена статуса записи
      */
-    $commandForm.on('click', '.changestate', function () {
-        var id = $(this).attr('data-id');
-        $('.select-on-check').prop('checked', false);
-        $('.select-on-check[value="' + id + '"]').prop('checked', true);
-        change_action_and_submit($(this).attr('data-action'), 'state=' + $(this).attr('data-state'));
+    $commandForm.on('change', '.state', function () {
+        var obj = $(this);
+        selectItem(obj.attr('data-id'));
+        change_action_and_submit('state', 'attribute=' + obj.attr('name') + '&value=' + obj.val());
         return false;
     });
+
+    function selectItem(id) {
+        $('.select-on-check').prop('checked', false);
+        $('.select-on-check[value="' + id + '"]').prop('checked', true);
+    }
 
     $(document).on('pjax:success', function () {
         $('input[name="urlParams"]').val(location.search.substr(1));

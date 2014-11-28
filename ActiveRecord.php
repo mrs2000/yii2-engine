@@ -5,6 +5,7 @@ namespace mrssoft\engine;
  * @method search()
  * @method addCondition()
  * @method addWithCondition()
+ * @method shortName()
  */
 class ActiveRecord extends \yii\db\ActiveRecord
 {

@@ -24,13 +24,18 @@ class Module extends \yii\base\Module
                         'baseUrl' => '@web',
                         'basePath' => '@webroot',
                         'path' => 'content',
-                        'name' => 'Корневая папка'
+                        'name' => 'Корневая папка',
+                        'uploadMaxSize' => '5M',
                     ]
                 ],
-                /*'uploadMaxSize' => '10M',
-                'bind' => array(
-                    'upload mkdir rename' => ['app\modules\admin\components\ElFinderExt', 'rename'],
-                )*/
+                'bind' => [
+                    'upload mkdir rename' => [
+                        'class' => '\mrssoft\engine\ElFinderExt',
+                        'action' => 'change',
+                        'imageMaxWidth' => 800,
+                        'imageMaxHeight' => 600,
+                    ],
+                ]
             ]
         ];
 

@@ -3,25 +3,79 @@ namespace mrssoft\engine;
 
 class ElFinderExt extends \yii\base\Object
 {
+    public $imageMinWidth = false;
+    public $imageMinHeight = false;
+    public $imageMaxWidth = false;
+    public $imageMaxHeight = false;
 
-    public function rename($cmd, $result, $args, $elfinder)
+    function resize($path)
+    {
+        $info = @getimagesize($path);
+        if ($info)
+        {
+            $ih = new \mrssoft\image\ImageHandler();
+            $ih->load($path);
+            $change = false;
+
+            if ($this->imageMinWidth && $ih->getWidth() < $this->imageMinWidth)
+            {
+                $ih->resize($this->imageMinWidth, false);
+                $change = true;
+            }
+            if ($this->imageMinHeight && $ih->getHeight() < $this->imageMinHeight)
+            {
+                $ih->resize(false, $this->imageMinHeight);
+                $change = true;
+            }
+            if ($this->imageMaxWidth && $ih->getWidth() > $this->imageMaxWidth)
+            {
+                $ih->resize($this->imageMaxWidth, false);
+                $change = true;
+            }
+            if ($this->imageMaxHeight && $ih->getHeight() > $this->imageMaxHeight)
+            {
+                $ih->resize(false, $this->imageMaxHeight);
+                $change = true;
+            }
+
+            if ($change)
+            {
+                $ih->save(false, false, 100);
+            }
+        }
+    }
+
+    /**
+     * Отслеживаем перемещение и переименование
+     * @param $cmd
+     * @param $result
+     * @param $args
+     * @param $elfinder
+     * @return bool
+     */
+    function change($cmd, $result, $args, $elfinder)
     {
         foreach ($result['added'] as &$file)
         {
             $path = $elfinder->realpath($file['phash']);
 
-            $new_name = $this->translite($file['name']);
+            if ($cmd == 'upload' && $file['mime'] != 'directory')
+            {
+                $this->resize($path.DIRECTORY_SEPARATOR.$file['name']);
+            }
+
+            $new_name = mb_strtolower($this->translite($file['name']));
+            if (file_exists($path.DIRECTORY_SEPARATOR.$file['name']) && $new_name != $file['name'])
+            {
+                $new_name = $this->uniqueFileName($path, $new_name);
+            }
+
             if ($new_name != $file['name'])
             {
-                if (file_exists($path.DIRECTORY_SEPARATOR.$new_name))
-                {
-                    $new_name = $this->uniqueFileName($path, $new_name);
-                }
-                $elfinder->exec('rename', array('target' => $file['hash'], 'name' => $new_name));
+                $elfinder->exec('rename', ['target' => $file['hash'], 'name' => $new_name]);
             }
-            return true;
         }
-        return false;
+        return true;
     }
 
     private function uniqueFileName($dir, $name)
@@ -55,17 +109,7 @@ class ElFinderExt extends \yii\base\Object
      */
     private function translite($str)
     {
-        static $tbl = array(
-            'а'=>'a', 'б'=>'b', 'в'=>'v', 'г'=>'g', 'д'=>'d', 'е'=>'e', 'ж'=>'g', 'з'=>'z',
-            'и'=>'i', 'й'=>'y', 'к'=>'k', 'л'=>'l', 'м'=>'m', 'н'=>'n', 'о'=>'o', 'п'=>'p',
-            'р'=>'r', 'с'=>'s', 'т'=>'t', 'у'=>'u', 'ф'=>'f', 'ы'=>'i', 'э'=>'e', 'А'=>'A',
-            'Б'=>'B', 'В'=>'V', 'Г'=>'G', 'Д'=>'D', 'Е'=>'E', 'Ж'=>'G', 'З'=>'Z', 'И'=>'I',
-            'Й'=>'Y', 'К'=>'K', 'Л'=>'L', 'М'=>'M', 'Н'=>'N', 'О'=>'O', 'П'=>'P', 'Р'=>'R',
-            'С'=>'S', 'Т'=>'T', 'У'=>'U', 'Ф'=>'F', 'Ы'=>'I', 'Э'=>'E', 'ё'=>"yo", 'х'=>"h",
-            'ц'=>"ts", 'ч'=>"ch", 'ш'=>"sh", 'щ'=>"shch", 'ъ'=>"", 'ь'=>"", 'ю'=>"yu", 'я'=>"ya",
-            'Ё'=>"YO", 'Х'=>"H", 'Ц'=>"TS", 'Ч'=>"CH", 'Ш'=>"SH", 'Щ'=>"SHCH", 'Ъ'=>"", 'Ь'=>"",
-            'Ю'=>"YU", 'Я'=>"YA", ' '=>'-'
-        );
-        return strtr($str, $tbl);
+        $str = \dosamigos\transliterator\TransliteratorHelper::process($str);
+        return preg_replace('/[^-A-Za-z0-9_\.]+/', '', $str);
     }
 }

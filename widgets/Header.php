@@ -89,17 +89,20 @@ class Header extends Widget
                         break;
                     case 'public':
                         $button = [
-                            'action' => 'changepublic?state=on',
+                            'action' => 'state?attribute=public&value=1',
                             'title' => 'Вкл',
                             'need_items' => true,
+                            'no-group' => true
                         ];
-                        $out .= $this->createButton($button);
+                        $b1 = $this->createButton($button);
                         $button = array(
-                            'action' => 'changepublic?state=off',
+                            'action' => 'state?attribute=public&value=0',
                             'title' => 'Выкл',
                             'need_items' => true,
+                            'no-group' => true
                         );
-                        $out .= $this->createButton($button);
+                        $b2 = $this->createButton($button);
+                        $out .= Html::tag('div', $b1.$b2, ['class' => 'btn-group']);
                         break;
                     case 'save':
                         $button = [
@@ -162,6 +165,10 @@ class Header extends Widget
 
         $btn = Html::a($icon.$params['title'], $params['href'], $options);
 
-        return Html::tag('div', $btn, ['class' => 'btn-group']);
+        if (empty($params['no-group'])) {
+            return Html::tag('div', $btn, ['class' => 'btn-group']);
+        } else {
+            return $btn;
+        }
     }
 }

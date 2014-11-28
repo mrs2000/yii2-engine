@@ -16,12 +16,20 @@ class Search extends \yii\base\Behavior
      */
     public $defaultOrder = null;
 
-    private $searchAttributes = [
+    public $searchAttributes = [
         'title' => true,
         'public' => false,
-        'position' => false,
         'id' => false,
     ];
+
+    /**
+     * Пets the name of the class without its namespace
+     * @return string
+     */
+    public function shortName()
+    {
+        return (new \ReflectionClass($this->owner))->getShortName();
+    }
 
     /**
      * @return \yii\data\ActiveDataProvider
@@ -30,30 +38,54 @@ class Search extends \yii\base\Behavior
     {
         if ($this->defaultOrder === null)
         {
-            $this->defaultOrder = ['id' => SORT_ASC];
+            if ($this->owner->canGetProperty('defaultOrder', true, false))
+            {
+                $this->defaultOrder = $this->owner->{'defaultOrder'};
+            }
+            else
+            {
+                $this->defaultOrder = ['id' => SORT_ASC];
 
-            if ($this->owner->hasAttribute('position'))
-            {
-                $this->defaultOrder = ['position' => SORT_ASC];
-            }
-            elseif ($this->owner->hasAttribute('date'))
-            {
-                $this->defaultOrder = ['date' => SORT_DESC];
-            }
-            elseif ($this->owner->hasAttribute('title'))
-            {
-                $this->defaultOrder = ['title' => SORT_ASC];
+                if ($this->owner->hasAttribute('position'))
+                {
+                    $this->defaultOrder = ['position' => SORT_ASC];
+                }
+                elseif ($this->owner->hasAttribute('date'))
+                {
+                    $this->defaultOrder = ['date' => SORT_DESC];
+                }
+                elseif ($this->owner->hasAttribute('title'))
+                {
+                    $this->defaultOrder = ['title' => SORT_ASC];
+                }
             }
         }
 
         $query = $this->owner->find();
+
+        if ($this->owner->canGetProperty('searchCondition')) {
+            $query->andWhere($this->owner->{'searchCondition'});
+        }
+
         $dataProvider = new \yii\data\ActiveDataProvider([
             'query' => $query,
             'sort' => ['defaultOrder' => $this->defaultOrder]
         ]);
 
-        if (\Yii::$app->request->get())
+        if (\Yii::$app->request->get($this->shortName()))
         {
+            $this->searchAttributes = [
+                'public' => false,
+                'id' => false
+            ];
+
+            if ($this->owner->canGetProperty('searchAttributes')) {
+                $this->searchAttributes = array_merge(
+                    $this->owner->{'searchAttributes'},
+                    $this->searchAttributes
+                );
+            }
+
             foreach ($this->searchAttributes as $attribute => $compare)
             {
                 if ($this->owner->hasAttribute($attribute))

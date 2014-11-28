@@ -96,18 +96,6 @@ h1 {
     margin-bottom: 0;
 }
 
-.changestate {
-    background: url(../img/on.png) no-repeat;
-    width: 16px;
-    height: 16px;
-    display: inline-block;
-    cursor: pointer;
-}
-
-.changestate[data-state=on] {
-    background-image: url(../img/off.png);
-}
-
 .grid-view .table td {
     vertical-align: middle;
 }
@@ -120,7 +108,6 @@ h1 {
     position: relative;
     overflow: hidden;
 }
-
 .btn-file input[type="file"] {
     position: absolute;
     top: 0;
@@ -133,4 +120,8 @@ h1 {
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
     cursor: inherit;
     display: block;
+}
+
+input.state {
+    cursor: pointer;
 }

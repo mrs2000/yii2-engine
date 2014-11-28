@@ -24,15 +24,21 @@ class Grid extends \yii\base\Widget
                 Admin::columnCheckbox()
             ];
 
-            if (empty($this->columns))
+            if (empty($this->columns) && $this->model->hasAttribute('title'))
             {
                 $this->columns = [Admin::columnEdit()];
             }
 
             $endColumns = [];
-            if ($this->model->hasAttribute('public')) $endColumns[] = Admin::columnPublic();
-            if ($this->model->hasAttribute('position')) $endColumns[] = Admin::columnPosition();
-            if ($this->model->hasAttribute('date')) $endColumns[] = Admin::columnDate();
+            if (empty($this->columns['public']) && $this->model->hasAttribute('public'))
+                $endColumns[] = Admin::columnPublic();
+
+            if (empty($this->columns['position']) && $this->model->hasAttribute('position'))
+                $endColumns[] = Admin::columnPosition();
+
+            if ($this->model->hasAttribute('date') && !$this->hasColumn('date'))
+                $endColumns[] = Admin::columnDate();
+
             $endColumns[] = Admin::columnID();
 
             $this->columns = array_merge($startColumns, $this->columns, $endColumns);
@@ -49,4 +55,20 @@ class Grid extends \yii\base\Widget
         ]);
         \yii\widgets\Pjax::end();
     }
+
+    private function hasColumn($atribute)
+    {
+        if (empty($this->columns[$atribute]))
+            return true;
+
+        foreach ($this->columns as $column)
+        {
+            if (!empty($column['attribute']) && $column['attribute'] == $atribute) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

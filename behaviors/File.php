@@ -40,9 +40,7 @@ class File extends \yii\base\Behavior
 
     public function beforeValidate()
     {
-        $this->file = \yii\web\UploadedFile::getInstance($this->owner, $this->attribute);
-        if (!empty($this->file->size))
-            $this->owner->{$this->attribute} = $this->file->name;
+        $this->owner->{$this->attribute} = \yii\web\UploadedFile::getInstance($this->owner, $this->attribute);
     }
 
     public function beforeSave()
@@ -57,7 +55,7 @@ class File extends \yii\base\Behavior
             {
                 $filename = $this->createFilename($path, $this->file->name);
 
-                if ($this->file->saveAs($path.$filename))
+                if ($this->file->saveAs($path . $filename))
                 {
                     $this->deleteFile();
                     $this->owner->{$this->attribute} = $filename;
