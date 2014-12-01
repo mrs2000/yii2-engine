@@ -40,7 +40,8 @@ class File extends \yii\base\Behavior
 
     public function beforeValidate()
     {
-        $this->owner->{$this->attribute} = \yii\web\UploadedFile::getInstance($this->owner, $this->attribute);
+        $this->file = \yii\web\UploadedFile::getInstance($this->owner, $this->attribute);
+        $this->owner->{$this->attribute} = $this->file;
     }
 
     public function beforeSave()
