@@ -29,7 +29,7 @@ $this->title = 'Панель управления';
     </div>
     <footer class="footer">
         <div class="container">
-            <p class="pull-left">&copy; Компания «Группа «Новатор», <?=date('Y');?></p>
+            <p class="pull-left">&copy; <?=Yii::$app->controller->module->copyright;?>, <?=date('Y');?></p>
         </div>
     </footer>
     <?php $this->endBody() ?>

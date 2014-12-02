@@ -49,6 +49,11 @@ class Controller extends \yii\web\Controller
         return parent::beforeAction($action);
     }
 
+    public function renderDefault($view, $params = [])
+    {
+        return parent::render($view, $params);
+    }
+
     public function render($view, $params = [])
     {
         return parent::render(Admin::getView($view), $params);
