@@ -36,7 +36,7 @@ class GenerateUrl extends InputWidget
             return false;
         };
         $('.generate-url').click(generate);
-        $('".$this->source."').blur(function () { if ($(this).val() != '') generate(); });";
+        $('".$this->source."').blur(function () { if ($('#".$id."').val() == '') generate(); });";
 
         Russin2UrlAsset::register($this->view);
         $this->view->registerJs($js, \yii\web\View::POS_END);
