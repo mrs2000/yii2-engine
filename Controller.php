@@ -3,6 +3,7 @@
 namespace mrssoft\engine;
 
 use Yii;
+use yii\base\Exception;
 use yii\helpers\Url;
 use yii\web\HttpException;
 use mrssoft\engine\helpers\Admin;
@@ -202,10 +203,18 @@ class Controller extends \yii\web\Controller
             foreach ($items as $id)
             {
                 $model = $this->getModel($id);
-                if (!$model->delete())
+                try
                 {
-                    Admin::error($model);
-                    $this->redir();
+                    if (!$model->delete())
+                    {
+                        Admin::error($model);
+                        return $this->redir();
+                    }
+                }
+                catch (Exception $e)
+                {
+                    Admin::error('Ошибка удаления записи. Возможно на неё ссылаются другие объекты.');
+                    return $this->redir();
                 }
             }
             Admin::success('Данные успешно удалены.');
@@ -214,7 +223,7 @@ class Controller extends \yii\web\Controller
         {
             throw new HttpException(400, 'Неверный запрос');
         }
-        $this->redir();
+        return $this->redir();
     }
 
     /**
@@ -244,12 +253,12 @@ class Controller extends \yii\web\Controller
             if (!$obj->save())
             {
                 Admin::error($obj);
-                $this->redir();
+                return $this->redir();
             }
         }
 
         Admin::success('Статус успешно изменён.');
-        $this->redir();
+        return $this->redir();
     }
 
     /**
@@ -267,11 +276,12 @@ class Controller extends \yii\web\Controller
                 call_user_func([$model, 'changePosition'], $position[$id]);
             }
         }
-        $this->redir();
+        return $this->redir();
     }
 
     /**
      * @param \app\components\UploadFilesAction $action
+     * @return \yii\web\Response
      */
     public function afterUpload($action)
     {
@@ -284,7 +294,7 @@ class Controller extends \yii\web\Controller
             Admin::success('Фотографии успешно загружены.');
         }
 
-        $this->redir();
+        return $this->redir();
     }
 
     /**
@@ -346,7 +356,7 @@ class Controller extends \yii\web\Controller
             if (empty($model))
             {
                 Admin::error('Запись с идентификатором '.$id.' не найдена.');
-                $this->redir();
+                return $this->redir();
             }
         }
 
