@@ -8,13 +8,23 @@ class Module extends \yii\base\Module
 {
     public $controllerNamespace = 'app\modules\admin\controllers';
 
+    public $authController = '\mrssoft\engine\controllers\AuthController';
+    public $defaultController = '\mrssoft\engine\controllers\DefaultController';
+    public $filesController = '\mrssoft\engine\controllers\FilesController';
+
+    public $elfinderMaxImageWidth = 800;
+    public $elfinderMaxImageHeight = 600;
+
+    public $copyright = 'MRSSOFT';
+
     public function init()
     {
         parent::init();
 
         $this->controllerMap = [
-            'auth' => '\mrssoft\engine\controllers\AuthController',
-            'default' => '\mrssoft\engine\controllers\DefaultController',
+            'auth' => $this->authController,
+            'default' => $this->defaultController,
+            'files' => $this->filesController,
             'elfinder' => [
                 'class' => 'mihaildev\elfinder\Controller',
                 'access' => ['moderator'],
@@ -32,8 +42,8 @@ class Module extends \yii\base\Module
                     'upload mkdir rename' => [
                         'class' => '\mrssoft\engine\ElFinderExt',
                         'action' => 'change',
-                        'imageMaxWidth' => 800,
-                        'imageMaxHeight' => 600,
+                        'imageMaxWidth' => $this->elfinderMaxImageWidth,
+                        'imageMaxHeight' => $this->elfinderMaxImageHeight,
                     ],
                 ]
             ]

@@ -172,5 +172,4 @@ class Admin
         $pathTableView = \Yii::getAlias($alias.'.php');
         return is_file($pathTableView) ? $alias : '/layouts/_'.$view;
     }
-
 }

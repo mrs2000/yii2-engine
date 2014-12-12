@@ -74,11 +74,6 @@ class Search extends \yii\base\Behavior
 
         if (\Yii::$app->request->get($this->shortName()))
         {
-            $this->searchAttributes = [
-                'public' => false,
-                'id' => false
-            ];
-
             if ($this->owner->canGetProperty('searchAttributes')) {
                 $this->searchAttributes = array_merge(
                     $this->owner->{'searchAttributes'},
