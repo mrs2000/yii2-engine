@@ -12,8 +12,12 @@ class Module extends \yii\base\Module
     public $defaultController = '\mrssoft\engine\controllers\DefaultController';
     public $filesController = '\mrssoft\engine\controllers\FilesController';
 
+    /**
+     * ElFinder options
+     */
     public $elfinderMaxImageWidth = 800;
     public $elfinderMaxImageHeight = 600;
+    public $elfinderUploadMaxSize = '5M';
 
     public $copyright = 'MRSSOFT';
 
@@ -35,7 +39,7 @@ class Module extends \yii\base\Module
                         'basePath' => '@webroot',
                         'path' => 'content',
                         'name' => 'Корневая папка',
-                        'uploadMaxSize' => '5M',
+                        'uploadMaxSize' => $this->elfinderUploadMaxSize,
                     ]
                 ],
                 'bind' => [
@@ -51,14 +55,12 @@ class Module extends \yii\base\Module
 
         Yii::$app->session->name = 'PHPSESSBACKID';
         Yii::$app->user->loginUrl = '/admin/auth/login';
-        Yii::$app->urlManager->suffix = '';
         Yii::$app->errorHandler->errorAction = 'admin/default/error';
 
         Yii::$app->viewPath = '@app/modules/admin/views';
         Yii::$app->layoutPath =  dirname(__FILE__) . '/views/layouts';
 
-
-
+        Yii::$app->urlManager->suffix = '';
         Yii::$app->urlManager->addRules([
             'admin/<controller:\w+>' => 'admin/<controller>/index',
         ], false);

@@ -4,6 +4,7 @@ namespace mrssoft\engine;
 
 use Yii;
 use yii\base\Exception;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\HttpException;
 use mrssoft\engine\helpers\Admin;
@@ -389,9 +390,15 @@ class Controller extends \yii\web\Controller
         return $this->redirect([$this->id.'/'.$action.$params]);
     }
 
-    public function createUrl($route)
+    public function createUrl($route, $params = null)
     {
-        $params = http_build_query($this->urlParams);
+        if ($params !== null) {
+            $params = ArrayHelper::merge($this->urlParams, $params);
+        } else {
+            $params = $this->urlParams;
+        }
+
+        $params = http_build_query($params);
         if (!empty($params)) $params = '?'.$params;
         return Url::toRoute($route).$params;
     }

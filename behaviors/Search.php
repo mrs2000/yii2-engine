@@ -12,10 +12,8 @@ class Search extends \yii\base\Behavior
     public $owner;
 
     /**
-     * @var array
+     * @var array атрибуты фильтров по умолчанию
      */
-    public $defaultOrder = null;
-
     public $searchAttributes = [
         'title' => true,
         'public' => false,
@@ -23,7 +21,7 @@ class Search extends \yii\base\Behavior
     ];
 
     /**
-     * Пets the name of the class without its namespace
+     * Get the name of the class without its namespace
      * @return string
      */
     public function shortName()
@@ -36,44 +34,50 @@ class Search extends \yii\base\Behavior
      */
     public function search()
     {
-        if ($this->defaultOrder === null)
-        {
-            if ($this->owner->canGetProperty('defaultOrder', true, false))
-            {
-                $this->defaultOrder = $this->owner->{'defaultOrder'};
-            }
-            else
-            {
-                $this->defaultOrder = ['id' => SORT_ASC];
+        /**
+         * Определение cортировки по умолчанию
+         */
+        if ($this->owner->canGetProperty('defaultOrder', true, false)) {
+            $defaultOrder = $this->owner->{'defaultOrder'};
+        } else {
+            $defaultOrder = ['id' => SORT_ASC];
 
-                if ($this->owner->hasAttribute('position'))
-                {
-                    $this->defaultOrder = ['position' => SORT_ASC];
-                }
-                elseif ($this->owner->hasAttribute('date'))
-                {
-                    $this->defaultOrder = ['date' => SORT_DESC];
-                }
-                elseif ($this->owner->hasAttribute('title'))
-                {
-                    $this->defaultOrder = ['title' => SORT_ASC];
-                }
+            if ($this->owner->hasAttribute('position')) {
+                $defaultOrder = ['position' => SORT_ASC];
+            } elseif ($this->owner->hasAttribute('date')) {
+                $defaultOrder = ['date' => SORT_DESC];
+            } elseif ($this->owner->hasAttribute('title')) {
+                $defaultOrder = ['title' => SORT_ASC];
             }
         }
 
         $query = $this->owner->find();
 
+        /**
+         * Условия отбора относительно родителя
+         */
+        if (property_exists($this->owner, 'relativeAttributes')) {
+            foreach ($this->owner->{'relativeAttributes'} as $attribute) {
+                $value = \Yii::$app->request->get($attribute);
+                if ($value === null) {
+                    $query->andWhere($attribute . ' IS NULL');
+                } else {
+                    $query->andWhere($attribute . '=:' . $attribute, [':' . $attribute => $value]);
+                }
+            }
+        }
+
+        /**
+         * Дополнительные условия поиска
+         */
         if ($this->owner->canGetProperty('searchCondition')) {
             $query->andWhere($this->owner->{'searchCondition'});
         }
 
-        $dataProvider = new \yii\data\ActiveDataProvider([
-            'query' => $query,
-            'sort' => ['defaultOrder' => $this->defaultOrder]
-        ]);
-
-        if (\Yii::$app->request->get($this->shortName()))
-        {
+        /**
+         * Отбор с помощью фильтров
+         */
+        if (\Yii::$app->request->get($this->shortName())) {
             if ($this->owner->canGetProperty('searchAttributes')) {
                 $this->searchAttributes = array_merge(
                     $this->owner->{'searchAttributes'},
@@ -81,16 +85,17 @@ class Search extends \yii\base\Behavior
                 );
             }
 
-            foreach ($this->searchAttributes as $attribute => $compare)
-            {
-                if ($this->owner->hasAttribute($attribute))
-                {
+            foreach ($this->searchAttributes as $attribute => $compare) {
+                if ($this->owner->hasAttribute($attribute)) {
                     $this->addCondition($query, $attribute, $compare);
                 }
             }
         }
 
-        return $dataProvider;
+        return new \yii\data\ActiveDataProvider([
+            'query' => $query,
+            'sort' => ['defaultOrder' => $defaultOrder]
+        ]);
     }
 
     /**
@@ -103,17 +108,17 @@ class Search extends \yii\base\Behavior
     public function addCondition($query, $attribute, $partialMatch = false)
     {
         $value = $this->owner->{$attribute};
-        if (trim($value) === '')
-        {
+        if (trim($value) === '') {
             return;
         }
-        if ($partialMatch)
-        {
+        if ($partialMatch) {
             $query->andWhere(['like', $attribute, $value]);
-        }
-        else
-        {
-            $query->andWhere([$attribute => $value]);
+        } else {
+            if ($value === null) {
+                $query->andWhere($attribute . ' IS NULL');
+            } else {
+                $query->andWhere([$attribute => $value]);
+            }
         }
     }
 
@@ -129,16 +134,12 @@ class Search extends \yii\base\Behavior
     public function addWithCondition($query, $attribute, $relation, $targetAttribute, $partialMatch = false)
     {
         $value = $this->owner->{$attribute};
-        if (trim($value) === '')
-        {
+        if (trim($value) === '') {
             return;
         }
-        if ($partialMatch)
-        {
+        if ($partialMatch) {
             $query->innerJoinWith([$relation])->andWhere(['like', $targetAttribute, $value]);
-        }
-        else
-        {
+        } else {
             $query->innerJoinWith([$relation])->andWhere([$targetAttribute => $value]);
         }
     }

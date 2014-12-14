@@ -100,14 +100,15 @@ $(document).ready(function() {
 
         var action = $(this).attr('data-action');
         if (action) {
+            var search = $(this).attr('data-search');
             var confirm_message = $(this).attr('data-confirm');
             if (confirm_message) {
                 ui_confirm(confirm_message, function (result) {
-                    if (result) change_action_and_submit(action);
+                    if (result) change_action_and_submit(action, search);
                 });
                 return false;
             }
-            change_action_and_submit(action);
+            change_action_and_submit(action, search);
         }
         return false;
     });

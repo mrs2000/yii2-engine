@@ -23,7 +23,7 @@ class Header extends Widget
 
     public function run()
     {
-        $content = Html::tag('div', Html::tag('h1', $this->title), ['class' => 'col-md-6']).
+        $content = Html::tag('div', Html::tag('h2', $this->title), ['class' => 'col-md-6']).
             Html::tag('div', $this->createButtons($this->buttons), ['class' => 'col-md-6']);
         echo Html::tag('div', $content, ['class' => 'row']);
     }
@@ -89,14 +89,16 @@ class Header extends Widget
                         break;
                     case 'public':
                         $button = [
-                            'action' => 'state?attribute=public&value=1',
+                            'action' => 'state',
+                            'search' => 'attribute=public&value=1',
                             'title' => 'Вкл',
                             'need_items' => true,
                             'no-group' => true
                         ];
                         $b1 = $this->createButton($button);
                         $button = array(
-                            'action' => 'state?attribute=public&value=0',
+                            'action' => 'state',
+                            'search' => 'attribute=public&value=0',
                             'title' => 'Выкл',
                             'need_items' => true,
                             'no-group' => true
@@ -154,6 +156,7 @@ class Header extends Widget
 
         $options['class'] = 'action btn '.$params['class'];
         if (!empty($params['action'])) $options['data-action'] = $params['action'];
+        if (!empty($params['search'])) $options['data-search'] = $params['search'];
         if (!empty($params['need_items'])) $options['data-need-items'] = '1';
         if (!empty($params['confirm'])) $options['data-confirm'] = $params['confirm'];
         if (!empty($params['id'])) $options['id'] = $params['id'];

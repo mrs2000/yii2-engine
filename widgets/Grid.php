@@ -11,7 +11,7 @@ class Grid extends \yii\base\Widget
     public $model;
 
     /** @var array */
-    public $columns;
+    public $columns = [];
 
     public $addCommonRows = true;
 
@@ -58,7 +58,7 @@ class Grid extends \yii\base\Widget
 
     private function hasColumn($atribute)
     {
-        if (empty($this->columns[$atribute]))
+        if (!empty($this->columns[$atribute]))
             return true;
 
         foreach ($this->columns as $column)

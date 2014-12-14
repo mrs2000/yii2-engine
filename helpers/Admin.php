@@ -56,6 +56,12 @@ class Admin
         return $result;
     }
 
+    /**
+     * Колонка с ссылкой на редактирвование записи
+     * @param string $attribute
+     * @param string $attributeID
+     * @return array
+     */
     public static function columnEdit($attribute = 'title', $attributeID = 'id')
     {
         return [
@@ -65,6 +71,27 @@ class Admin
         ];
     }
 
+    /**
+     * Колонка с ссылками на редактирвование записи и переходя к дочерним элементам
+     * @param string $attribute
+     * @param string $attributeID
+     * @param string $attributeParentID
+     * @return array
+     */
+    public static function columnEditCategory($attribute = 'title', $attributeID = 'id', $attributeParentID = 'parent_id')
+    {
+        return [
+            'class' => \mrssoft\engine\columns\EditCategory::className(),
+            'attribute' => $attribute,
+            'attributeID' => $attributeID,
+            'attributeParentID' => $attributeParentID
+        ];
+    }
+
+    /**
+     * Колонка с порядковым номером
+     * @return array
+     */
     public static function columnSerial()
     {
         return [
@@ -75,6 +102,10 @@ class Admin
         ];
     }
 
+    /**
+     * Колонка с чекбоксом
+     * @return array
+     */
     public static function columnCheckbox()
     {
         return [
@@ -85,6 +116,11 @@ class Admin
         ];
     }
 
+    /**
+     * Колонка с ID записи
+     * @param string $attribute
+     * @return array
+     */
     public static function columnID($attribute = 'id')
     {
         return [
@@ -94,6 +130,10 @@ class Admin
         ];
     }
 
+    /**
+     * Колонка "Опубликовано"
+     * @return array
+     */
     public static function columnPublic()
     {
         return [
@@ -101,6 +141,11 @@ class Admin
         ];
     }
 
+    /**
+     * Колонка с датой
+     * @param string $attribute
+     * @return array
+     */
     public static function columnDate($attribute = 'date')
     {
         return [

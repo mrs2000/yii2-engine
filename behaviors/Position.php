@@ -39,10 +39,13 @@ class Position extends Behavior
      */
     public function getMaxPosition()
     {
-        $query = (new Query())->select('MAX('.$this->attribute.') AS maxColumn')->from($this->owner->tableName());
-        foreach ($this->relativeAttributes as $name)
-        {
-            $query->andWhere($name.'=:'.$name, [':'.$name => $this->owner->{$name}]);
+        $query = (new Query())->select('MAX(' . $this->attribute . ') AS maxColumn')->from($this->owner->tableName());
+        foreach ($this->relativeAttributes as $name) {
+            if ($this->owner->{$name} === null) {
+                $query->andWhere($name . ' IS NULL');
+            } else {
+                $query->andWhere($name . '=:' . $name, [':' . $name => $this->owner->{$name}]);
+            }
         }
 
         return $query->scalar();
@@ -58,14 +61,11 @@ class Position extends Behavior
         $where = [];
         $params = [':p1' => $value, ':p2' => $this->owner->{$this->attribute}];
 
-        if ($this->owner->{$this->attribute} > $value)
-        {
-            $where[$this->attribute.' >= :p1 AND '.$this->attribute.' < :p2'] = $params;
+        if ($this->owner->{$this->attribute} > $value) {
+            $where[$this->attribute . ' >= :p1 AND ' . $this->attribute . ' < :p2'] = $params;
             $direction = '+1';
-        }
-        else
-        {
-            $where[$this->attribute.' <= :p1 AND '.$this->attribute.' > :p2'] = $params;
+        } else {
+            $where[$this->attribute . ' <= :p1 AND ' . $this->attribute . ' > :p2'] = $params;
             $direction = '-1';
         }
 
@@ -80,8 +80,7 @@ class Position extends Behavior
      */
     public function moveUp()
     {
-        if ($this->owner->{$this->attribute} > 1)
-        {
+        if ($this->owner->{$this->attribute} > 1) {
             $this->changePosition($this->owner->{$this->attribute} - 1);
         }
     }
@@ -91,8 +90,7 @@ class Position extends Behavior
      */
     public function moveDown()
     {
-        if ($this->owner->{$this->attribute} < $this->getMaxPosition())
-        {
+        if ($this->owner->{$this->attribute} < $this->getMaxPosition()) {
             $this->changePosition($this->owner->{$this->attribute} + 1);
         }
     }
@@ -103,23 +101,26 @@ class Position extends Behavior
      */
     private function executeCommand($where, $direction)
     {
-        foreach ($this->relativeAttributes as $name)
-        {
-            $where[$name.'=:'.$name] = [':'.$name => $this->owner->{$name}];
+        foreach ($this->relativeAttributes as $name) {
+            if ($this->owner->{$name} === null) {
+                $where[$name . ' IS NULL'] = null;
+            } else {
+                $where[$name . '=:' . $name] = [':' . $name => $this->owner->{$name}];
+            }
         }
 
         $params = [];
-        foreach ($where as $w)
-        {
-            foreach ($w as $k => $v)
-            {
-                $params[$k] = $v;
+        foreach ($where as $w) {
+            if ($w !== null) {
+                foreach ($w as $k => $v) {
+                    $params[$k] = $v;
+                }
             }
         }
 
         $cmd = Yii::$app->db->createCommand()->update(
             $this->owner->tableName(),
-            [$this->attribute => new Expression($this->attribute.$direction)],
+            [$this->attribute => new Expression($this->attribute . $direction)],
             implode(' AND ', array_keys($where)),
             $params
         );
@@ -141,7 +142,7 @@ class Position extends Behavior
     public function afterDelete()
     {
         $this->executeCommand(
-            [$this->attribute.'>:p0' => [':p0' => $this->owner->{$this->attribute}]],
+            [$this->attribute . '>:p0' => [':p0' => $this->owner->{$this->attribute}]],
             '-1'
         );
     }
