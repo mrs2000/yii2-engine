@@ -10,7 +10,7 @@ class ImageThumb extends DataColumn
 {
     public $attribute = 'image';
 
-    public $header = 'Изображение';
+    public $header;
 
     public $contentOptions = ['class' => 'center'];
 
@@ -19,6 +19,12 @@ class ImageThumb extends DataColumn
     public $filter = false;
 
     public $enablePreview = true;
+
+    public function init()
+    {
+        if (empty($this->header))
+            $this->header = Yii::t('admin/main', 'Image');
+    }
 
     /**
      * @inheritdoc

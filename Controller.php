@@ -97,6 +97,7 @@ class Controller extends \yii\web\Controller
     /**
      * Редактирование записи
      * @param $id
+     * @return string
      * @throws HttpException
      */
     public function actionEdit($id = 0)
@@ -126,7 +127,7 @@ class Controller extends \yii\web\Controller
             {
                 if ($model->save())
                 {
-                    Admin::success('Данные успешно сохранены.');
+                    Admin::success(Yii::t('admin/main', 'Data saved successfully.'));
                     $result['result'] = true;
                 }
             }
@@ -134,7 +135,7 @@ class Controller extends \yii\web\Controller
             return $result;
         }
 
-        throw new HttpException(400, 'Неверный запрос');
+        throw new HttpException(400, Yii::t('admin/main', 'Invalid query.'));
     }
 
     /**
@@ -219,15 +220,15 @@ class Controller extends \yii\web\Controller
                 }
                 catch (Exception $e)
                 {
-                    Admin::error('Ошибка удаления записи. Возможно на неё ссылаются другие объекты.');
+                    Admin::error(Yii::t('admin/main', 'Failed to delete the record. Perhaps at it is referenced by other objects.'));
                     return $this->redir();
                 }
             }
-            Admin::success('Данные успешно удалены.');
+            Admin::success(Yii::t('admin/main', 'Data successfully deleted.'));
         }
         else
         {
-            throw new HttpException(400, 'Неверный запрос');
+            throw new HttpException(400, Yii::t('admin/main', 'Invalid query.'));
         }
         return $this->redir();
     }
@@ -244,6 +245,7 @@ class Controller extends \yii\web\Controller
      * Изменене состояния атрибута
      * @param string $attribute - название поля
      * @param string $value - новое состояние
+     * @return \yii\web\Response
      */
     public function actionState($attribute, $value)
     {
@@ -263,7 +265,7 @@ class Controller extends \yii\web\Controller
             }
         }
 
-        Admin::success('Статус успешно изменён.');
+        Admin::success(Yii::t('admin/main', 'Status changed successfully.'));
         return $this->redir();
     }
 
@@ -297,7 +299,7 @@ class Controller extends \yii\web\Controller
         }
         else
         {
-            Admin::success('Фотографии успешно загружены.');
+            Admin::success(Yii::t('admin/main', 'File successfully downloaded.'));
         }
 
         return $this->redir();
@@ -361,7 +363,7 @@ class Controller extends \yii\web\Controller
             $model = $model::findOne($id);
             if (empty($model))
             {
-                Admin::error('Запись с идентификатором '.$id.' не найдена.');
+                Admin::error(Yii::t('admin/main', 'Record with ID {0} not found.'));
                 return $this->redir();
             }
         }

@@ -8,8 +8,8 @@ use yii\bootstrap\ActiveForm;
 
 
 ?>
-<h1>Вход</h1>
-<p>Введите имя пользователя и пароль.</p>
+<h1><?=Yii::t('admin/main','Singin');?></h1>
+<p><?=Yii::t('admin/main', 'Enter your login and password.');?></p>
 
 <?php $form = ActiveForm::begin([
     'id' => 'login-form',
@@ -25,7 +25,7 @@ use yii\bootstrap\ActiveForm;
 
 <div class="form-group">
     <div class="col-md-offset-1 col-md-11">
-        <?= Html::submitButton('Вход', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+        <?= Html::submitButton(Yii::t('admin/main', 'Singin'), ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
     </div>
 </div>
 

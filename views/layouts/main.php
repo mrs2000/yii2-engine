@@ -4,7 +4,7 @@
  * @var $content string
  */
 
-$this->title = 'Панель управления';
+$this->title = Yii::t('admin/main', 'Control Panel');
 \mrssoft\engine\Asset::register($this);
 ?>
 

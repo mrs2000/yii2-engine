@@ -12,14 +12,17 @@ class Asset extends AssetBundle
         'css/admin.css',
     ];
 
-    public $js = [
-        'js/admin.strings.ru.min.js',
-        'js/admin.js',
-    ];
-
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
         'yii\bootstrap\BootstrapThemeAsset'
     ];
+
+    public function init()
+    {
+        $this->js = [
+            'js/admin.strings.'.\Yii::$app->language.'.min.js',
+            'js/admin.js',
+        ];
+    }
 }

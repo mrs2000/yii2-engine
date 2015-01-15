@@ -26,8 +26,8 @@ class UploadModal extends Widget
 
     public function run()
     {
-        $buttons = Html::submitButton('Загрузить', ['class' => 'btn btn-primary btn-upload']).
-            Html::button('Закрыть', ['class' => 'btn btn-default', 'data-dismiss' => 'modal']);
+        $buttons = Html::submitButton(Yii::t('admin/main', 'Download'), ['class' => 'btn btn-primary btn-upload']).
+            Html::button(Yii::t('admin/main', 'Close'), ['class' => 'btn btn-default', 'data-dismiss' => 'modal']);
 
         Modal::begin([
             'header' => Html::tag('h4', $this->title, ['class' => 'modal-title']),
@@ -38,7 +38,7 @@ class UploadModal extends Widget
         $demands = $this->getDemands();
         if (!empty($demands))
         {
-            echo Html::tag('b', 'Требования к загружаемым файлам:');
+            echo Html::tag('b', Yii::t('image-demands', 'Requirements for download:'));
             echo $demands;
         }
 

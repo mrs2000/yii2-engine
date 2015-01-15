@@ -51,7 +51,7 @@ class Header extends Widget
                 {
                     case 'add':
                         $button = [
-                            'title' => 'Создать',
+                            'title' => Yii::t('admin/main', 'Create'),
                             'class' => 'btn-success',
                             'icon' => 'glyphicon-plus glyphicon-white',
                             'href' => Yii::$app->controller->createUrl('edit')
@@ -60,7 +60,7 @@ class Header extends Widget
                         break;
                     case 'cancel':
                         $button = [
-                            'title' => 'Закрыть',
+                            'title' => Yii::t('admin/main', 'Close'),
                             'class' => 'btn-danger',
                             'icon' => ' glyphicon-off glyphicon-white',
                             'href' => Yii::$app->controller->createUrl('index')
@@ -70,7 +70,7 @@ class Header extends Widget
                     case 'copy':
                         $button = [
                             'action' => $button,
-                            'title' => 'Копия',
+                            'title' => Yii::t('admin/main', 'Copy'),
                             'class' => 'btn-success',
                             'need_items' => true,
                         ];
@@ -79,11 +79,11 @@ class Header extends Widget
                     case 'delete':
                         $button = [
                             'action' => $button,
-                            'title' => 'Удалить',
+                            'title' => Yii::t('admin/main', 'Delete'),
                             'class' => 'btn-danger',
                             'need_items' => true,
                             'icon' => 'glyphicon-trash glyphicon-white',
-                            'confirm' => 'Вы действительно хотите удалить выделенные элементы?'
+                            'confirm' => Yii::t('admin/main', 'Are you sure you want to remove the selected items?')
                         ];
                         $out .= $this->createButton($button);
                         break;
@@ -91,7 +91,7 @@ class Header extends Widget
                         $button = [
                             'action' => 'state',
                             'search' => 'attribute=public&value=1',
-                            'title' => 'Вкл',
+                            'title' => Yii::t('admin/main', 'On'),
                             'need_items' => true,
                             'no-group' => true
                         ];
@@ -99,7 +99,7 @@ class Header extends Widget
                         $button = array(
                             'action' => 'state',
                             'search' => 'attribute=public&value=0',
-                            'title' => 'Выкл',
+                            'title' => Yii::t('admin/main', 'Off'),
                             'need_items' => true,
                             'no-group' => true
                         );
@@ -109,7 +109,7 @@ class Header extends Widget
                     case 'save':
                         $button = [
                             'action' => 'update',
-                            'title' => 'Сохранить',
+                            'title' => Yii::t('admin/main', 'Save'),
                             'class' => 'btn-success',
                             'icon' => 'glyphicon-ok glyphicon-white',
                         ];
@@ -118,7 +118,7 @@ class Header extends Widget
                     case 'apply':
                         $button = [
                             'action' => 'apply',
-                            'title' => 'Применить',
+                            'title' => Yii::t('admin/main', 'Apply'),
                             'class' => 'btn-primary',
                             'icon' => 'glyphicon-ok glyphicon-white',
                         ];
@@ -126,7 +126,7 @@ class Header extends Widget
                         break;
                     case 'upload':
                         $button = [
-                             'title' => 'Загрузить',
+                            'title' => Yii::t('admin/main', 'Download'),
                             'class' => 'btn-primary btn-show-upload',
                             'icon' => 'glyphicon-arrow-down glyphicon-white',
                         ];
@@ -149,7 +149,7 @@ class Header extends Widget
      */
     private function createButton($params)
     {
-        if (!isset($params['title'])) throw new Exception('Не указан заголовок командной кнопки.');
+        if (!isset($params['title'])) throw new Exception('Unknown header command button.');
 
         if (!isset($params['class'])) $params['class'] = 'btn-default';
         $icon = isset($params['icon']) ? '<i class="glyphicon '.$params['icon'].'"></i> ' : '';

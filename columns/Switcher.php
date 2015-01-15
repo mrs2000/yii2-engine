@@ -14,10 +14,16 @@ class Switcher extends DataColumn
 
     public $contentOptions = ['class' => 'center'];
 
-    public $filter = [
-        0 => 'Нет',
-        1 => 'Да'
-    ];
+    public function init()
+    {
+        if (empty($this->filter))
+        {
+            $this->filter = [
+                0 => Yii::t('admin/main', 'No'),
+                1 => Yii::t('admin/main', 'Yes')
+            ];
+        }
+    }
 
     /**
      * @inheritdoc

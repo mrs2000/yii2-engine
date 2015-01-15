@@ -39,7 +39,7 @@ class Breadcrumbs extends \yii\base\Widget
         echo \yii\widgets\Breadcrumbs::widget([
             'links' => array_reverse($links),
             'homeLink' => [
-                'label' => 'Корневой раздел',
+                'label' => \Yii::t('admin/main', 'Root'),
                 'url' => [$route]
             ]
         ]);

@@ -25,6 +25,15 @@ class Module extends \yii\base\Module
     {
         parent::init();
 
+        Yii::$app->i18n->translations['admin/main'] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'sourceLanguage' => 'en-US',
+            'basePath' => dirname(__FILE__).DIRECTORY_SEPARATOR.'messages',
+            'fileMap' => [
+                'admin/main' => 'main.php',
+            ],
+        ];
+
         $this->controllerMap = [
             'auth' => $this->authController,
             'default' => $this->defaultController,
@@ -38,7 +47,7 @@ class Module extends \yii\base\Module
                         'baseUrl' => '@web',
                         'basePath' => '@webroot',
                         'path' => 'content',
-                        'name' => 'Корневая папка',
+                        'name' => Yii::t('admin/main', 'Root folder'),
                         'uploadMaxSize' => $this->elfinderUploadMaxSize,
                     ]
                 ],

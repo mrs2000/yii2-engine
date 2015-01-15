@@ -8,7 +8,7 @@ use yii\widgets\InputWidget;
 
 class GenerateUrl extends InputWidget
 {
-    public $buttonText = 'Сгенерировать';
+    public $buttonText;
 
     public $buttonOptions = ['class' => 'btn btn-primary'];
 
@@ -17,6 +17,9 @@ class GenerateUrl extends InputWidget
     public function run()
     {
         $id = $this->getId();
+
+        if (empty($this->buttonText))
+            $this->buttonText = \Yii::t('admin/mian', 'Generate');
 
         if (empty($this->buttonOptions['class'])) $this->buttonOptions['class'] = '';
         $this->buttonOptions['class'] .= ' generate-url';

@@ -1,6 +1,7 @@
 <?
 namespace mrssoft\engine\behaviors;
 
+use Yii;
 use yii\helpers\Html;
 
 /**
@@ -14,6 +15,18 @@ class ImageDemands extends \yii\base\Behavior
     public $owner;
 
     private $_multiple = false;
+
+    public function init()
+    {
+        Yii::$app->i18n->translations['image-demands'] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'sourceLanguage' => 'en-US',
+            'basePath' => dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'messages',
+            'fileMap' => [
+                'image-demands' => 'image-demands.php',
+            ],
+        ];
+    }
 
     /**
      * Получить требования на основе правил валидации
@@ -36,23 +49,23 @@ class ImageDemands extends \yii\base\Behavior
             {
                 if (!empty($validator->extensions))
                 {
-                    $demands[] = Html::tag('li', 'Доступные форматы: '.implode(', ',$validator->extensions));
+                    $demands[] = Html::tag('li', Yii::t('image-demands', 'Available formats: ').implode(', ',$validator->extensions));
                 }
                 if (!empty($validator->maxSize))
                 {
-                    $demands[] = Html::tag('li', 'Максимальный размер файла: '.\Yii::$app->formatter->asShortSize($validator->maxSize));
+                    $demands[] = Html::tag('li', Yii::t('image-demands', 'Maximum file size: ').\Yii::$app->formatter->asShortSize($validator->maxSize));
                 }
                 if (!empty($validator->maxFiles))
                 {
-                    $demands[] = Html::tag('li', 'Одновременно можно выбрать: '.$validator->maxFiles.' файлов');
+                    $demands[] = Html::tag('li', Yii::t('image-demands', 'At the same time, you can choose {0} files', $validator->maxFiles));
                 }
                 if (!(empty($validator->minWidth) && empty($validator->minHeight)))
                 {
-                    $demands[] = Html::tag('li', 'Минимальные размеры изображения: '.$validator->minWidth.'x'.$validator->minHeight.'px');
+                    $demands[] = Html::tag('li', Yii::t('image-demands', 'Minimum image size: ').$validator->minWidth.'x'.$validator->minHeight.'px');
                 }
                 if (!(empty($validator->maxWidth) && empty($validator->maxHeight)))
                 {
-                    $demands[] = Html::tag('li', 'Максимальные размеры изображения: '.$validator->minWidth.'x'.$validator->minHeight.'px');
+                    $demands[] = Html::tag('li', Yii::t('image-demands', 'Maximum image size: ').$validator->minWidth.'x'.$validator->minHeight.'px');
                 }
 
                 $this->_multiple = $validator->maxFiles > 1;

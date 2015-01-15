@@ -32,7 +32,9 @@ class FileInput extends Widget
         if (empty($this->label))
         {
             $this->label = isset($this->inputOptions['multiple']) && $this->inputOptions['multiple'] == 'on' ?
-                 'Выберите файлы...' : 'Выберите файл...';
+                 'Select files...' : 'Select file...';
+
+            $this->label = \Yii::t('admin/main', $this->label);
         }
 
         $id = $this->getId();
