@@ -144,8 +144,12 @@ class Controller extends \yii\web\Controller
      * Применить
      * @throws HttpException
      */
-    public function actionApply()
+    public function actionApply($id = null)
     {
+        if (Yii::$app->request->isGet && !empty($id)) {
+            return $this->actionEdit($id);
+        }
+
         $result = $this->update();
 
         return $this->render('edit', ['model' => $result['model']]);

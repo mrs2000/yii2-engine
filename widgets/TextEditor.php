@@ -9,7 +9,7 @@ class TextEditor extends \mihaildev\ckeditor\CKEditor
             'preset' => 'standard',
             'forcePasteAsPlainText' => true,
             'pasteFromWordRemoveFontStyles' => true,
-            'extraAllowedContent' => 'div(*)'
+            'allowedContent' => true
         ]);
 
         parent::init();
