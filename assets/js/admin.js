@@ -7,7 +7,7 @@ function ui_alert(text) {
     alert(text); return;
 
 
-    $('<div title="Административная панель">' + text + '</div>').dialog({
+    $('<div title="' + strings.admin_panel +'">' + text + '</div>').dialog({
         resizable: false,
         height:'auto',
         width: 400,
@@ -29,7 +29,7 @@ function ui_confirm(text, callback) {
 
     callback(confirm(text)); return;
 
-    $('<div title="Административная панель">' + text + '</div>').dialog({
+    $('<div title="' + strings.admin_panel +'">' + text + '</div>').dialog({
         resizable: false,
         height:'auto',
         width: 400,
@@ -54,7 +54,7 @@ function ui_confirm(text, callback) {
  */
 function change_action_and_submit(action, search) {
     var mas = location.pathname.split('/');
-    mas[3] = action;
+    if (mas[1].length < 3) mas[4] = action; else mas[3] = action;
     var loc_serach = location.search ? location.search + '&' : '?';
     search = search ? loc_serach + search : location.search;
     $('#command-form')
@@ -94,7 +94,7 @@ $(document).ready(function() {
         if ($(this).attr('href') != '#') return true;
 
         if ($(this).attr('data-need-items') && $('.select-on-check:checked').length == 0) {
-            ui_alert('Нет отмеченных элементов.');
+            ui_alert(strings.no_checked_items);
             return false;
         }
 

@@ -34,6 +34,15 @@ class Module extends \yii\base\Module
             ],
         ];
 
+        Yii::$app->i18n->translations['admin/menu'] = [
+            'class' => 'yii\i18n\PhpMessageSource',
+            'sourceLanguage' => 'en-US',
+            'basePath' => '@app/modules/admin/messages',
+            'fileMap' => [
+                'admin/menu' => 'menu.php',
+            ],
+        ];
+
         $this->controllerMap = [
             'auth' => $this->authController,
             'default' => $this->defaultController,

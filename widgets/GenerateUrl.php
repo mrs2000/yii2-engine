@@ -19,7 +19,7 @@ class GenerateUrl extends InputWidget
         $id = $this->getId();
 
         if (empty($this->buttonText))
-            $this->buttonText = \Yii::t('admin/mian', 'Generate');
+            $this->buttonText = \Yii::t('admin/main', 'Generate');
 
         if (empty($this->buttonOptions['class'])) $this->buttonOptions['class'] = '';
         $this->buttonOptions['class'] .= ' generate-url';
