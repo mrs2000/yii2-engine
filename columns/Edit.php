@@ -17,13 +17,14 @@ class Edit extends DataColumn
      */
     protected function renderDataCellContent($model, $key, $index)
     {
-        $url = array_merge(
-            [ Yii::$app->controller->id.'/edit', 'id' => $model->{$this->attributeID}],
-            Yii::$app->controller->urlParams
-        );
+        $url = array_merge([
+            Yii::$app->controller->id . '/edit', 'id' => $model->{$this->attributeID}
+        ], Yii::$app->controller->urlParams);
 
         $title = $this->getDataCellValue($model, $key, $index);
-        if (empty($title)) $title = '[ отсутствует ]';
+        if (empty($title)) {
+            $title = '[ отсутствует ]';
+        }
 
         return Html::a($title, $url, ['title' => Yii::t('admin/main', 'Edit')]);
     }

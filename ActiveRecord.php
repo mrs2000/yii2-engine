@@ -42,6 +42,6 @@ class ActiveRecord extends \yii\db\ActiveRecord
      */
     public static function active()
     {
-        return self::find()->where('public=1');
+        return static::find()->where('public=1');
     }
 }

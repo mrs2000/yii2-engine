@@ -18,6 +18,8 @@ class ImageFunctions extends Behavior
 
     public $thumbHeight = null;
 
+    public $thumbQuality = 100;
+
     public $quality = 100;
 
     public $path = '@web/img/';
@@ -100,6 +102,15 @@ class ImageFunctions extends Behavior
     }
 
     /**
+     * Качество сохранения эскиза
+     * @return int
+     */
+    public function getThumbQuality()
+    {
+        return $this->thumbQuality;
+    }
+
+    /**
      * Необходимые размеры изображения
      * @return string
      */
@@ -114,14 +125,11 @@ class ImageFunctions extends Behavior
      */
     public function getImagePath()
     {
-        if (is_null($this->_path))
-        {
+        if (is_null($this->_path)) {
             $this->_path = rtrim($this->path, '/') . '/';
 
-            if (preg_match_all('#{(.*)}#Ui', $this->_path, $matches))
-            {
-                foreach ($matches[1] as $i => $param)
-                {
+            if (preg_match_all('#{(.*)}#Ui', $this->_path, $matches)) {
+                foreach ($matches[1] as $i => $param) {
                     $this->_path = str_replace($matches[0][$i], $this->owner->{$param}, $this->_path);
                 }
             }
@@ -135,16 +143,12 @@ class ImageFunctions extends Behavior
      */
     public function copy()
     {
-        $path = '.'.$this->getImagePath();
+        $path = '.' . $this->getImagePath();
         $copyName = $this->createFilename($path, $this->owner->{$this->attribute});
-        copy($path.$this->owner->{$this->attribute}, $path.$copyName);
+        copy($path . $this->owner->{$this->attribute}, $path . $copyName);
 
-        if (!($this->thumbHeight === null || $this->thumbHeight == null))
-        {
-            copy(
-                $path . self::thumbPath($this->owner->{$this->attribute}, $this->thumbSuffix),
-                $path . self::thumbPath($copyName, $this->thumbSuffix)
-            );
+        if (!($this->thumbHeight === null || $this->thumbHeight == null)) {
+            copy($path . self::thumbPath($this->owner->{$this->attribute}, $this->thumbSuffix), $path . self::thumbPath($copyName, $this->thumbSuffix));
         }
 
         $this->owner->{$this->attribute} = $copyName;
@@ -164,14 +168,12 @@ class ImageFunctions extends Behavior
     public function deleteImages()
     {
         $path = '.' . $this->getImage();
-        if (is_file($path))
-        {
+        if (is_file($path)) {
             @unlink($path);
         }
 
         $path = self::thumbPath($path, $this->thumbSuffix);
-        if (is_file($path))
-        {
+        if (is_file($path)) {
             @unlink($path);
         }
     }
@@ -185,12 +187,9 @@ class ImageFunctions extends Behavior
     public static function thumbPath($filename, $suffix = '_thumb')
     {
         $n = strripos($filename, '.');
-        if ($n === false)
-        {
+        if ($n === false) {
             return $filename . $suffix;
-        }
-        else
-        {
+        } else {
             return substr($filename, 0, $n) . $suffix . substr($filename, $n);
         }
     }
@@ -204,8 +203,7 @@ class ImageFunctions extends Behavior
     private function createFilename($path, $filename)
     {
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
-        do
-        {
+        do {
             $name = substr(mb_strtolower(md5(uniqid())), 0, $this->nameLenght) . '.' . $ext;
         } while (is_file($path . $name));
 
@@ -222,24 +220,19 @@ class ImageFunctions extends Behavior
      */
     public function createThumb($imageHandler = null, $adaptive = true, $proportional = true)
     {
-        if ($imageHandler === null)
-        {
+        if ($imageHandler === null) {
             $imageHandler = new \mrssoft\image\ImageHandler();
             $imageHandler->load('.' . $this->getImage());
         }
 
-        if ($this->thumbWidth !== null && $this->thumbHeight !== null)
-        {
-            if ($adaptive)
-            {
+        if ($this->thumbWidth !== null && $this->thumbHeight !== null) {
+            if ($adaptive) {
                 $imageHandler->adaptiveThumb($this->thumbWidth, $this->thumbHeight);
-            }
-            else
-            {
+            } else {
                 $imageHandler->thumb($this->thumbWidth, $this->thumbHeight, $proportional);
             }
 
-            $imageHandler->save('.' . $this->getThumb());
+            $imageHandler->save('.' . $this->getThumb(), false, $this->thumbQuality);
         }
 
         return $imageHandler;
@@ -254,16 +247,13 @@ class ImageFunctions extends Behavior
      */
     public function resize($imageHandler = null, $proportional = true)
     {
-        if ($imageHandler === null)
-        {
+        if ($imageHandler === null) {
             $imageHandler = new \mrssoft\image\ImageHandler();
             $imageHandler->load('.' . $this->getImage());
         }
 
-        if ($imageHandler->getWidth() != $this->width || $imageHandler->getHeight() != $this->height)
-        {
-            $imageHandler->resize($this->width, $this->height, $proportional)
-                         ->save(false, false, $this->quality);
+        if ($imageHandler->getWidth() != $this->width || $imageHandler->getHeight() != $this->height) {
+            $imageHandler->resize($this->width, $this->height, $proportional)->save(false, false, $this->quality);
         }
 
         return $imageHandler;

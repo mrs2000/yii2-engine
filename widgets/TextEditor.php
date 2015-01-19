@@ -5,14 +5,12 @@ class TextEditor extends \mihaildev\ckeditor\CKEditor
 {
     public function init()
     {
-        $this->editorOptions = \mihaildev\elfinder\ElFinder::ckeditorOptions(
-            'admin/elfinder',
-            [
-                'preset' => 'standard',
-                'forcePasteAsPlainText' => true,
-                'pasteFromWordRemoveFontStyles' => true
-            ]
-        );
+        $this->editorOptions = \mihaildev\elfinder\ElFinder::ckeditorOptions('admin/elfinder', [
+            'preset' => 'standard',
+            'forcePasteAsPlainText' => true,
+            'pasteFromWordRemoveFontStyles' => true,
+            'extraAllowedContent' => 'div(*)'
+        ]);
 
         parent::init();
     }

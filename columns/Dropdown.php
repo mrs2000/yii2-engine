@@ -35,24 +35,19 @@ class Dropdown extends DataColumn
             $options = $this->dropdownOptions;
         }
 
-        if (is_array($value))
-        {
+        if (is_array($value)) {
             $class = 'state form-control';
             if (!isset($options['class'])) {
-                $options['class'] .= ' '.$class;
+                $options['class'] .= ' ' . $class;
             } else {
                 $options['class'] = $class;
             }
 
             $options['data-id'] = $key;
 
-            return \yii\helpers\Html::dropDownList(
-                $this->attribute,
-                $model->{$this->attribute},
-                $this->getDataCellValue($model, $key, $index),
-                $options
-            );
+            return \yii\helpers\Html::dropDownList($this->attribute, $model->{$this->attribute}, $this->getDataCellValue($model, $key, $index), $options);
         }
+
         return Html::tag('span', $value, $options);
     }
 }

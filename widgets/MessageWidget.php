@@ -11,7 +11,7 @@ use yii\helpers\Html;
 class MessageWidget extends Widget
 {
     var $title = '';
-    var $buttons = array();
+    var $buttons = [];
 
     private function getCloseButton()
     {
@@ -20,14 +20,12 @@ class MessageWidget extends Widget
 
     public function run()
     {
-        if ($msgSuccess = Yii::$app->session->getFlash('msg-success'))
-        {
-            echo Html::tag('div', $this->getCloseButton().$msgSuccess , ['class' => 'alert alert-success']);
+        if ($msgSuccess = Yii::$app->session->getFlash('msg-success')) {
+            echo Html::tag('div', $this->getCloseButton() . $msgSuccess, ['class' => 'alert alert-success']);
         }
 
-        if ($msgError = Yii::$app->session->getFlash('msg-error'))
-        {
-            echo Html::tag('div', $this->getCloseButton().$msgError , ['class' => 'alert alert-danger']);
+        if ($msgError = Yii::$app->session->getFlash('msg-error')) {
+            echo Html::tag('div', $this->getCloseButton() . $msgError, ['class' => 'alert alert-danger']);
         }
     }
 }

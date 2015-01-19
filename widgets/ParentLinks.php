@@ -16,7 +16,7 @@ class ParentLinks extends Widget
 
     var $modelClass;
 
-    var $title = 'Список';
+    var $title;
 
     var $attributeID;
 
@@ -25,8 +25,11 @@ class ParentLinks extends Widget
         /** @var \yii\db\ActiveRecord $model */
         $model = new $this->modelClass;
 
-        if (empty($this->controller))
-        {
+        if (empty($this->title)) {
+            $this->title = Yii::t('admin/main', 'List');
+        }
+
+        if (empty($this->controller)) {
             $n = strrpos($this->modelClass, '\\');
             $this->controller = substr($this->modelClass, $n + 1);
         }
@@ -34,7 +37,10 @@ class ParentLinks extends Widget
         $this->controller = strtolower($this->controller);
 
         $id = Yii::$app->request->get($this->attributeID);
-        echo Html::a($model::findOne($id)->{$this->attributeTitle}, [$this->controller.'/edit', 'id' => $id]).' &bullet; ';
-        echo Html::a($this->title, [$this->controller.'/index']);
+        echo Html::a($model::findOne($id)->{$this->attributeTitle}, [
+                $this->controller . '/edit',
+                'id' => $id
+            ]) . ' &bullet; ';
+        echo Html::a($this->title, [$this->controller . '/index']);
     }
 }

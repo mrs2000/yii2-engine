@@ -29,10 +29,8 @@ class FileInput extends Widget
 
     public function run()
     {
-        if (empty($this->label))
-        {
-            $this->label = isset($this->inputOptions['multiple']) && $this->inputOptions['multiple'] == 'on' ?
-                 'Select files...' : 'Select file...';
+        if (empty($this->label)) {
+            $this->label = isset($this->inputOptions['multiple']) && $this->inputOptions['multiple'] == 'on' ? 'Select files...' : 'Select file...';
 
             $this->label = \Yii::t('admin/main', $this->label);
         }
@@ -40,7 +38,7 @@ class FileInput extends Widget
         $id = $this->getId();
         $file = Html::activeFileInput($this->model, $this->attribute, $this->inputOptions);
         $selected = Html::tag('div', '', ['class' => 'selected']);
-        echo Html::tag('div', $this->label.$file, ['class' => 'btn-file btn-block btn btn-primary', 'id' => $id]);
+        echo Html::tag('div', $this->label . $file, ['class' => 'btn-file btn-block btn btn-primary', 'id' => $id]);
         echo $selected;
 
         $script = "$('.btn-file').on('change', 'input', function () {

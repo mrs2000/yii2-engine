@@ -17,29 +17,18 @@ class Position extends DataColumn
 
     private $list = null;
 
-    /**
-     * @inheritdoc
-     */
     protected function renderDataCellContent($model, $key, $index)
     {
-        if ($this->list === null)
-        {
+        if ($this->list === null) {
             $max = $model->getMaxPosition();
             $this->list = [];
-            for ($i = 1; $i <= $max; $i++)
-            {
+            for ($i = 1; $i <= $max; $i++) {
                 $this->list[$i] = $i;
             }
         }
 
-        return \yii\helpers\Html::dropDownList(
-            'position['.$model->primaryKey.']',
-            $model->{$this->attribute},
-            $this->list,
-            [
-                'class' => 'position form-control',
-                'data-id' => $model->primaryKey
-            ]
-        );
+        return \yii\helpers\Html::dropDownList('position[' . $model->primaryKey . ']', $model->{$this->attribute}, $this->list, [
+            'class' => 'position form-control', 'data-id' => $model->primaryKey
+        ]);
     }
 }

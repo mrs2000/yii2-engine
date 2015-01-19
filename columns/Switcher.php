@@ -16,11 +16,9 @@ class Switcher extends DataColumn
 
     public function init()
     {
-        if (empty($this->filter))
-        {
+        if (empty($this->filter)) {
             $this->filter = [
-                0 => Yii::t('admin/main', 'No'),
-                1 => Yii::t('admin/main', 'Yes')
+                0 => Yii::t('admin/main', 'No'), 1 => Yii::t('admin/main', 'Yes')
             ];
         }
     }
@@ -30,14 +28,8 @@ class Switcher extends DataColumn
      */
     protected function renderDataCellContent($model, $key, $index)
     {
-        return Html::checkbox(
-            $this->attribute,
-            (bool)$model->{$this->attribute},
-            [
-                'class' => 'state',
-                'value' => (bool)$model->{$this->attribute} ? '0' : '1',
-                'data-id' => $key
-            ]
-        );
+        return Html::checkbox($this->attribute, (bool)$model->{$this->attribute}, [
+            'class' => 'state', 'value' => (bool)$model->{$this->attribute} ? '0' : '1', 'data-id' => $key
+        ]);
     }
 }

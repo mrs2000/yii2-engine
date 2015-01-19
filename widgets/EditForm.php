@@ -11,7 +11,6 @@ use yii\widgets\ActiveForm;
  * Форма редактирования в админ. манели
  * @var $model ActiveRecord
  */
-
 class EditForm extends Widget
 {
     public $title;
@@ -30,32 +29,28 @@ class EditForm extends Widget
 
         //Открытие формы
         $formConfig = [
-            'action' => '/admin/'.Yii::$app->controller->id.'/index',
+            'action' => '/admin/' . Yii::$app->controller->id . '/index',
             'id' => 'command-form',
         ];
-        if (isset($config['enctype']))
-        {
+        if (isset($config['enctype'])) {
             $formConfig['options']['enctype'] = $config['enctype'];
         }
         $formConfig['enableClientValidation'] = false;
         $form = ActiveForm::begin($formConfig);
 
-        if (!empty($config['model']->id))
-        {
+        if (!empty($config['model']->id)) {
             echo Html::hiddenInput('id', $config['model']->id);
         }
 
         echo Html::hiddenInput('urlParams', http_build_query(Yii::$app->controller->urlParams));
 
-        if (isset($config['parentKeys']))
-        {
-            if (!is_array($config['parentKeys']))
+        if (isset($config['parentKeys'])) {
+            if (!is_array($config['parentKeys'])) {
                 $config['parentKeys'] = [$config['parentKeys']];
+            }
 
-            foreach ($config['parentKeys'] as $attribute)
-            {
-                if (empty($config['model']->{$attribute}))
-                {
+            foreach ($config['parentKeys'] as $attribute) {
+                if (empty($config['model']->{$attribute})) {
                     $config['model']->{$attribute} = Yii::$app->request->get($attribute);
                     echo Html::activeHiddenInput($config['model'], $attribute);
                 }
@@ -69,8 +64,7 @@ class EditForm extends Widget
         ]);
 
         //Ошибки
-        if (!is_array($config['model']) && !empty($config['model']))
-        {
+        if (!is_array($config['model']) && !empty($config['model'])) {
             echo Html::errorSummary($config['model'], ['class' => 'alert alert-danger', 'header' => false]);
         }
 

@@ -67,9 +67,9 @@ class MaterialThumb extends Behavior
                 $this->owner->{$this->attributeImage} = md5($src) . '.jpg';
 
                 $ih = new ImageHandler();
-                $ih->load($src)->
-                resize($this->thumbWidth, $this->thumbHeight)->
-                save($this->path . $this->owner->{$this->attributeImage}, false, 100);
+                $ih->load($src)
+                   ->resize($this->thumbWidth, $this->thumbHeight)
+                   ->save($this->path . $this->owner->{$this->attributeImage}, false, 100);
             }
         }
 
@@ -95,7 +95,10 @@ class MaterialThumb extends Behavior
     public function getThumbnail()
     {
         $image = $this->owner->{$this->attributeImage};
-        if (empty($image)) return null;
+        if (empty($image)) {
+            return null;
+        }
+
         return $this->path . $image;
     }
 }

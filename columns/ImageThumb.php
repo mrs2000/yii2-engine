@@ -22,13 +22,11 @@ class ImageThumb extends DataColumn
 
     public function init()
     {
-        if (empty($this->header))
+        if (empty($this->header)) {
             $this->header = Yii::t('admin/main', 'Image');
+        }
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function renderDataCellContent($model, $key, $index)
     {
         $img = Html::img($model->getThumb());

@@ -118,12 +118,8 @@ class Position extends Behavior
             }
         }
 
-        $cmd = Yii::$app->db->createCommand()->update(
-            $this->owner->tableName(),
-            [$this->attribute => new Expression($this->attribute . $direction)],
-            implode(' AND ', array_keys($where)),
-            $params
-        );
+        $cmd = Yii::$app->db->createCommand()
+                            ->update($this->owner->tableName(), [$this->attribute => new Expression($this->attribute . $direction)], implode(' AND ', array_keys($where)), $params);
 
         $cmd->execute();
     }
@@ -141,9 +137,6 @@ class Position extends Behavior
      */
     public function afterDelete()
     {
-        $this->executeCommand(
-            [$this->attribute . '>:p0' => [':p0' => $this->owner->{$this->attribute}]],
-            '-1'
-        );
+        $this->executeCommand([$this->attribute . '>:p0' => [':p0' => $this->owner->{$this->attribute}]], '-1');
     }
 }

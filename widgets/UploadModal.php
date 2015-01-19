@@ -22,12 +22,18 @@ class UploadModal extends Widget
     /**
      * @var string Заголовок окна
      */
-    public $title = 'Загрузка изображений';
+    public $title;
 
     public function run()
     {
-        $buttons = Html::submitButton(Yii::t('admin/main', 'Download'), ['class' => 'btn btn-primary btn-upload']).
-            Html::button(Yii::t('admin/main', 'Close'), ['class' => 'btn btn-default', 'data-dismiss' => 'modal']);
+        if (!$this->title) {
+            $this->title = Yii::t('admin/main', 'Upload images');
+        }
+
+        $buttons = Html::submitButton(Yii::t('admin/main', 'Download'), ['class' => 'btn btn-primary btn-upload']) . Html::button(Yii::t('admin/main', 'Close'), [
+                'class' => 'btn btn-default',
+                'data-dismiss' => 'modal'
+            ]);
 
         Modal::begin([
             'header' => Html::tag('h4', $this->title, ['class' => 'modal-title']),
@@ -36,8 +42,7 @@ class UploadModal extends Widget
         ]);
 
         $demands = $this->getDemands();
-        if (!empty($demands))
-        {
+        if (!empty($demands)) {
             echo Html::tag('b', Yii::t('image-demands', 'Requirements for download:'));
             echo $demands;
         }
@@ -47,14 +52,14 @@ class UploadModal extends Widget
 
         echo FileInput::widget([
             'model' => $this->model,
-            'attribute' => $this->attribute.'[]',
+            'attribute' => $this->attribute . '[]',
             'inputOptions' => ['multiple' => $multiple ? 'on' : 'off', 'required' => 'on']
         ]);
 
         Modal::end();
 
         \mrssoft\mrs2000box\Asset::register($this->view);
-        $errImgPath = Yii::$app->assetManager->getPublishedUrl('@vendor/mrssoft/yii2-mrs2000box/assets').'/err-img.gif';
+        $errImgPath = Yii::$app->assetManager->getPublishedUrl('@vendor/mrssoft/yii2-mrs2000box/assets') . '/err-img.gif';
 
         $script = "$(document).ready(function() {
             $('.btn-show-upload').click(function (e) {
@@ -69,7 +74,7 @@ class UploadModal extends Widget
 
             function init_mrs2000box() {
                 if (typeof $.fn.mrs2000box === 'function') {
-                    $('.mrs2000box').mrs2000box({err_img_path:'".$errImgPath."'});
+                    $('.mrs2000box').mrs2000box({err_img_path:'" . $errImgPath . "'});
                 }
             }
             init_mrs2000box();
@@ -86,6 +91,7 @@ class UploadModal extends Widget
     public function getDemands()
     {
         $method = 'getDemands';
+
         return $this->model->hasMethod($method) ? $this->model->{$method}() : '';
     }
 }

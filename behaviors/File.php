@@ -31,10 +31,8 @@ class File extends \yii\base\Behavior
     public function events()
     {
         return [
-            ActiveRecord::EVENT_BEFORE_VALIDATE => 'beforeValidate',
-            ActiveRecord::EVENT_BEFORE_INSERT => 'beforeSave',
-            ActiveRecord::EVENT_BEFORE_UPDATE => 'beforeSave',
-            ActiveRecord::EVENT_BEFORE_DELETE => 'beforeDelete',
+            ActiveRecord::EVENT_BEFORE_VALIDATE => 'beforeValidate', ActiveRecord::EVENT_BEFORE_INSERT => 'beforeSave',
+            ActiveRecord::EVENT_BEFORE_UPDATE => 'beforeSave', ActiveRecord::EVENT_BEFORE_DELETE => 'beforeDelete',
         ];
     }
 
@@ -48,21 +46,17 @@ class File extends \yii\base\Behavior
     {
         $this->getOldValue();
 
-        if (!empty($this->file->size))
-        {
+        if (!empty($this->file->size)) {
             $path = $this->preparePath($this->getUploadPath());
 
-            if ($this->createPath($path))
-            {
+            if ($this->createPath($path)) {
                 $filename = $this->createFilename($path, $this->file->name);
 
-                if ($this->file->saveAs($path . $filename))
-                {
+                if ($this->file->saveAs($path . $filename)) {
                     $this->deleteFile();
                     $this->owner->{$this->attribute} = $filename;
 
-                    if (method_exists($this->owner, 'afterUploadFile'))
-                    {
+                    if (method_exists($this->owner, 'afterUploadFile')) {
                         $this->owner->afterUploadFile($this->attribute);
                     }
                 }
@@ -72,8 +66,7 @@ class File extends \yii\base\Behavior
 
     private function getUploadPath()
     {
-        if (empty($this->path) && ($imageFunctions = $this->getImageFunctionsBehavior()))
-        {
+        if (empty($this->path) && ($imageFunctions = $this->getImageFunctionsBehavior())) {
             return $imageFunctions->getImagePath();
         }
 
@@ -85,14 +78,11 @@ class File extends \yii\base\Behavior
      */
     private function getImageFunctionsBehavior()
     {
-        foreach ($this->owner->behaviors() as $name => $behaviorOptions)
-        {
-            if ($behaviorOptions['class'] == \mrssoft\engine\behaviors\ImageFunctions::className())
-            {
+        foreach ($this->owner->behaviors() as $name => $behaviorOptions) {
+            if ($behaviorOptions['class'] == \mrssoft\engine\behaviors\ImageFunctions::className()) {
                 /** @var \mrssoft\engine\behaviors\ImageFunctions $imageFunctions */
                 $imageFunctions = $this->owner->getBehavior($name);
-                if ($imageFunctions->attribute == $this->attribute)
-                {
+                if ($imageFunctions->attribute == $this->attribute) {
                     return $imageFunctions;
                 }
             }
@@ -108,17 +98,15 @@ class File extends \yii\base\Behavior
 
     public function deleteFile()
     {
-        if ($imageFunctions = $this->getImageFunctionsBehavior())
-        {
+        if ($imageFunctions = $this->getImageFunctionsBehavior()) {
             $imageFunctions->deleteImages();
+
             return;
         }
 
-        if (!empty($this->owner->{$this->attribute}))
-        {
+        if (!empty($this->owner->{$this->attribute})) {
             $path = $this->preparePath($this->getUploadPath()) . $this->owner->{$this->attribute};
-            if (@is_file($path))
-            {
+            if (@is_file($path)) {
                 @unlink($path);
             }
         }
@@ -126,29 +114,26 @@ class File extends \yii\base\Behavior
 
     private function preparePath($path)
     {
-        $path = '.'.ltrim($path, '.');
-        return rtrim($path, '/').'/';
+        $path = '.' . ltrim($path, '.');
+
+        return rtrim($path, '/') . '/';
     }
 
     public function getFileUrl()
     {
-        return Yii::$app->request->baseUrl.rtrim($this->path, '/').'/'.$this->owner->{$this->attribute};
+        return Yii::$app->request->baseUrl . rtrim($this->path, '/') . '/' . $this->owner->{$this->attribute};
     }
 
     private function createFilename($path, $filename)
     {
-        if ($this->uniqueFilename)
-        {
+        if ($this->uniqueFilename) {
             $ext = pathinfo($filename, PATHINFO_EXTENSION);
-            do
-            {
+            do {
                 $name = substr(mb_strtolower(md5(uniqid())), 0, $this->nameLenght) . '.' . $ext;
             } while (is_file($path . $name));
 
             return $name;
-        }
-        else
-        {
+        } else {
             return \dosamigos\transliterator\TransliteratorHelper::process($filename);
         }
     }
@@ -157,13 +142,10 @@ class File extends \yii\base\Behavior
     {
         $parts = explode('/', $path);
         $p = '';
-        foreach ($parts as $part)
-        {
-            $p .= $part.'/';
-            if (!file_exists($p))
-            {
-                if (!mkdir($p))
-                {
+        foreach ($parts as $part) {
+            $p .= $part . '/';
+            if (!file_exists($p)) {
+                if (!mkdir($p)) {
                     return false;
                 }
             }
@@ -175,8 +157,7 @@ class File extends \yii\base\Behavior
     private function getOldValue()
     {
         $obj = $this->owner->findOne($this->owner->primaryKey);
-        if ($obj)
-        {
+        if ($obj) {
             $this->owner->{$this->attribute} = $obj->{$this->attribute};
         }
     }

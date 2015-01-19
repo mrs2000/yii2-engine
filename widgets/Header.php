@@ -23,8 +23,7 @@ class Header extends Widget
 
     public function run()
     {
-        $content = Html::tag('div', Html::tag('h2', $this->title), ['class' => 'col-md-6']).
-            Html::tag('div', $this->createButtons($this->buttons), ['class' => 'col-md-6']);
+        $content = Html::tag('div', Html::tag('h2', $this->title), ['class' => 'col-md-6']) . Html::tag('div', $this->createButtons($this->buttons), ['class' => 'col-md-6']);
         echo Html::tag('div', $content, ['class' => 'row']);
     }
 
@@ -37,18 +36,15 @@ class Header extends Widget
     {
         $out = '';
 
-        if (!is_array($list)) $list = [$list];
+        if (!is_array($list)) {
+            $list = [$list];
+        }
 
-        foreach ($list as $button)
-        {
-            if (is_array($button))
-            {
+        foreach ($list as $button) {
+            if (is_array($button)) {
                 $out .= $this->createButton($button);
-            }
-            else
-            {
-                switch($button)
-                {
+            } else {
+                switch ($button) {
                     case 'add':
                         $button = [
                             'title' => Yii::t('admin/main', 'Create'),
@@ -96,15 +92,15 @@ class Header extends Widget
                             'no-group' => true
                         ];
                         $b1 = $this->createButton($button);
-                        $button = array(
+                        $button = [
                             'action' => 'state',
                             'search' => 'attribute=public&value=0',
                             'title' => Yii::t('admin/main', 'Off'),
                             'need_items' => true,
                             'no-group' => true
-                        );
+                        ];
                         $b2 = $this->createButton($button);
-                        $out .= Html::tag('div', $b1.$b2, ['class' => 'btn-group']);
+                        $out .= Html::tag('div', $b1 . $b2, ['class' => 'btn-group']);
                         break;
                     case 'save':
                         $button = [
@@ -136,9 +132,7 @@ class Header extends Widget
             }
         }
 
-        return Html::tag('div', $out, ['class' => 'btn-toolbar pull-right']).
-            Html::tag('div', '', ['class' => 'clearfix']).
-            Html::hiddenInput('action', Yii::$app->controller->action->id);
+        return Html::tag('div', $out, ['class' => 'btn-toolbar pull-right']) . Html::tag('div', '', ['class' => 'clearfix']) . Html::hiddenInput('action', Yii::$app->controller->action->id);
     }
 
     /**
@@ -149,24 +143,37 @@ class Header extends Widget
      */
     private function createButton($params)
     {
-        if (!isset($params['title'])) throw new Exception('Unknown header command button.');
+        if (!isset($params['title'])) {
+            throw new Exception('Unknown header command button.');
+        }
 
-        if (!isset($params['class'])) $params['class'] = 'btn-default';
-        $icon = isset($params['icon']) ? '<i class="glyphicon '.$params['icon'].'"></i> ' : '';
+        if (!isset($params['class'])) {
+            $params['class'] = 'btn-default';
+        }
+        $icon = isset($params['icon']) ? '<i class="glyphicon ' . $params['icon'] . '"></i> ' : '';
 
-        $options['class'] = 'action btn '.$params['class'];
-        if (!empty($params['action'])) $options['data-action'] = $params['action'];
-        if (!empty($params['search'])) $options['data-search'] = $params['search'];
-        if (!empty($params['need_items'])) $options['data-need-items'] = '1';
-        if (!empty($params['confirm'])) $options['data-confirm'] = $params['confirm'];
-        if (!empty($params['id'])) $options['id'] = $params['id'];
+        $options['class'] = 'action btn ' . $params['class'];
+        if (!empty($params['action'])) {
+            $options['data-action'] = $params['action'];
+        }
+        if (!empty($params['search'])) {
+            $options['data-search'] = $params['search'];
+        }
+        if (!empty($params['need_items'])) {
+            $options['data-need-items'] = '1';
+        }
+        if (!empty($params['confirm'])) {
+            $options['data-confirm'] = $params['confirm'];
+        }
+        if (!empty($params['id'])) {
+            $options['id'] = $params['id'];
+        }
 
-        if (empty($params['href']))
-        {
+        if (empty($params['href'])) {
             $params['href'] = '#';
         }
 
-        $btn = Html::a($icon.$params['title'], $params['href'], $options);
+        $btn = Html::a($icon . $params['title'], $params['href'], $options);
 
         if (empty($params['no-group'])) {
             return Html::tag('div', $btn, ['class' => 'btn-group']);

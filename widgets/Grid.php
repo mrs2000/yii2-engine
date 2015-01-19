@@ -1,5 +1,6 @@
 <?
 namespace mrssoft\engine\widgets;
+
 use mrssoft\engine\helpers\Admin;
 
 /**
@@ -17,27 +18,28 @@ class Grid extends \yii\base\Widget
 
     public function run()
     {
-        if ($this->addCommonRows)
-        {
+        if ($this->addCommonRows) {
             $startColumns = [
                 Admin::columnSerial(),
                 Admin::columnCheckbox()
             ];
 
-            if (empty($this->columns) && $this->model->hasAttribute('title'))
-            {
+            if (empty($this->columns) && $this->model->hasAttribute('title')) {
                 $this->columns = [Admin::columnEdit()];
             }
 
             $endColumns = [];
-            if (empty($this->columns['public']) && $this->model->hasAttribute('public'))
+            if (empty($this->columns['public']) && $this->model->hasAttribute('public')) {
                 $endColumns[] = Admin::columnPublic();
+            }
 
-            if (empty($this->columns['position']) && $this->model->hasAttribute('position'))
+            if (empty($this->columns['position']) && $this->model->hasAttribute('position')) {
                 $endColumns[] = Admin::columnPosition();
+            }
 
-            if ($this->model->hasAttribute('date') && !$this->hasColumn('date'))
+            if ($this->model->hasAttribute('date') && !$this->hasColumn('date')) {
                 $endColumns[] = Admin::columnDate();
+            }
 
             $endColumns[] = Admin::columnID();
 
@@ -58,11 +60,11 @@ class Grid extends \yii\base\Widget
 
     private function hasColumn($atribute)
     {
-        if (!empty($this->columns[$atribute]))
+        if (!empty($this->columns[$atribute])) {
             return true;
+        }
 
-        foreach ($this->columns as $column)
-        {
+        foreach ($this->columns as $column) {
             if (!empty($column['attribute']) && $column['attribute'] == $atribute) {
                 return true;
             }
