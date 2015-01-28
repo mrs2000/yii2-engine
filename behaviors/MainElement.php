@@ -1,6 +1,6 @@
 <?
 
-namespace app\components;
+namespace mrssoft\engine\behaviors;
 
 use yii\base\Behavior;
 use yii\db\ActiveRecord;

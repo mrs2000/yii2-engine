@@ -10,16 +10,28 @@ use yii\helpers\Url;
 use yii\web\HttpException;
 
 /**
- * @property mixed urlParams
+ * Базовый класс для контроллеров админ. панели
  */
 class Controller extends \yii\web\Controller
 {
+    /**
+     * @var string Заголовок страницы
+     */
     protected $title = '';
 
+    /**
+     * @var array Кнопки действий в списке объктов
+     */
     protected $buttons = ['add', 'copy', 'delete', 'public'];
 
+    /**
+     * @var null Класс модели
+     */
     protected $modelClass = null;
 
+    /**
+     * @var null Название модели
+     */
     protected $modelName = null;
 
     public $urlParams = '';
@@ -99,7 +111,7 @@ class Controller extends \yii\web\Controller
         if ($model) {
             return $this->render('edit', ['model' => $model]);
         } else {
-            throw new HttpException(404);
+            throw new HttpException(404, Yii::t('yii', 'Page not found.'));
         }
     }
 
@@ -142,6 +154,8 @@ class Controller extends \yii\web\Controller
 
     /**
      * Применить
+     * @param null $id
+     * @return string
      * @throws HttpException
      */
     public function actionApply($id = null)
@@ -176,10 +190,8 @@ class Controller extends \yii\web\Controller
                 /** @var \yii\db\ActiveRecord $copy */
                 $copy = new $className();
                 $copy->setAttributes($attributes, false);
-                if (!$copy->save()) {
-                    Admin::error($copy);
-                    break;
-                }
+                $copy->save(false);
+                break;
             }
         }
 
@@ -200,13 +212,11 @@ class Controller extends \yii\web\Controller
                 try {
                     if (!$model->delete()) {
                         Admin::error($model);
-
                         return $this->redir();
                     }
                 }
                 catch (Exception $e) {
                     Admin::error(Yii::t('admin/main', 'Failed to delete the record. Perhaps at it is referenced by other objects.'));
-
                     return $this->redir();
                 }
             }
@@ -227,7 +237,7 @@ class Controller extends \yii\web\Controller
     }
 
     /**
-     * Изменене состояния атрибута
+     * Изменение состояния атрибута
      * @param string $attribute - название поля
      * @param string $value - новое состояние
      * @return \yii\web\Response
