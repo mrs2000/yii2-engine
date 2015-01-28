@@ -1,23 +1,38 @@
+function create_window(callback) {
+    var $wnd = $('.cp-modal');
+    if ($wnd.length == 0) {
+        $wnd = $('<div class="modal fade cp-modal"><div class="modal-dialog"><div class="modal-content">' +
+        '<div class="modal-header"><button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>' +
+        '<h4 class="modal-title">' + strings.admin_panel + '</h4></div>' +
+        '<div class="modal-body"></div>' +
+        '<div class="modal-footer">' +
+        '<button type="button" class="btn btn-primary modal-yes">' + strings.yes + '</button>' +
+        '<button type="button" class="btn btn-default modal-no">' + strings.no + '</button>' +
+        '</div></div></div></div>');
+
+        $wnd.find('.btn').click(function () {
+            $wnd.modal('toggle');
+            callback($(this).hasClass('modal-yes'));
+            return false;
+        });
+
+        $wnd.modal();
+    } else {
+        $wnd.modal('toggle');
+    }
+
+    return $wnd;
+}
+
 /**
  * Модальное окно с сообщением
  * @param text
+ * @param callback
  */
-function ui_alert(text) {
-
-    alert(text); return;
-
-
-    $('<div title="' + strings.admin_panel +'">' + text + '</div>').dialog({
-        resizable: false,
-        height:'auto',
-        width: 400,
-        modal: true,
-        buttons: {
-            'Закрыть': function() {
-                $( this ).dialog('close');
-            }
-        }
-    });
+function ui_alert(text, callback) {
+    var $wnd = create_window(callback);
+    $wnd.find('.modal-body').html(text);
+    $wnd.find('.modal-no').hide();
 }
 
 /**
@@ -26,25 +41,10 @@ function ui_alert(text) {
  * @param callback
  */
 function ui_confirm(text, callback) {
-
-    callback(confirm(text)); return;
-
-    $('<div title="' + strings.admin_panel +'">' + text + '</div>').dialog({
-        resizable: false,
-        height:'auto',
-        width: 400,
-        modal: true,
-        buttons: {
-            'Да': function() {
-                callback(true);
-                $(this).dialog('close');
-            },
-            'Нет': function() {
-                callback(false);
-                $(this).dialog('close');
-            }
-        }
-    });
+    var $wnd = create_window(callback);
+    $wnd.find('.modal-body').html(text);
+    $wnd.find('.modal-no').show();
+    $wnd.modal();
 }
 
 /**

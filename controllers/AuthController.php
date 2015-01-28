@@ -2,17 +2,16 @@
 
 namespace mrssoft\engine\controllers;
 
+use mrssoft\engine\models\LoginForm;
+
 class AuthController extends \yii\web\Controller
 {
     public function actionLogin()
     {
-        $model = new \mrssoft\engine\models\LoginForm();
-        if ($model->load(\Yii::$app->request->post()) && $model->login())
-        {
-            return $this->redirect('/admin');
+        $model = new LoginForm();
+        if ($model->load(\Yii::$app->request->post()) && $model->login()) {
+            return $this->redirect('/' . $this->module->id);
         }
-
-        $this->layout = null;
 
         return $this->render('login', [
             'model' => $model,
@@ -22,6 +21,6 @@ class AuthController extends \yii\web\Controller
     public function actionLogout()
     {
         \Yii::$app->user->logout();
-        $this->redirect('/admin');
+        $this->redirect('/' . $this->module->id);
     }
 }

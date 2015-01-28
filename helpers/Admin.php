@@ -213,7 +213,7 @@ class Admin
      */
     public static function getView($view)
     {
-        $alias = '@app/modules/admin/views/'.\Yii::$app->controller->id.'/'.$view;
+        $alias = '@app/modules/'.\Yii::$app->controller->module->id.'/views/'.\Yii::$app->controller->id.'/'.$view;
         $pathTableView = \Yii::getAlias($alias.'.php');
         return is_file($pathTableView) ? $alias : '/layouts/_'.$view;
     }

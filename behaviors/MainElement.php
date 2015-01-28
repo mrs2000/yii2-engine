@@ -1,6 +1,6 @@
 <?
 
-namespace mrssoft\engine\behaviors;
+namespace app\components;
 
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
@@ -8,6 +8,9 @@ use yii\db\Query;
 
 class MainElement extends Behavior
 {
+    /** @var ActiveRecord */
+    public $owner;
+
     public $attribute = 'main';
 
     public $relativeAttributes = [];
@@ -18,6 +21,7 @@ class MainElement extends Behavior
             ActiveRecord::EVENT_BEFORE_UPDATE => 'beforeUpdate',
             ActiveRecord::EVENT_BEFORE_INSERT => 'beforeInsert',
             ActiveRecord::EVENT_AFTER_UPDATE => 'afterUpdate',
+            ActiveRecord::EVENT_AFTER_DELETE => 'afterDelete',
         ];
     }
 
@@ -41,6 +45,16 @@ class MainElement extends Behavior
     }
 
     public function afterUpdate()
+    {
+        $this->setFirstMain();
+    }
+
+    public function afterDelete()
+    {
+        $this->setFirstMain();
+    }
+
+    private function setFirstMain()
     {
         if ($this->hasMain() == false) {
             $obj = $this->owner->find()->where($this->getRelationCondition())->one();

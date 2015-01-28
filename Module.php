@@ -72,15 +72,15 @@ class Module extends \yii\base\Module
         ];
 
         Yii::$app->session->name = 'PHPSESSBACKID';
-        Yii::$app->user->loginUrl = '/admin/auth/login';
-        Yii::$app->errorHandler->errorAction = 'admin/default/error';
+        Yii::$app->user->loginUrl = '/' . $this->id . '/auth/login';
+        Yii::$app->errorHandler->errorAction = '/' . $this->id . '/default/error';
 
-        Yii::$app->viewPath = '@app/modules/admin/views';
-        Yii::$app->layoutPath =  dirname(__FILE__) . '/views/layouts';
+        Yii::$app->viewPath = '@app/modules/' . $this->id . '/views';
+        Yii::$app->layoutPath = dirname(__FILE__) . '/views/layouts';
 
         Yii::$app->urlManager->suffix = '';
         Yii::$app->urlManager->addRules([
-            'admin/<controller:\w+>' => 'admin/<controller>/index',
+            '/' . $this->id . '/<controller:\w+>' => '/' . $this->id . '/<controller>/index',
         ], false);
     }
 }
