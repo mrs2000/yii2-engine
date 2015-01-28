@@ -10,8 +10,6 @@ class ImageThumb extends DataColumn
 {
     public $attribute = 'image';
 
-    public $header;
-
     public $contentOptions = ['class' => 'center'];
 
     public $format = 'html';

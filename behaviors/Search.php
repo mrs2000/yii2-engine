@@ -17,6 +17,7 @@ class Search extends \yii\base\Behavior
     public $searchAttributes = [
         'title' => true,
         'public' => false,
+        'position' => false,
         'id' => false,
     ];
 

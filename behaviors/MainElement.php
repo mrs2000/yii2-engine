@@ -20,7 +20,6 @@ class MainElement extends Behavior
         return [
             ActiveRecord::EVENT_BEFORE_UPDATE => 'beforeUpdate',
             ActiveRecord::EVENT_BEFORE_INSERT => 'beforeInsert',
-            ActiveRecord::EVENT_AFTER_UPDATE => 'afterUpdate',
             ActiveRecord::EVENT_AFTER_DELETE => 'afterDelete',
         ];
     }
@@ -34,7 +33,7 @@ class MainElement extends Behavior
 
     public function beforeUpdate()
     {
-        if ($this->owner->{$this->attribute} == 1)
+        if (array_key_exists($this->attribute, $this->owner->dirtyAttributes) && $this->owner->{$this->attribute} == 1)
         {
             \Yii::$app->db->createCommand()->update(
                 $this->owner->tableName(),
@@ -44,17 +43,7 @@ class MainElement extends Behavior
         }
     }
 
-    public function afterUpdate()
-    {
-        $this->setFirstMain();
-    }
-
     public function afterDelete()
-    {
-        $this->setFirstMain();
-    }
-
-    private function setFirstMain()
     {
         if ($this->hasMain() == false) {
             $obj = $this->owner->find()->where($this->getRelationCondition())->one();

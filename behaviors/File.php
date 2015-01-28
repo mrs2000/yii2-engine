@@ -23,6 +23,9 @@ class File extends \yii\base\Behavior
 
     public $uniqueFilename = true;
 
+    /** @var ActiveRecord */
+    public $owner;
+
     /**
      * @var \yii\web\UploadedFile
      */
@@ -31,8 +34,10 @@ class File extends \yii\base\Behavior
     public function events()
     {
         return [
-            ActiveRecord::EVENT_BEFORE_VALIDATE => 'beforeValidate', ActiveRecord::EVENT_BEFORE_INSERT => 'beforeSave',
-            ActiveRecord::EVENT_BEFORE_UPDATE => 'beforeSave', ActiveRecord::EVENT_BEFORE_DELETE => 'beforeDelete',
+            ActiveRecord::EVENT_BEFORE_VALIDATE => 'beforeValidate',
+            ActiveRecord::EVENT_BEFORE_INSERT => 'beforeSave',
+            ActiveRecord::EVENT_BEFORE_UPDATE => 'beforeSave',
+            ActiveRecord::EVENT_BEFORE_DELETE => 'beforeDelete',
         ];
     }
 
@@ -56,7 +61,7 @@ class File extends \yii\base\Behavior
                     $this->deleteFile();
                     $this->owner->{$this->attribute} = $filename;
 
-                    if (method_exists($this->owner, 'afterUploadFile')) {
+                    if ($this->owner->hasMethod('afterUploadFile')) {
                         $this->owner->afterUploadFile($this->attribute);
                     }
                 }
