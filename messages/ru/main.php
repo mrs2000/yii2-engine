@@ -52,6 +52,7 @@ return [
     'Apply' => 'Применить',
     'Download' => 'Загрузить',
     'Are you sure you want to remove the selected items?' => 'Вы действительно хотите удалить выделенные элементы?',
+    'missing' => 'отсутствует',
 
     'Select file...' => 'Выберите файл...',
     'Select files...' => 'Выберите файлы...',

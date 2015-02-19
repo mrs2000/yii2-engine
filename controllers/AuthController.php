@@ -13,6 +13,9 @@ class AuthController extends \yii\web\Controller
             return $this->redirect('/' . $this->module->id);
         }
 
+        $model->username = '';
+        $model->password = '';
+
         return $this->render('login', [
             'model' => $model,
         ]);

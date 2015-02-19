@@ -23,7 +23,7 @@ class Edit extends DataColumn
 
         $title = $this->getDataCellValue($model, $key, $index);
         if (empty($title)) {
-            $title = '[ отсутствует ]';
+            $title = '[&nbsp;'.Yii::t('admin/main', 'missing').'&nbsp;]';
         }
 
         return Html::a($title, $url, ['title' => Yii::t('admin/main', 'Edit')]);
