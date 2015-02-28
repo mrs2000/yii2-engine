@@ -29,7 +29,7 @@ $this->title = Yii::t('admin/main', 'Control Panel');
     </div>
     <footer class="footer">
         <div class="container">
-            <p class="pull-left">&copy; <?=Yii::$app->controller->module->copyright;?>, 2014 &mdash;; <?=date('Y');?></p>
+            <p class="pull-left">&copy; <?=Yii::$app->controller->module->copyright;?>, 2014 &mdash; <?=date('Y');?></p>
         </div>
     </footer>
     <?php $this->endBody() ?>
