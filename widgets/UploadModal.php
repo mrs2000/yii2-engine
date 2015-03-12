@@ -27,7 +27,7 @@ class UploadModal extends Widget
     public function run()
     {
         if (!$this->title) {
-            $this->title = Yii::t('admin/main', 'Upload images');
+            $this->title = Yii::t('admin/main', 'Upload files');
         }
 
         $buttons = Html::submitButton(Yii::t('admin/main', 'Download'), ['class' => 'btn btn-primary btn-upload']) . Html::button(Yii::t('admin/main', 'Close'), [

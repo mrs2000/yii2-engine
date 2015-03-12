@@ -13,15 +13,15 @@ use yii\bootstrap\ActiveForm;
 
 <?php $form = ActiveForm::begin([
     'id' => 'login-form',
-    'options' => ['class' => 'form-horizontal'],
+    'options' => ['class' => 'form-horizontal', 'autocomplete' => 'off'],
     'fieldConfig' => [
         'template' => "{label}\n<div class=\"col-md-3\">{input}</div>\n<div class=\"col-md-8\">{error}</div>",
         'labelOptions' => ['class' => 'col-md-1 control-label'],
     ],
 ]); ?>
 
-<?=$form->field($model, 'username')->textInput(['required' => 'on', 'autofocus' => 'on']);?>
-<?=$form->field($model, 'password')->passwordInput(['required' => 'on']);?>
+<?=$form->field($model, 'username')->textInput(['required' => 'on', 'autofocus' => 'on', 'autocomplete' => 'off']);?>
+<?=$form->field($model, 'password')->passwordInput(['required' => 'on', 'autocomplete' => 'off']);?>
 
 <div class="form-group">
     <div class="col-md-offset-1 col-md-11">

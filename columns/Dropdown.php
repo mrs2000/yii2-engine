@@ -16,7 +16,7 @@ class Dropdown extends DataColumn
 
     public $format = 'html';
 
-    public $action = 'changestate';
+    public $action = 'state';
 
     /**
      * @inheritdoc
@@ -36,13 +36,8 @@ class Dropdown extends DataColumn
         }
 
         if (is_array($value)) {
-            $class = 'state form-control';
-            if (!isset($options['class'])) {
-                $options['class'] .= ' ' . $class;
-            } else {
-                $options['class'] = $class;
-            }
-
+            Html::addCssClass($options, 'state form-control');
+            $options['data-action'] = $this->action;
             $options['data-id'] = $key;
 
             return \yii\helpers\Html::dropDownList($this->attribute, $model->{$this->attribute}, $this->getDataCellValue($model, $key, $index), $options);

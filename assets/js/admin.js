@@ -128,7 +128,7 @@ $(document).ready(function() {
     $commandForm.on('change', '.state', function () {
         var obj = $(this);
         selectItem(obj.attr('data-id'));
-        change_action_and_submit('state', 'attribute=' + obj.attr('name') + '&value=' + obj.val());
+        change_action_and_submit(obj.attr('data-action'), 'attribute=' + obj.attr('name') + '&value=' + obj.val());
         return false;
     });
 
