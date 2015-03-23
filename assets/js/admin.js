@@ -62,6 +62,26 @@ function change_action_and_submit(action, search) {
         .submit();
 }
 
+function processStart(delay) {
+    function showShadow() {
+        var $ps = $('#prosess-shadow');
+        if ($ps.length == 0) {
+            $ps = $('<div id="prosess-shadow">');
+            $('body').append($ps);
+        }
+        $ps.show();
+    }
+    if (delay) {
+        setTimeout(showShadow, delay);
+    } else {
+        showShadow();
+    }
+}
+
+function processStop() {
+    $('#prosess-shadow').hide();
+}
+
 $(document).ready(function() {
 
     $(document).ajaxSuccess(function (e, xhr, settings) {
