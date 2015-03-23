@@ -2,9 +2,10 @@
 namespace mrssoft\engine\widgets;
 
 use mrssoft\engine\helpers\Admin;
+use yii\widgets\Pjax;
 
 /**
- *
+ * Таблица в админ. панели
  */
 class Grid extends \yii\base\Widget
 {
@@ -18,6 +19,7 @@ class Grid extends \yii\base\Widget
 
     public function run()
     {
+        //Добавить частоиспользуемые колонки
         if ($this->addCommonRows) {
             $startColumns = [
                 Admin::columnSerial(),
@@ -46,16 +48,14 @@ class Grid extends \yii\base\Widget
             $this->columns = array_merge($startColumns, $this->columns, $endColumns);
         }
 
-        \yii\widgets\Pjax::begin([
-            'linkSelector' => 'a[data-page], a[data-sort]'
-        ]);
+        Pjax::begin(['linkSelector' => 'a[data-page], a[data-sort]', 'id' => 'pjax-container']);
         echo \yii\grid\GridView::widget([
             'dataProvider' => $this->model->search(),
             'filterModel' => $this->model,
             'columns' => $this->columns,
             'layout' => "{pager}\n{summary}\n{items}\n{pager}"
         ]);
-        \yii\widgets\Pjax::end();
+        Pjax::end();
     }
 
     private function hasColumn($atribute)
@@ -72,5 +72,4 @@ class Grid extends \yii\base\Widget
 
         return false;
     }
-
 }
