@@ -12,6 +12,8 @@ class Grid extends \yii\base\Widget
     /** @var \mrssoft\engine\ActiveRecord */
     public $model;
 
+    public $filter = true;
+
     /** @var array */
     public $columns = [];
 
@@ -51,7 +53,7 @@ class Grid extends \yii\base\Widget
         Pjax::begin(['linkSelector' => 'a[data-page], a[data-sort]', 'id' => 'pjax-container']);
         echo \yii\grid\GridView::widget([
             'dataProvider' => $this->model->search(),
-            'filterModel' => $this->model,
+            'filterModel' => $this->filter === true ? $this->model : $this->filter,
             'columns' => $this->columns,
             'layout' => "{pager}\n{summary}\n{items}\n{pager}"
         ]);
