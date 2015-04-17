@@ -35,6 +35,7 @@ class File extends \yii\base\Behavior
     {
         return [
             ActiveRecord::EVENT_BEFORE_VALIDATE => 'beforeValidate',
+            ActiveRecord::EVENT_AFTER_VALIDATE => 'afterValidate',
             ActiveRecord::EVENT_BEFORE_INSERT => 'beforeSave',
             ActiveRecord::EVENT_BEFORE_UPDATE => 'beforeSave',
             ActiveRecord::EVENT_BEFORE_DELETE => 'beforeDelete',
@@ -45,6 +46,13 @@ class File extends \yii\base\Behavior
     {
         $this->file = \yii\web\UploadedFile::getInstance($this->owner, $this->attribute);
         $this->owner->{$this->attribute} = $this->file;
+    }
+
+    public function afterValidate()
+    {
+        if ($this->owner->hasErrors($this->attribute)) {
+            $this->getOldValue();
+        }
     }
 
     public function beforeSave()
@@ -164,6 +172,8 @@ class File extends \yii\base\Behavior
         $obj = $this->owner->findOne($this->owner->primaryKey);
         if ($obj) {
             $this->owner->{$this->attribute} = $obj->{$this->attribute};
+        } else {
+            $this->owner->{$this->attribute} = null;
         }
     }
 }
