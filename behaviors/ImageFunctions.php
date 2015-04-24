@@ -44,7 +44,7 @@ class ImageFunctions extends Behavior
      */
     public function getImage()
     {
-        return $this->getImagePath() . $this->owner->{$this->attribute};
+        return $this->owner->{$this->attribute} ? $this->getImagePath() . $this->owner->{$this->attribute} : null;
     }
 
     /**
@@ -186,12 +186,16 @@ class ImageFunctions extends Behavior
      */
     public static function thumbPath($filename, $suffix = '_thumb')
     {
-        $n = strripos($filename, '.');
-        if ($n === false) {
-            return $filename . $suffix;
-        } else {
-            return substr($filename, 0, $n) . $suffix . substr($filename, $n);
+        if ($filename) {
+            $n = strripos($filename, '.');
+            if ($n === false) {
+                return $filename . $suffix;
+            } else {
+                return substr($filename, 0, $n) . $suffix . substr($filename, $n);
+            }
         }
+
+        return null;
     }
 
     /**
