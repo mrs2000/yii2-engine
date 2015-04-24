@@ -14,6 +14,8 @@ class Switcher extends DataColumn
 
     public $contentOptions = ['class' => 'center'];
 
+    public $action = 'state';
+
     public function init()
     {
         if (empty($this->filter)) {
@@ -29,7 +31,10 @@ class Switcher extends DataColumn
     protected function renderDataCellContent($model, $key, $index)
     {
         return Html::checkbox($this->attribute, (bool)$model->{$this->attribute}, [
-            'class' => 'state', 'value' => (bool)$model->{$this->attribute} ? '0' : '1', 'data-id' => $key
+            'class' => 'state',
+            'value' => (bool)$model->{$this->attribute} ? '0' : '1',
+            'data-id' => $key,
+            'data-action' => $this->action
         ]);
     }
 }
