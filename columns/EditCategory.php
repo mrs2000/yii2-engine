@@ -16,6 +16,12 @@ class EditCategory extends DataColumn
 
     public $condition = null;
 
+    /**
+     * Enable open subcategories
+     * @var bool
+     */
+    public $enableOpen = true;
+
     protected function renderDataCellContent($model, $key, $index)
     {
         $urlEdit = array_merge([
@@ -30,8 +36,16 @@ class EditCategory extends DataColumn
         $urlParams[$this->attributeParentID] = $model->id;
         $urlChildren = array_merge([Yii::$app->controller->id . '/index'], $urlParams);
 
+        $enableOpen = is_callable($this->enableOpen) ?
+            call_user_func($this->enableOpen, $model, $key, $index) :
+            (bool)$this->enableOpen;
+
+        $text = $enableOpen ?
+            Html::a($this->getDataCellValue($model, $key, $index), $urlChildren, ['title' => Yii::t('admin/main', 'Open')]) :
+            $this->getDataCellValue($model, $key, $index);
+
         return Html::a(Html::tag('span', '', [
             'class' => 'glyphicon glyphicon-pencil', 'title' => Yii::t('admin/main', 'Edit')
-        ]), $urlEdit) . '&nbsp;&nbsp;' . '[ ' . Html::a($this->getDataCellValue($model, $key, $index), $urlChildren, ['title' => Yii::t('admin/main', 'Open')]) . ' ]';
+        ]), $urlEdit) . '&nbsp;&nbsp;' . '[ ' . $text . ' ]';
     }
 }
