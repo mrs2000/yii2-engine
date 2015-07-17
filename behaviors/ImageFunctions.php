@@ -116,7 +116,14 @@ class ImageFunctions extends Behavior
      */
     public function needSize()
     {
-        return $this->width . 'x' . $this->height . 'px';
+        if ($this->width && $this->height) {
+            return $this->width . 'x' . $this->height . 'px';
+        } elseif ($this->width) {
+            return \Yii::t('admin/main', 'width') . ': ' . $this->width . ' px';
+        } elseif ($this->height) {
+            return \Yii::t('admin/main', 'height') . ': ' . $this->height . ' px';
+        }
+        return '';
     }
 
     /**
