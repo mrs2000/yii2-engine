@@ -2,9 +2,6 @@
 
 namespace mrssoft\engine\controllers;
 
-use Yii;
-use mrssoft\engine\Controller;
-
 class DefaultController extends \mrssoft\engine\Controller
 {
     public function actions()
