@@ -109,7 +109,7 @@ class Controller extends \yii\web\Controller
     {
         $model = $this->getModel($id, 'create');
         if ($model) {
-            return $this->render('edit', ['model' => $model]);
+            return $this->edit($model);
         } else {
             throw new HttpException(404, Yii::t('yii', 'Page not found.'));
         }
@@ -149,7 +149,14 @@ class Controller extends \yii\web\Controller
             return $this->redir();
         }
 
-        return $this->render('edit', ['model' => $result['model']]);
+        return $this->edit($result['model']);
+    }
+
+    private function edit($model)
+    {
+        AssetEdit::register($this->view);
+        $this->view->registerJs("$('input[name *= \"title\"]').typograf(); $('[data-typograf=\"on\"]').typograf();");
+        return $this->render('edit', ['model' => $model]);
     }
 
     /**
@@ -165,8 +172,7 @@ class Controller extends \yii\web\Controller
         }
 
         $result = $this->update();
-
-        return $this->render('edit', ['model' => $result['model']]);
+        return $this->edit($result['model']);
     }
 
     /**
