@@ -39,18 +39,19 @@ class Admin
     {
         $errors = $model->getErrors();
         $result = '';
-        if (!empty($errors))
-        {
-            if ($applyAlert)
+        if (!empty($errors)) {
+            if ($applyAlert) {
                 $result .= '<div class="alert alert-error">';
+            }
+
             $result .= '<ul style="margin-bottom: 0;">';
-            foreach ($errors as $error)
-            {
+            foreach ($errors as $error) {
                 $result .= '<li>' . $error[0] . '</li>';
             }
             $result .= '</ul>';
-            if ($applyAlert)
+            if ($applyAlert) {
                 $result .= '</div>';
+            }
         }
 
         return $result;

@@ -67,7 +67,7 @@ class Grid extends \yii\base\Widget
         }
 
         foreach ($this->columns as $column) {
-            if (!empty($column['attribute']) && $column['attribute'] == $atribute) {
+            if (!empty($column['attribute']) && $column['attribute'] === $atribute) {
                 return true;
             }
         }

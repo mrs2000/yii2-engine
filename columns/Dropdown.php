@@ -26,10 +26,9 @@ class Dropdown extends DataColumn
         $value = $this->getDataCellValue($model, $key, $index);
 
         if (is_array($this->dropdownOptions) && !empty($this->dropdownOptions) && is_array(reset($this->dropdownOptions))) {
-            if (isset($this->dropdownOptions[$model->{$this->attribute}])) {
+            $options = [];
+            if (array_key_exists($model->{$this->attribute}, $this->dropdownOptions)) {
                 $options = $this->dropdownOptions[$model->{$this->attribute}];
-            } else {
-                $options = [];
             }
         } else {
             $options = $this->dropdownOptions;

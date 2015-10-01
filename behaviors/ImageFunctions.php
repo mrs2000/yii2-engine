@@ -28,7 +28,7 @@ class ImageFunctions extends Behavior
 
     public $nameLenght = 6;
 
-    private $_path = null;
+    private $_path;
 
     public function events()
     {
@@ -132,10 +132,10 @@ class ImageFunctions extends Behavior
      */
     public function getImagePath()
     {
-        if (is_null($this->_path)) {
+        if ($this->_path === null) {
             $this->_path = rtrim($this->path, '/') . '/';
 
-            if (preg_match_all('#{(.*)}#Ui', $this->_path, $matches)) {
+            if (preg_match_all('#{(.*)}#U', $this->_path, $matches)) {
                 foreach ($matches[1] as $i => $param) {
                     $this->_path = str_replace($matches[0][$i], $this->owner->{$param}, $this->_path);
                 }
@@ -154,7 +154,7 @@ class ImageFunctions extends Behavior
         $copyName = $this->createFilename($path, $this->owner->{$this->attribute});
         copy($path . $this->owner->{$this->attribute}, $path . $copyName);
 
-        if (!($this->thumbHeight === null || $this->thumbHeight == null)) {
+        if (!($this->thumbHeight === null || $this->thumbHeight === null)) {
             copy($path . self::thumbPath($this->owner->{$this->attribute}, $this->thumbSuffix), $path . self::thumbPath($copyName, $this->thumbSuffix));
         }
 
@@ -251,7 +251,7 @@ class ImageFunctions extends Behavior
 
     /**
      * Изменение размера изображения
-     * @param null $imageHandler
+     * @param null|\mrssoft\image\ImageHandler $imageHandler
      * @param bool $proportional
      * @return \mrssoft\image\ImageHandler
      * @throws \yii\base\Exception

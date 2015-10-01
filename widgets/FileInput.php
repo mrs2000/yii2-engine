@@ -30,7 +30,8 @@ class FileInput extends Widget
     public function run()
     {
         if (empty($this->label)) {
-            $this->label = isset($this->inputOptions['multiple']) && $this->inputOptions['multiple'] == 'on' ? 'Select files...' : 'Select file...';
+            $this->label = array_key_exists('multiple', $this->inputOptions) && $this->inputOptions['multiple'] === 'on' ?
+                'Select files...' : 'Select file...';
 
             $this->label = \Yii::t('admin/main', $this->label);
         }

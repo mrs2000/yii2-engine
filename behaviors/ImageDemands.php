@@ -47,7 +47,7 @@ class ImageDemands extends \yii\base\Behavior
         $demands = [];
 
         foreach ($this->owner->validators as $validator) {
-            if ($validator instanceof \yii\validators\ImageValidator && (is_null($attribute) || in_array($attribute, $validator->attributes))) {
+            if ($validator instanceof \yii\validators\ImageValidator && ($attribute === null || in_array($attribute, $validator->attributes))) {
                 if (!empty($validator->extensions)) {
                     $demands[] = Html::tag('li', Yii::t('image-demands', 'Available formats: ') . implode(', ', $validator->extensions));
                 }

@@ -9,7 +9,9 @@ class Date
 {
     public static function date($value)
     {
-        if (empty($value)) return '';
+        if (empty($value)) {
+            return '';
+        }
         $value = new \DateTime($value);
         $formater = new \IntlDateFormatter(
             Yii::$app->language,
@@ -22,7 +24,9 @@ class Date
 
     public static function datetime($value)
     {
-        if (empty($value)) return '';
+        if (empty($value)) {
+            return '';
+        }
         $value = new \DateTime($value);
         return self::getDate($value).' '.$value->format('H:i');
     }

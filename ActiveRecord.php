@@ -3,8 +3,8 @@ namespace mrssoft\engine;
 
 /**
  * @method search()
- * @method addCondition()
- * @method addWithCondition()
+ * @method addCondition($query, $attribute, $partialMatch = false)
+ * @method addWithCondition($query, $attribute, $relation, $targetAttribute, $partialMatch)
  * @method shortName()
  */
 class ActiveRecord extends \yii\db\ActiveRecord

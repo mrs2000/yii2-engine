@@ -14,11 +14,11 @@ class EditCategory extends DataColumn
 
     public $attributeParentID = 'parent_id';
 
-    public $condition = null;
+    public $condition;
 
     /**
      * Enable open subcategories
-     * @var bool
+     * @var bool|callable
      */
     public $enableOpen = true;
 

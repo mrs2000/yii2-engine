@@ -10,15 +10,15 @@ use yii\helpers\Html;
  */
 class ParentLinks extends Widget
 {
-    var $attributeTitle = 'title';
+    public $attributeTitle = 'title';
 
-    var $controller = '';
+    public $controller = '';
 
-    var $modelClass;
+    public $modelClass;
 
-    var $title;
+    public $title;
 
-    var $attributeID;
+    public $attributeID;
 
     public function run()
     {

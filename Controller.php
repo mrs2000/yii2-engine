@@ -27,14 +27,14 @@ class Controller extends \yii\web\Controller
     /**
      * @var null Класс модели
      */
-    protected $modelClass = null;
+    protected $modelClass;
 
     /**
      * @var null Название модели
      */
-    protected $modelName = null;
+    protected $modelName;
 
-    public $urlParams = '';
+    public $urlParams = [];
 
     public function behaviors()
     {
@@ -53,7 +53,7 @@ class Controller extends \yii\web\Controller
 
     public function beforeAction($action)
     {
-        if (isset($_GET['id'])) {
+        if (array_key_exists('id', $_GET)) {
             unset($_GET['id']);
         }
         $this->urlParams = $_GET;
@@ -61,7 +61,7 @@ class Controller extends \yii\web\Controller
         return parent::beforeAction($action);
     }
 
-    public function renderDefault($view, $params = [])
+    public function renderDefault($view, array $params = [])
     {
         return parent::render($view, $params);
     }
@@ -124,11 +124,9 @@ class Controller extends \yii\web\Controller
         if (Yii::$app->request->isPost) {
             $id = Yii::$app->request->post('id');
             $model = $this->getModel($id);
-            if ($model->load(Yii::$app->request->post())) {
-                if ($model->save()) {
-                    Admin::success(Yii::t('admin/main', 'Data saved successfully.'));
-                    $result['result'] = true;
-                }
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                Admin::success(Yii::t('admin/main', 'Data saved successfully.'));
+                $result['result'] = true;
             }
             $result['model'] = $model;
 
@@ -189,7 +187,7 @@ class Controller extends \yii\web\Controller
                 $source->copy();
 
                 $attributes = $source->getAttributes();
-                if (isset($attributes['id'])) {
+                if (array_key_exists('id', $attributes)) {
                     unset($attributes['id']);
                 }
 
@@ -251,6 +249,7 @@ class Controller extends \yii\web\Controller
     public function actionState($attribute, $value)
     {
         /* @var $model ActiveRecord */
+        /* @var $obj ActiveRecord */
 
         $modelName = $this->getModelClass();
         $model = new $modelName;
@@ -389,6 +388,11 @@ class Controller extends \yii\web\Controller
         return $this->redirect([$this->id . '/' . $action . $params]);
     }
 
+    /**
+     * @param $route
+     * @param null|array $params
+     * @return string
+     */
     public function createUrl($route, $params = null)
     {
         if ($params !== null) {
@@ -397,11 +401,11 @@ class Controller extends \yii\web\Controller
             $params = $this->urlParams;
         }
 
-        $params = http_build_query($params);
-        if (!empty($params)) {
-            $params = '?' . $params;
+        $httpParams = http_build_query($params);
+        if (!empty($httpParams)) {
+            $httpParams = '?' . $httpParams;
         }
 
-        return Url::toRoute($route) . $params;
+        return Url::toRoute($route) . $httpParams;
     }
 }

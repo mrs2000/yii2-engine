@@ -8,7 +8,7 @@ class ElFinderExt extends \yii\base\Object
     public $imageMaxWidth = false;
     public $imageMaxHeight = false;
 
-    function resize($path)
+    public function resize($path)
     {
         $info = @getimagesize($path);
         if ($info)
@@ -50,27 +50,27 @@ class ElFinderExt extends \yii\base\Object
      * @param $cmd
      * @param $result
      * @param $args
-     * @param $elfinder
+     * @param \elFinder $elfinder
      * @return bool
      */
-    function change($cmd, $result, $args, $elfinder)
+    public function change($cmd, $result, $args, $elfinder)
     {
         foreach ($result['added'] as &$file)
         {
             $path = $elfinder->realpath($file['phash']);
 
-            if ($cmd == 'upload' && $file['mime'] != 'directory')
+            if ($cmd === 'upload' && $file['mime'] !== 'directory')
             {
                 $this->resize($path.DIRECTORY_SEPARATOR.$file['name']);
             }
 
             $new_name = mb_strtolower($this->translite($file['name']));
-            if (file_exists($path.DIRECTORY_SEPARATOR.$file['name']) && $new_name != $file['name'])
+            if (file_exists($path.DIRECTORY_SEPARATOR.$file['name']) && $new_name !== $file['name'])
             {
                 $new_name = $this->uniqueFileName($path, $new_name);
             }
 
-            if ($new_name != $file['name'])
+            if ($new_name !== $file['name'])
             {
                 $elfinder->exec('rename', ['target' => $file['hash'], 'name' => $new_name]);
             }
@@ -82,7 +82,9 @@ class ElFinderExt extends \yii\base\Object
     {
         $dir = rtrim($dir, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
 
-        if (!file_exists($dir.$name)) return $name;
+        if (!file_exists($dir.$name)) {
+            return $name;
+        }
 
         $file = $name;
         $n = 1;

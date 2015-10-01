@@ -10,8 +10,8 @@ use yii\helpers\Html;
  */
 class MessageWidget extends Widget
 {
-    var $title = '';
-    var $buttons = [];
+    public $title = '';
+    public $buttons = [];
 
     private function getCloseButton()
     {

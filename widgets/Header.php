@@ -14,12 +14,12 @@ class Header extends Widget
     /**
      * @var string Заголовок страницы
      */
-    var $title = '';
+    public $title = '';
 
     /**
      * @var array Кнопки управления
      */
-    var $buttons = [];
+    public $buttons = [];
 
     public function run()
     {
@@ -29,18 +29,14 @@ class Header extends Widget
 
     /**
      * Создать кнопки
-     * @param array $list
+     * @param array|string $list
      * @return string
      */
-    private function createButtons($list = [])
+    private function createButtons($list)
     {
         $out = '';
 
-        if (!is_array($list)) {
-            $list = [$list];
-        }
-
-        foreach ($list as $button) {
+        foreach ((array)$list as $button) {
             if (is_array($button)) {
                 $out .= $this->createButton($button);
             } else {

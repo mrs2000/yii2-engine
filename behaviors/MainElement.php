@@ -26,7 +26,7 @@ class MainElement extends Behavior
 
     public function beforeInsert()
     {
-        if ($this->hasMain() == false) {
+        if ($this->hasMain() === false) {
             $this->owner->{$this->attribute} = 1;
         }
     }
@@ -45,7 +45,7 @@ class MainElement extends Behavior
 
     public function afterDelete()
     {
-        if ($this->hasMain() == false) {
+        if ($this->hasMain() === false) {
             $obj = $this->owner->find()->where($this->getRelationCondition())->one();
             if ($obj) {
                 $obj->{$this->attribute} = 1;

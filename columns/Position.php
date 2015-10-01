@@ -15,7 +15,7 @@ class Position extends DataColumn
 
     public $format = 'html';
 
-    private $list = null;
+    private $list;
 
     protected function renderDataCellContent($model, $key, $index)
     {

@@ -28,7 +28,7 @@ class Module extends \yii\base\Module
         Yii::$app->i18n->translations['admin/main'] = [
             'class' => 'yii\i18n\PhpMessageSource',
             'sourceLanguage' => 'en-US',
-            'basePath' => dirname(__FILE__).DIRECTORY_SEPARATOR.'messages',
+            'basePath' => __DIR__ . DIRECTORY_SEPARATOR . 'messages',
             'fileMap' => [
                 'admin/main' => 'main.php',
             ],
@@ -76,7 +76,7 @@ class Module extends \yii\base\Module
         Yii::$app->errorHandler->errorAction = '/' . $this->id . '/default/error';
 
         Yii::$app->viewPath = '@app/modules/' . $this->id . '/views';
-        Yii::$app->layoutPath = dirname(__FILE__) . '/views/layouts';
+        Yii::$app->layoutPath = __DIR__ . '/views/layouts';
 
         Yii::$app->urlManager->suffix = '';
         Yii::$app->urlManager->addRules([

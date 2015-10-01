@@ -10,10 +10,10 @@ use yii\helpers\Html;
  */
 class TableForm extends Widget
 {
-    var $title = '';
-    var $buttons = [];
-    var $params = [];
-    var $formParams = [];
+    public $title = '';
+    public $buttons = [];
+    public $params = [];
+    public $formParams = [];
 
     public static function begin($config = [])
     {
