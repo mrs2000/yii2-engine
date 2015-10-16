@@ -13,11 +13,13 @@ class Breadcrumbs extends \yii\base\Widget
 
     public $attributeTitle = 'title';
 
+    public $route;
+
     public function run()
     {
         $parentID = \Yii::$app->request->get($this->attributeParentID);
 
-        $route = \Yii::$app->controller->id . '/index';
+        $route = $this->route ?: \Yii::$app->controller->id . '/index';
 
         while (!empty($parentID)) {
             $item = $this->model->find()
@@ -31,7 +33,7 @@ class Breadcrumbs extends \yii\base\Widget
 
             $links[] = [
                 'label' => $item->{$this->attributeTitle},
-                'url' => [$route, $this->attributeParentID => $item->id]
+                'url' => [$route, $this->attributeParentID => $item->getPrimaryKey()]
             ];
 
             $parentID = $item->{$this->attributeParentID};
