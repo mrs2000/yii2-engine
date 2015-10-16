@@ -61,7 +61,7 @@ class Search extends \yii\base\Behavior
             foreach ($this->owner->{'relativeAttributes'} as $attribute) {
                 $value = \Yii::$app->request->get($attribute);
                 if ($value === null) {
-                    $query->andWhere($attribute . ' IS NULL');
+                    $query->andWhere($attribute . ' IS NULL OR 0=' . $attribute);
                 } else {
                     $query->andWhere($attribute . '=:' . $attribute, [':' . $attribute => $value]);
                 }
