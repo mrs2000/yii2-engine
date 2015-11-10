@@ -37,10 +37,12 @@ class ParentLinks extends Widget
         $this->controller = strtolower($this->controller);
 
         $id = Yii::$app->request->get($this->attributeID);
-        echo Html::a($model::findOne($id)->{$this->attributeTitle}, [
-                $this->controller . '/edit',
-                'id' => $id
-            ]) . ' &bullet; ';
+
         echo Html::a($this->title, [$this->controller . '/index']);
+        echo ' &bullet; ';
+        echo Html::a($model::findOne($id)->{$this->attributeTitle}, [
+            $this->controller . '/edit',
+            'id' => $id
+        ]);
     }
 }
