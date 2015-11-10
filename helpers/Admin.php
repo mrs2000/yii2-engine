@@ -1,6 +1,15 @@
 <?
 namespace mrssoft\engine\helpers;
 
+use Yii;
+use yii\db\ActiveRecord;
+use yii\grid\CheckboxColumn;
+use yii\grid\SerialColumn;
+use mrssoft\engine\columns\Edit;
+use mrssoft\engine\columns\EditCategory;
+use mrssoft\engine\columns\Position;
+use mrssoft\engine\columns\Switcher;
+
 class Admin
 {
     /**
@@ -9,7 +18,7 @@ class Admin
      */
     public static function success($message)
     {
-        \Yii::$app->session->setFlash('msg-success', $message);
+        Yii::$app->session->setFlash('msg-success', $message);
     }
 
     /**
@@ -18,20 +27,19 @@ class Admin
      */
     public static function error($message)
     {
-        if ($message instanceof \yii\db\ActiveRecord)
-        {
+        if ($message instanceof ActiveRecord) {
             $message = self::formatModelErrors($message);
         }
-        \Yii::$app->session->setFlash('msg-error', $message);
+        Yii::$app->session->setFlash('msg-error', $message);
     }
 
     public function getMessage()
     {
-        \Yii::$app->session->getFlash('msg-error');
+        Yii::$app->session->getFlash('msg-error');
     }
 
     /**
-     * @param \yii\db\ActiveRecord $model
+     * @param Yii\db\ActiveRecord $model
      * @param bool $applyAlert
      * @return string
      */
@@ -66,7 +74,7 @@ class Admin
     public static function columnEdit($attribute = 'title', $attributeID = 'id')
     {
         return [
-            'class' => \mrssoft\engine\columns\Edit::className(),
+            'class' => Edit::className(),
             'attribute' => $attribute,
             'attributeID' => $attributeID
         ];
@@ -82,7 +90,7 @@ class Admin
     public static function columnEditCategory($attribute = 'title', $attributeID = 'id', $attributeParentID = 'parent_id')
     {
         return [
-            'class' => \mrssoft\engine\columns\EditCategory::className(),
+            'class' => EditCategory::className(),
             'attribute' => $attribute,
             'attributeID' => $attributeID,
             'attributeParentID' => $attributeParentID
@@ -96,7 +104,7 @@ class Admin
     public static function columnSerial()
     {
         return [
-            'class' => \yii\grid\SerialColumn::className(),
+            'class' => SerialColumn::className(),
             'header' => '№',
             'headerOptions' => ['class' => 'column-small'],
             'contentOptions' => ['class' => 'center column-small'],
@@ -110,7 +118,7 @@ class Admin
     public static function columnCheckbox()
     {
         return [
-            'class' => \yii\grid\CheckboxColumn::className(),
+            'class' => CheckboxColumn::className(),
             'checkboxOptions' => ['class' => 'select-on-check'],
             'contentOptions' => ['class' => 'center'],
             'headerOptions' => ['class' => 'center column-small'],
@@ -138,7 +146,7 @@ class Admin
     public static function columnPublic()
     {
         return [
-            'class' => \mrssoft\engine\columns\Switcher::className(),
+            'class' => Switcher::className(),
         ];
     }
 
@@ -157,15 +165,18 @@ class Admin
         ];
     }
 
+    /**
+     * Колонка с датой и временем
+     * @param string $attribute
+     * @return array
+     */
     public static function columnDateTime($attribute = 'date')
     {
         return [
             'attribute' => $attribute,
-            'value' => function ($model, $attribute) {
-                return \Yii::$app->formatter->asDate($model->{$attribute}, 'long');
-            },
+            'format' => 'datetime',
+            'filter' => false,
             'contentOptions' => ['class' => 'center'],
-            'headerOptions' => ['class' => 'center'],
         ];
     }
 
@@ -177,32 +188,9 @@ class Admin
     public static function columnPosition($attribute = 'position')
     {
         return [
-            'class' => \mrssoft\engine\columns\Position::className(),
+            'class' => Position::className(),
             'attribute' => $attribute
         ];
-    }
-
-    // TODO not used
-    public static function CKEditorOptions()
-    {
-        $options['height'] = 300;
-
-        $options['toolbarGroups'] = [
-            ['name' => 'clipboard', 'groups' => ['mode','undo', 'selection', 'clipboard','doctools']],
-            ['name' => 'editing', 'groups' => ['tools', 'about']],
-            '/',
-            ['name' => 'paragraph', 'groups' => ['templates', 'list', 'indent', 'align']],
-            ['name' => 'insert'],
-            '/',
-            ['name' => 'basicstyles', 'groups' => ['basicstyles', 'cleanup']],
-            ['name' => 'colors'],
-            ['name' => 'links'],
-            ['name' => 'others'],
-        ];
-
-        $options['removeButtons'] = 'Smiley,Iframe';
-
-        return $options;
     }
 
     /**
@@ -214,8 +202,8 @@ class Admin
      */
     public static function getView($view)
     {
-        $alias = '@app/modules/'.\Yii::$app->controller->module->id.'/views/'.\Yii::$app->controller->id.'/'.$view;
-        $pathTableView = \Yii::getAlias($alias.'.php');
+        $alias = '@app/modules/'.Yii::$app->controller->module->id.'/views/'.Yii::$app->controller->id.'/'.$view;
+        $pathTableView = Yii::getAlias($alias.'.php');
         return is_file($pathTableView) ? $alias : '/layouts/_'.$view;
     }
 }

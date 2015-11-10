@@ -150,7 +150,7 @@ class Controller extends \yii\web\Controller
         return $this->edit($result['model']);
     }
 
-    private function edit($model)
+    protected function edit($model)
     {
         AssetEdit::register($this->view);
         $this->view->registerJs("$('input[name *= \"title\"]').typograf(); $('[data-typograf=\"on\"]').typograf();");
@@ -277,10 +277,8 @@ class Controller extends \yii\web\Controller
         $position = Yii::$app->request->post('position');
         $id = $this->getSelectedItems()[0];
 
-        if (!empty($id)) {
-            if (($model = $this->getModel($id)) && $model->hasMethod('changePosition')) {
-                call_user_func([$model, 'changePosition'], $position[$id]);
-            }
+        if (!empty($id) && ($model = $this->getModel($id)) && $model->hasMethod('changePosition')) {
+            call_user_func([$model, 'changePosition'], $position[$id]);
         }
 
         return $this->redir();
@@ -308,7 +306,7 @@ class Controller extends \yii\web\Controller
     public function getModelName()
     {
         if (empty($this->modelName)) {
-            $value = $this::className();
+            $value = self::className();
             $n = mb_strrpos($value, '\\');
             if ($n !== false) {
                 $value = substr($value, $n + 1);
