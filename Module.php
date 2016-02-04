@@ -3,6 +3,7 @@
 namespace mrssoft\engine;
 
 use Yii;
+use yii\helpers\Url;
 
 class Module extends \yii\base\Module
 {
@@ -72,7 +73,7 @@ class Module extends \yii\base\Module
         ];
 
         Yii::$app->session->name = 'PHPSESSBACKID';
-        Yii::$app->user->loginUrl = '/' . $this->id . '/auth/login';
+        Yii::$app->user->loginUrl = Url::toRoute('/' . $this->id . '/auth/login');
         Yii::$app->errorHandler->errorAction = '/' . $this->id . '/default/error';
 
         Yii::$app->viewPath = '@app/modules/' . $this->id . '/views';
