@@ -45,7 +45,9 @@ class Grid extends \yii\base\Widget
                 $endColumns[] = Admin::columnDate();
             }
 
-            $endColumns[] = Admin::columnID();
+            if ($this->model->hasAttribute('id') && !$this->hasColumn('id')) {
+                $endColumns[] = Admin::columnID();
+            }
 
             $this->columns = array_merge($startColumns, $this->columns, $endColumns);
         }
