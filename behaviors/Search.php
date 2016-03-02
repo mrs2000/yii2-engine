@@ -1,8 +1,11 @@
 <?
 namespace mrssoft\engine\behaviors;
 
+use Yii;
+use yii\data\ActiveDataProvider;
+
 /**
- * Поведение добавляет функции поиска
+ * Поведение добавляет функции поиска к моделе
  */
 class Search extends \yii\base\Behavior
 {
@@ -41,14 +44,15 @@ class Search extends \yii\base\Behavior
         if ($this->owner->canGetProperty('defaultOrder', true, false)) {
             $defaultOrder = $this->owner->{'defaultOrder'};
         } else {
-            $defaultOrder = ['id' => SORT_ASC];
-
             if ($this->owner->hasAttribute('position')) {
                 $defaultOrder = ['position' => SORT_ASC];
             } elseif ($this->owner->hasAttribute('date')) {
                 $defaultOrder = ['date' => SORT_DESC];
             } elseif ($this->owner->hasAttribute('title')) {
                 $defaultOrder = ['title' => SORT_ASC];
+            } else {
+                $primary = $this->owner->getPrimaryKey(true);
+                $defaultOrder = [key($primary) => SORT_ASC];
             }
         }
 
@@ -59,7 +63,7 @@ class Search extends \yii\base\Behavior
          */
         if (property_exists($this->owner, 'relativeAttributes')) {
             foreach ($this->owner->{'relativeAttributes'} as $attribute) {
-                $value = \Yii::$app->request->get($attribute);
+                $value = Yii::$app->request->get($attribute);
                 if ($value === null) {
                     $query->andWhere($attribute . ' IS NULL OR 0=' . $attribute);
                 } else {
@@ -78,7 +82,7 @@ class Search extends \yii\base\Behavior
         /**
          * Отбор с помощью фильтров
          */
-        if (\Yii::$app->request->get($this->shortName())) {
+        if (Yii::$app->request->get($this->shortName())) {
             if ($this->owner->canGetProperty('searchAttributes')) {
                 $this->searchAttributes = array_merge(
                     $this->owner->{'searchAttributes'},
@@ -93,7 +97,7 @@ class Search extends \yii\base\Behavior
             }
         }
 
-        return new \yii\data\ActiveDataProvider([
+        return new ActiveDataProvider([
             'query' => $query,
             'sort' => ['defaultOrder' => $defaultOrder]
         ]);
