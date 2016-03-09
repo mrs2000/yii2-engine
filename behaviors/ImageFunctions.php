@@ -1,7 +1,10 @@
 <?
 namespace mrssoft\engine\behaviors;
 
+use Yii;
 use yii\base\Behavior;
+use mrssoft\engine\ActiveRecord;
+use mrssoft\image\ImageHandler;
 
 /**
  * Поведение для работы с изображениеями модели
@@ -14,9 +17,9 @@ class ImageFunctions extends Behavior
 
     public $height = 600;
 
-    public $thumbWidth = null;
+    public $thumbWidth;
 
-    public $thumbHeight = null;
+    public $thumbHeight;
 
     public $thumbQuality = 100;
 
@@ -33,8 +36,8 @@ class ImageFunctions extends Behavior
     public function events()
     {
         return [
-            \mrssoft\engine\ActiveRecord::EVENT_AFTER_DELETE => 'afterDelete',
-            \mrssoft\engine\ActiveRecord::EVENT_COPY => 'copy'
+            ActiveRecord::EVENT_AFTER_DELETE => 'afterDelete',
+            ActiveRecord::EVENT_COPY => 'copy'
         ];
     }
 
@@ -119,9 +122,9 @@ class ImageFunctions extends Behavior
         if ($this->width && $this->height) {
             return $this->width . 'x' . $this->height . 'px';
         } elseif ($this->width) {
-            return \Yii::t('admin/main', 'width') . ': ' . $this->width . ' px';
+            return Yii::t('admin/main', 'width') . ': ' . $this->width . ' px';
         } elseif ($this->height) {
-            return \Yii::t('admin/main', 'height') . ': ' . $this->height . ' px';
+            return Yii::t('admin/main', 'height') . ': ' . $this->height . ' px';
         }
         return '';
     }
@@ -142,7 +145,7 @@ class ImageFunctions extends Behavior
             }
         }
 
-        return \Yii::getAlias($this->_path);
+        return Yii::getAlias($this->_path);
     }
 
     /**
@@ -152,10 +155,10 @@ class ImageFunctions extends Behavior
     {
         $path = '.' . $this->getImagePath();
         $copyName = $this->createFilename($path, $this->owner->{$this->attribute});
-        copy($path . $this->owner->{$this->attribute}, $path . $copyName);
+        @copy($path . $this->owner->{$this->attribute}, $path . $copyName);
 
         if (!($this->thumbHeight === null || $this->thumbHeight === null)) {
-            copy($path . self::thumbPath($this->owner->{$this->attribute}, $this->thumbSuffix), $path . self::thumbPath($copyName, $this->thumbSuffix));
+            @copy($path . self::thumbPath($this->owner->{$this->attribute}, $this->thumbSuffix), $path . self::thumbPath($copyName, $this->thumbSuffix));
         }
 
         $this->owner->{$this->attribute} = $copyName;
@@ -194,11 +197,11 @@ class ImageFunctions extends Behavior
     public static function thumbPath($filename, $suffix = '_thumb')
     {
         if ($filename) {
-            $n = strripos($filename, '.');
+            $n = strrpos($filename, '.');
             if ($n === false) {
                 return $filename . $suffix;
             } else {
-                return substr($filename, 0, $n) . $suffix . substr($filename, $n);
+                return substr_replace($filename, $suffix, $n, 0);
             }
         }
 
@@ -215,7 +218,7 @@ class ImageFunctions extends Behavior
     {
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
         do {
-            $name = substr(mb_strtolower(md5(uniqid())), 0, $this->nameLenght) . '.' . $ext;
+            $name = substr(mb_strtolower(md5(uniqid(mt_rand(), true))), 0, $this->nameLenght) . '.' . $ext;
         } while (is_file($path . $name));
 
         return $name;
@@ -232,7 +235,7 @@ class ImageFunctions extends Behavior
     public function createThumb($imageHandler = null, $adaptive = true, $proportional = true)
     {
         if ($imageHandler === null) {
-            $imageHandler = new \mrssoft\image\ImageHandler();
+            $imageHandler = new ImageHandler();
             $imageHandler->load('.' . $this->getImage());
         }
 
@@ -259,12 +262,13 @@ class ImageFunctions extends Behavior
     public function resize($imageHandler = null, $proportional = true)
     {
         if ($imageHandler === null) {
-            $imageHandler = new \mrssoft\image\ImageHandler();
+            $imageHandler = new ImageHandler();
             $imageHandler->load('.' . $this->getImage());
         }
 
         if ($imageHandler->getWidth() != $this->width || $imageHandler->getHeight() != $this->height) {
-            $imageHandler->resize($this->width, $this->height, $proportional)->save(false, false, $this->quality);
+            $imageHandler->resize($this->width, $this->height, $proportional)
+                         ->save(false, false, $this->quality);
         }
 
         return $imageHandler;
