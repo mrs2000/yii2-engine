@@ -13,6 +13,7 @@ use yii\bootstrap\ActiveForm;
 
 <?php $form = ActiveForm::begin([
     'id' => 'login-form',
+    'action' => Yii::$app->user->loginUrl,
     'options' => ['class' => 'form-horizontal', 'autocomplete' => 'off'],
     'fieldConfig' => [
         'template' => "{label}\n<div class=\"col-md-3\">{input}</div>\n<div class=\"col-md-8\">{error}</div>",
