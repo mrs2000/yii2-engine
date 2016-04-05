@@ -1,9 +1,10 @@
 <?
 namespace mrssoft\engine\behaviors;
 
-use mrssoft\image\ImageHandler;
+use Yii;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
+use mrssoft\image\ImageHandler;
 
 /**
  * Поведение создаёт эскиз из первого изображения в указанном тексте
@@ -51,7 +52,7 @@ class MaterialThumb extends Behavior
 
     public function beforeSave()
     {
-        $this->path = \Yii::getAlias('@webroot/') . trim($this->path, '/') . '/';
+        $this->path = Yii::getAlias('@webroot/') . trim($this->path, '/') . '/';
 
         if (!empty($this->owner->{$this->attributeImage})) {
             $this->delete('.' . $this->path . $this->owner->{$this->attributeImage});
@@ -68,7 +69,7 @@ class MaterialThumb extends Behavior
 
                 $ih = new ImageHandler();
                 $ih->load($src)
-                   ->resize($this->thumbWidth, $this->thumbHeight)
+                   ->adaptiveThumb($this->thumbWidth, $this->thumbHeight)
                    ->save($this->path . $this->owner->{$this->attributeImage}, false, 100);
             }
         }
