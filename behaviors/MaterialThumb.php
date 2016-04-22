@@ -68,9 +68,13 @@ class MaterialThumb extends Behavior
                 $this->owner->{$this->attributeImage} = md5($src) . '.jpg';
 
                 $ih = new ImageHandler();
-                $ih->load($src)
-                   ->adaptiveThumb($this->thumbWidth, $this->thumbHeight)
-                   ->save($this->path . $this->owner->{$this->attributeImage}, false, 100);
+                $ih->load($src);
+                if ($this->thumbWidth === false || $this->thumbHeight === false) {
+                    $ih->resize($this->thumbWidth, $this->thumbHeight);
+                } else {
+                    $ih->adaptiveThumb($this->thumbWidth, $this->thumbHeight);
+                }
+                $ih->save($this->path . $this->owner->{$this->attributeImage}, false, 100);
             }
         }
 
