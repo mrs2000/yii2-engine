@@ -11,6 +11,9 @@ class LoginForm extends Model
     public $username;
     public $password;
 
+    /**
+     * @var bool User
+     */
     private $_user = false;
 
     public function rules()
@@ -62,6 +65,9 @@ class LoginForm extends Model
         if ($this->_user === false)
         {
             $this->_user = User::findByUsername($this->username);
+            if ($this->_user->status != User::STATUS_ACTIVE) {
+                return null;
+            }
         }
 
         return $this->_user;
