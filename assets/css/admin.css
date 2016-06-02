@@ -137,3 +137,9 @@ input.state {
     z-index: 10000000;
     opacity: .5;
 }
+
+.form-group.required .control-label:after {
+    content: '*';
+    margin-left: 5px;
+    color: #d00;
+}
