@@ -202,6 +202,10 @@ class Admin
      */
     public static function getView($view)
     {
+        if (strpos($view, '//') === 0) {
+            return $view;
+        }
+
         $alias = '@app/modules/'.Yii::$app->controller->module->id.'/views/'.Yii::$app->controller->id.'/'.$view;
         $pathTableView = Yii::getAlias($alias.'.php');
         return is_file($pathTableView) ? $alias : '/layouts/_'.$view;
