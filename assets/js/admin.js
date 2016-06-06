@@ -62,24 +62,26 @@ function change_action_and_submit(action, search) {
         .submit();
 }
 
+var processTimerID = null;
 function processStart(delay) {
     function showShadow() {
-        var $ps = $('#prosess-shadow');
+        var $ps = $('#process-shadow');
         if ($ps.length == 0) {
-            $ps = $('<div id="prosess-shadow">');
+            $ps = $('<div id="process-shadow">');
             $('body').append($ps);
         }
         $ps.show();
     }
     if (delay) {
-        setTimeout(showShadow, delay);
+        processTimerID = setTimeout(showShadow, delay);
     } else {
         showShadow();
     }
 }
 
 function processStop() {
-    $('#prosess-shadow').hide();
+    clearTimeout(processTimerID);
+    $('#process-shadow').hide();
 }
 
 $(document).ready(function() {
