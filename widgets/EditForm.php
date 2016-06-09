@@ -4,8 +4,8 @@ namespace mrssoft\engine\widgets;
 use Yii;
 use yii\base\Widget;
 use yii\db\ActiveRecord;
-use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap\Html;
+use yii\bootstrap\ActiveForm;
 
 /**
  * Форма редактирования в админ. манели
