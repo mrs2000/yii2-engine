@@ -6,7 +6,7 @@ class AssetManager extends \yii\web\AssetManager
     public function getAssetUrl($bundle, $asset)
     {
         $url = parent::getAssetUrl($bundle, $asset);
-        if (!(substr($url, 0, 2) === '//') && !(substr($url, 0, 4) === 'http') && \Yii::$app->controller->module->id !== 'admin') {
+        if (!(strpos($url, '//') === 0) && !(strpos($url, 'http') === 0) && !(strpos($url, '/assets/') === 0)) {
             $url = '/' . filemtime('.' . $url) . $url;
         }
 
