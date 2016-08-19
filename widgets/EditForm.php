@@ -1,7 +1,8 @@
 <?php
+
 namespace mrssoft\engine\widgets;
 
-use Yii;
+use yii;
 use yii\base\Widget;
 use yii\db\ActiveRecord;
 use yii\bootstrap\Html;
@@ -32,7 +33,7 @@ class EditForm extends Widget
             'action' => '/admin/' . Yii::$app->controller->id . '/index',
             'id' => 'command-form',
         ];
-        if (isset($config['enctype'])) {
+        if (array_key_exists('enctype', $config)) {
             $formConfig['options']['enctype'] = $config['enctype'];
         }
         $formConfig['enableClientValidation'] = false;
@@ -44,7 +45,7 @@ class EditForm extends Widget
 
         echo Html::hiddenInput('urlParams', http_build_query(Yii::$app->controller->urlParams));
 
-        if (isset($config['parentKeys'])) {
+        if (array_key_exists('parentKeys', $config)) {
             foreach ((array)$config['parentKeys'] as $attribute) {
                 if (empty($config['model']->{$attribute})) {
                     $config['model']->{$attribute} = Yii::$app->request->get($attribute);

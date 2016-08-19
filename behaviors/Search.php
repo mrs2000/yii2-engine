@@ -1,7 +1,7 @@
 <?
 namespace mrssoft\engine\behaviors;
 
-use Yii;
+use yii;
 use yii\data\ActiveDataProvider;
 
 /**
@@ -84,10 +84,7 @@ class Search extends \yii\base\Behavior
          */
         if (Yii::$app->request->get($this->shortName())) {
             if ($this->owner->canGetProperty('searchAttributes')) {
-                $this->searchAttributes = array_merge(
-                    $this->owner->{'searchAttributes'},
-                    $this->searchAttributes
-                );
+                $this->searchAttributes = array_merge($this->owner->{'searchAttributes'}, $this->searchAttributes);
             }
 
             foreach ($this->searchAttributes as $attribute => $compare) {
@@ -143,9 +140,11 @@ class Search extends \yii\base\Behavior
             return;
         }
         if ($partialMatch) {
-            $query->innerJoinWith([$relation])->andWhere(['like', $targetAttribute, $value]);
+            $query->innerJoinWith([$relation])
+                  ->andWhere(['like', $targetAttribute, $value]);
         } else {
-            $query->innerJoinWith([$relation])->andWhere([$targetAttribute => $value]);
+            $query->innerJoinWith([$relation])
+                  ->andWhere([$targetAttribute => $value]);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace mrssoft\engine\behaviors;
 
-use Yii;
+use yii;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
@@ -39,7 +39,8 @@ class Position extends Behavior
      */
     public function getMaxPosition()
     {
-        $query = (new Query())->select('MAX(' . $this->attribute . ') AS maxColumn')->from($this->owner->tableName());
+        $query = (new Query())->select('MAX(' . $this->attribute . ') AS maxColumn')
+                              ->from($this->owner->tableName());
         foreach ($this->relativeAttributes as $name) {
             if ($this->owner->{$name} === null) {
                 $query->andWhere($name . ' IS NULL');

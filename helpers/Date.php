@@ -1,10 +1,11 @@
 <?
+namespace mrssoft\engine\helpers;
+
+use yii;
+
 /**
  * Хелпер для работы с датами
  */
-namespace mrssoft\engine\helpers;
-use Yii;
-
 class Date
 {
     public static function date($value)
@@ -13,12 +14,7 @@ class Date
             return '';
         }
         $value = new \DateTime($value);
-        $formater = new \IntlDateFormatter(
-            Yii::$app->language,
-            \IntlDateFormatter::LONG,
-            \IntlDateFormatter::NONE,
-            Yii::$app->timeZone
-        );
+        $formater = new \IntlDateFormatter(Yii::$app->language, \IntlDateFormatter::LONG, \IntlDateFormatter::NONE, Yii::$app->timeZone);
         return $formater->format($value);
     }
 
@@ -28,17 +24,12 @@ class Date
             return '';
         }
         $value = new \DateTime($value);
-        return self::getDate($value).' '.$value->format('H:i');
+        return self::getDate($value) . ' ' . $value->format('H:i');
     }
 
     private static function getDate($value)
     {
-        $formater = new \IntlDateFormatter(
-            Yii::$app->language,
-            \IntlDateFormatter::LONG,
-            \IntlDateFormatter::NONE,
-            Yii::$app->timeZone
-        );
+        $formater = new \IntlDateFormatter(Yii::$app->language, \IntlDateFormatter::LONG, \IntlDateFormatter::NONE, Yii::$app->timeZone);
 
         return $formater->format($value);
     }

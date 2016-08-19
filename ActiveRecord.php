@@ -6,6 +6,7 @@ namespace mrssoft\engine;
  * @method addCondition($query, $attribute, $partialMatch = false)
  * @method addWithCondition($query, $attribute, $relation, $targetAttribute, $partialMatch)
  * @method shortName()
+ * @method changePosition($position)
  */
 class ActiveRecord extends \yii\db\ActiveRecord
 {
@@ -13,15 +14,12 @@ class ActiveRecord extends \yii\db\ActiveRecord
 
     public function init()
     {
-        if ($this->scenario == 'create')
-        {
-            if ($this->hasAttribute('public'))
-            {
+        if ($this->scenario == 'create') {
+            if ($this->hasAttribute('public')) {
                 $this->setAttribute('public', 1);
             }
 
-            if ($this->hasAttribute('date'))
-            {
+            if ($this->hasAttribute('date')) {
                 $this->setAttribute('date', date('Y-m-d'));
             }
         }
@@ -29,8 +27,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
 
     public function copy()
     {
-        if ($this->hasAttribute('date'))
-        {
+        if ($this->hasAttribute('date')) {
             $this->setAttribute('date', date('Y-m-d'));
         }
 

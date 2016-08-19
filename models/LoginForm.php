@@ -2,7 +2,7 @@
 
 namespace mrssoft\engine\models;
 
-use Yii;
+use yii;
 use app\models\User;
 use yii\base\Model;
 
@@ -34,12 +34,10 @@ class LoginForm extends Model
 
     public function validatePassword($attribute)
     {
-        if (!$this->hasErrors())
-        {
+        if (!$this->hasErrors()) {
             $user = $this->getUser();
 
-            if (!$user || !$user->validatePassword($this->password))
-            {
+            if (!$user || !$user->validatePassword($this->password)) {
                 $this->addError($attribute, Yii::t('admin/main', 'The login or password you entered is incorrect.'));
             }
         }
@@ -47,12 +45,9 @@ class LoginForm extends Model
 
     public function login()
     {
-        if ($this->validate())
-        {
+        if ($this->validate()) {
             return Yii::$app->user->login($this->getUser());
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
@@ -62,8 +57,7 @@ class LoginForm extends Model
      */
     public function getUser()
     {
-        if ($this->_user === false)
-        {
+        if ($this->_user === false) {
             $this->_user = User::findByUsername($this->username);
             if ($this->_user->status != User::STATUS_ACTIVE) {
                 return null;

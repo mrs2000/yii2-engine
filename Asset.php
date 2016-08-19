@@ -2,12 +2,11 @@
 
 namespace mrssoft\engine;
 
+use yii;
 use yii\web\AssetBundle;
 
 class Asset extends AssetBundle
 {
-    public $sourcePath = '@vendor/mrssoft/yii2-engine/assets';
-
     public $css = [
         'css/admin.css',
     ];
@@ -20,8 +19,10 @@ class Asset extends AssetBundle
 
     public function init()
     {
+        $this->sourcePath = YII_DEBUG ? '@app/extensions/yii2-engine/assets' : '@vendor/mrssoft/yii2-engine/assets';
+
         $this->js = [
-            'js/admin.strings.'.\Yii::$app->language.'.min.js',
+            'js/admin.strings.' . Yii::$app->language . '.min.js',
             'js/admin.js',
         ];
     }

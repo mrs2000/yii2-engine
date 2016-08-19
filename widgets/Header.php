@@ -1,10 +1,12 @@
 <?php
+
 namespace mrssoft\engine\widgets;
 
-use Yii;
+use yii;
 use yii\base\Exception;
 use yii\base\Widget;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /**
  * Вывод шапки
@@ -46,7 +48,7 @@ class Header extends Widget
                             'title' => Yii::t('admin/main', 'Create'),
                             'class' => 'btn-success',
                             'icon' => 'glyphicon-plus glyphicon-white',
-                            'href' => Yii::$app->controller->createUrl('edit')
+                            'href' => Url::toRoute(['edit'])
                         ];
                         $out .= $this->createButton($button);
                         break;
@@ -55,7 +57,7 @@ class Header extends Widget
                             'title' => Yii::t('admin/main', 'Close'),
                             'class' => 'btn-danger',
                             'icon' => ' glyphicon-off glyphicon-white',
-                            'href' => Yii::$app->controller->createUrl('index')
+                            'href' => Url::toRoute(['index'])
                         ];
                         $out .= $this->createButton($button);
                         break;
@@ -166,10 +168,10 @@ class Header extends Widget
         }
 
         if (empty($params['href'])) {
-            $params['href'] = '#';
+            $btn = Html::button($icon . $params['title'], $options);
+        } else {
+            $btn = Html::a($icon . $params['title'], $params['href'], $options);
         }
-
-        $btn = Html::a($icon . $params['title'], $params['href'], $options);
 
         if (empty($params['no-group'])) {
             return Html::tag('div', $btn, ['class' => 'btn-group']);

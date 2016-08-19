@@ -1,7 +1,7 @@
 <?
 namespace mrssoft\engine\behaviors;
 
-use Yii;
+use yii;
 use yii\base\Behavior;
 use mrssoft\engine\ActiveRecord;
 use mrssoft\image\ImageHandler;

@@ -113,7 +113,7 @@ $(document).ready(function() {
      */
     $('.action').click(function() {
 
-        if ($(this).attr('href') != '#') return true;
+        if ($(this).attr('href')) return true;
 
         if ($(this).attr('data-need-items') && $('.select-on-check:checked').length == 0) {
             ui_alert(strings.no_checked_items);

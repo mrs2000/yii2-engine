@@ -6,8 +6,6 @@ use yii\web\AssetBundle;
 
 class AssetEdit extends AssetBundle
 {
-    public $sourcePath = '@vendor/mrssoft/yii2-engine/assets';
-
     public $js = [
         'js/jquery.typograf.js',
     ];
@@ -15,4 +13,9 @@ class AssetEdit extends AssetBundle
     public $depends = [
         'mrssoft\engine\Asset'
     ];
+
+    public function init()
+    {
+        $this->sourcePath = YII_DEBUG ? '@app/extensions/yii2-engine/assets' : '@vendor/mrssoft/yii2-engine/assets';
+    }
 }

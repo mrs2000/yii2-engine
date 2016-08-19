@@ -1,7 +1,7 @@
 <?
 namespace mrssoft\engine\helpers;
 
-use Yii;
+use yii;
 use yii\db\ActiveRecord;
 use yii\grid\CheckboxColumn;
 use yii\grid\SerialColumn;
@@ -39,7 +39,7 @@ class Admin
     }
 
     /**
-     * @param Yii\db\ActiveRecord $model
+     * @param yii\db\ActiveRecord $model
      * @param bool $applyAlert
      * @return string
      */
@@ -206,8 +206,8 @@ class Admin
             return $view;
         }
 
-        $alias = '@app/modules/'.Yii::$app->controller->module->id.'/views/'.Yii::$app->controller->id.'/'.$view;
-        $pathTableView = Yii::getAlias($alias.'.php');
-        return is_file($pathTableView) ? $alias : '/layouts/_'.$view;
+        $alias = '@app/modules/' . Yii::$app->controller->module->id . '/views/' . Yii::$app->controller->id . '/' . $view;
+        $pathTableView = Yii::getAlias($alias . '.php');
+        return is_file($pathTableView) ? $alias : '/layouts/_' . $view;
     }
 }

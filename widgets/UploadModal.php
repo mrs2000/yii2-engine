@@ -1,7 +1,7 @@
 <?
 namespace mrssoft\engine\widgets;
 
-use Yii;
+use yii;
 use yii\base\Widget;
 use yii\bootstrap\Modal;
 use yii\helpers\Html;

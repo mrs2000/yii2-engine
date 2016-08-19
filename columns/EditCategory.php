@@ -2,7 +2,7 @@
 
 namespace mrssoft\engine\columns;
 
-use Yii;
+use yii;
 use yii\grid\DataColumn;
 use yii\helpers\Html;
 

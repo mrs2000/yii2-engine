@@ -2,8 +2,7 @@
 
 namespace mrssoft\engine;
 
-use Yii;
-use yii\helpers\Url;
+use yii;
 
 class Module extends \yii\base\Module
 {

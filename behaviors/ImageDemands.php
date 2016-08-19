@@ -1,7 +1,7 @@
 <?
 namespace mrssoft\engine\behaviors;
 
-use Yii;
+use yii;
 use yii\helpers\Html;
 
 /**
@@ -21,7 +21,7 @@ class ImageDemands extends \yii\base\Behavior
         Yii::$app->i18n->translations['image-demands'] = [
             'class' => 'yii\i18n\PhpMessageSource',
             'sourceLanguage' => 'en-US',
-            'basePath' => dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'messages',
+            'basePath' => __DIR__ . DIRECTORY_SEPARATOR . 'messages',
             'fileMap' => [
                 'image-demands' => 'image-demands.php',
             ],

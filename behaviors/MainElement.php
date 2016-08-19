@@ -2,6 +2,7 @@
 
 namespace mrssoft\engine\behaviors;
 
+use yii;
 use yii\base\Behavior;
 use yii\db\ActiveRecord;
 use yii\db\Query;
@@ -33,20 +34,19 @@ class MainElement extends Behavior
 
     public function beforeUpdate()
     {
-        if (array_key_exists($this->attribute, $this->owner->dirtyAttributes) && $this->owner->{$this->attribute} == 1)
-        {
-            \Yii::$app->db->createCommand()->update(
-                $this->owner->tableName(),
-                [$this->attribute => 0],
-                $this->getRelationCondition()
-            )->execute();
+        if (array_key_exists($this->attribute, $this->owner->dirtyAttributes) && $this->owner->{$this->attribute} == 1) {
+            Yii::$app->db->createCommand()
+                         ->update($this->owner->tableName(), [$this->attribute => 0], $this->getRelationCondition())
+                         ->execute();
         }
     }
 
     public function afterDelete()
     {
         if ($this->hasMain() === false) {
-            $obj = $this->owner->find()->where($this->getRelationCondition())->one();
+            $obj = $this->owner->find()
+                               ->where($this->getRelationCondition())
+                               ->one();
             if ($obj) {
                 $obj->{$this->attribute} = 1;
                 $obj->save();
@@ -73,7 +73,7 @@ class MainElement extends Behavior
     {
         $condition = [];
         foreach ($this->relativeAttributes as $attribute) {
-            $condition[$attribute] =  $this->owner->{$attribute};
+            $condition[$attribute] = $this->owner->{$attribute};
         }
         return $condition;
     }

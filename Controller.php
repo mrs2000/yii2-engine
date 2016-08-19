@@ -3,7 +3,7 @@
 namespace mrssoft\engine;
 
 use mrssoft\engine\helpers\Admin;
-use Yii;
+use yii;
 use yii\base\Exception;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
@@ -248,14 +248,14 @@ class Controller extends \yii\web\Controller
      */
     public function actionState($attribute, $value)
     {
-        /* @var $model ActiveRecord */
-        /* @var $obj ActiveRecord */
+        /* @var $model \yii\db\ActiveRecord */
+        /* @var $obj \yii\db\ActiveRecord */
 
         $modelName = $this->getModelClass();
         $model = new $modelName;
 
         foreach ($this->getSelectedItems() as $id) {
-            $obj = $model->findOne($id);
+            $obj = $model::findOne($id);
             $obj->{$attribute} = $value;
             if (!$obj->save()) {
                 Admin::error($obj);
@@ -278,7 +278,7 @@ class Controller extends \yii\web\Controller
         $id = $this->getSelectedItems()[0];
 
         if (!empty($id) && ($model = $this->getModel($id)) && $model->hasMethod('changePosition')) {
-            call_user_func([$model, 'changePosition'], $position[$id]);
+            $model->changePosition($position[$id]);
         }
 
         return $this->redir();

@@ -1,7 +1,7 @@
 <?php
 namespace mrssoft\engine\behaviors;
 
-use Yii;
+use yii;
 use yii\db\ActiveRecord;
 
 /**
