@@ -26,14 +26,14 @@ class AuthController extends \yii\web\Controller
 
     public function actionLogout()
     {
-        if (Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost === false) {
             throw new MethodNotAllowedHttpException();
-        } 
-        
+        }
+
         if (Yii::$app->user->isGuest) {
             throw new UserException('User not found.');
         }
-        
+
         Yii::$app->user->logout();
         $this->redirect('/' . $this->module->id);
     }
