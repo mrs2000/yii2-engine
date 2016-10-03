@@ -2,6 +2,7 @@
 
 namespace mrssoft\engine\widgets;
 
+use mrssoft\engine\Controller;
 use yii;
 use yii\base\Exception;
 use yii\base\Widget;
@@ -42,13 +43,17 @@ class Header extends Widget
             if (is_array($button)) {
                 $out .= $this->createButton($button);
             } else {
+                
+                /** @var Controller $controller */
+                $controller = Yii::$app->controller;
+                
                 switch ($button) {
                     case 'add':
                         $button = [
                             'title' => Yii::t('admin/main', 'Create'),
                             'class' => 'btn-success',
                             'icon' => 'glyphicon-plus glyphicon-white',
-                            'href' => Url::toRoute(['edit'])
+                            'href' => $controller->createUrl('edit')
                         ];
                         $out .= $this->createButton($button);
                         break;
@@ -57,7 +62,7 @@ class Header extends Widget
                             'title' => Yii::t('admin/main', 'Close'),
                             'class' => 'btn-danger',
                             'icon' => ' glyphicon-off glyphicon-white',
-                            'href' => Url::toRoute(['index'])
+                            'href' => $controller->createUrl('index')
                         ];
                         $out .= $this->createButton($button);
                         break;
