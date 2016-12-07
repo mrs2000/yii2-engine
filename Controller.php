@@ -5,6 +5,7 @@ namespace mrssoft\engine;
 use mrssoft\engine\helpers\Admin;
 use yii;
 use yii\base\Exception;
+use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\HttpException;
@@ -40,11 +41,14 @@ class Controller extends \yii\web\Controller
     {
         return [
             'access' => [
-                'class' => \yii\filters\AccessControl::className(), 'rules' => [
+                'class' => AccessControl::className(),
+                'rules' => [
                     [
-                        'allow' => true, 'roles' => ['moderator'],
+                        'allow' => true,
+                        'roles' => ['moderator'],
                     ],
-                ], 'denyCallback' => function () {
+                ],
+                'denyCallback' => function () {
                     $this->redirect(Yii::$app->user->loginUrl);
                 }
             ],
@@ -94,7 +98,9 @@ class Controller extends \yii\web\Controller
             return $this->renderPartial('grid', ['model' => $model]);
         } else {
             return $this->render('table', [
-                'model' => $model, 'title' => $this->title, 'buttons' => $this->buttons,
+                'model' => $model,
+                'title' => $this->title,
+                'buttons' => $this->buttons,
             ]);
         }
     }
@@ -218,8 +224,7 @@ class Controller extends \yii\web\Controller
                         Admin::error($model);
                         return $this->redir();
                     }
-                }
-                catch (Exception $e) {
+                } catch (Exception $e) {
                     Admin::error(Yii::t('admin/main', 'Failed to delete the record. Perhaps at it is referenced by other objects.'));
                     return $this->redir();
                 }

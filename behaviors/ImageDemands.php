@@ -21,7 +21,7 @@ class ImageDemands extends \yii\base\Behavior
         Yii::$app->i18n->translations['image-demands'] = [
             'class' => 'yii\i18n\PhpMessageSource',
             'sourceLanguage' => 'en-US',
-            'basePath' => __DIR__ . DIRECTORY_SEPARATOR . 'messages',
+            'basePath' => '@app/modules/admin/messages',
             'fileMap' => [
                 'image-demands' => 'image-demands.php',
             ],
