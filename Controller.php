@@ -3,7 +3,7 @@
 namespace mrssoft\engine;
 
 use mrssoft\engine\helpers\Admin;
-use yii;
+use Yii;
 use yii\base\Exception;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;

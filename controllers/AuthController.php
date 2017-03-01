@@ -3,7 +3,7 @@
 namespace mrssoft\engine\controllers;
 
 use mrssoft\engine\models\LoginForm;
-use yii;
+use Yii;
 use yii\base\UserException;
 use yii\web\MethodNotAllowedHttpException;
 
@@ -12,8 +12,8 @@ class AuthController extends \yii\web\Controller
     public function actionLogin()
     {
         $model = new LoginForm();
-        if ($model->load(\Yii::$app->request->post()) && $model->login()) {
-            return $this->redirect('/' . $this->module->id);
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->redirect(['/' . $this->module->id]);
         }
 
         $model->username = '';
@@ -35,6 +35,6 @@ class AuthController extends \yii\web\Controller
         }
 
         Yii::$app->user->logout();
-        $this->redirect('/' . $this->module->id);
+        $this->redirect(['/' . $this->module->id]);
     }
 }
