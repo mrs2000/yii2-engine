@@ -45,7 +45,7 @@ class Controller extends \yii\web\Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'roles' => ['moderator'],
+                        'roles' => ['cp'],
                     ],
                 ],
                 'denyCallback' => function () {
