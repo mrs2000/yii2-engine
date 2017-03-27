@@ -1,4 +1,5 @@
-<?
+<?php
+
 namespace mrssoft\engine;
 
 class AssetManager extends \yii\web\AssetManager

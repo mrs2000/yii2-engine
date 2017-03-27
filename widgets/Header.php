@@ -7,7 +7,6 @@ use yii;
 use yii\base\Exception;
 use yii\base\Widget;
 use yii\helpers\Html;
-use yii\helpers\Url;
 
 /**
  * Вывод шапки
@@ -180,8 +179,8 @@ class Header extends Widget
 
         if (empty($params['no-group'])) {
             return Html::tag('div', $btn, ['class' => 'btn-group']);
-        } else {
-            return $btn;
         }
+
+        return $btn;
     }
 }

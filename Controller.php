@@ -96,13 +96,13 @@ class Controller extends \yii\web\Controller
 
         if (Yii::$app->request->isAjax) {
             return $this->renderPartial('grid', ['model' => $model]);
-        } else {
-            return $this->render('table', [
-                'model' => $model,
-                'title' => $this->title,
-                'buttons' => $this->buttons,
-            ]);
         }
+
+        return $this->render('table', [
+            'model' => $model,
+            'title' => $this->title,
+            'buttons' => $this->buttons,
+        ]);
     }
 
     /**
@@ -116,9 +116,9 @@ class Controller extends \yii\web\Controller
         $model = $this->getModel($id, 'create');
         if ($model) {
             return $this->edit($model);
-        } else {
-            throw new HttpException(404, Yii::t('yii', 'Page not found.'));
         }
+
+        throw new HttpException(404, Yii::t('yii', 'Page not found.'));
     }
 
     /**

@@ -1,4 +1,5 @@
-<?
+<?php
+
 return [
     'Control Panel' => 'Панель управления',
     'Login' => 'Логин',

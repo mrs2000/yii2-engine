@@ -28,7 +28,7 @@ class TableForm extends Widget
 
         echo Html::hiddenInput('controller', $controller, ['id' => 'controller']);
 
-        if (is_array($config['params'])) {
+        if (isset($config['params']) && is_array($config['params'])) {
             foreach ($config['params'] as $name => $value) {
                 echo Html::hiddenInput($name, $value);
             }

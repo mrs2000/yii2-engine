@@ -1,4 +1,4 @@
-<?
+<?php
 return [
     'Requirements for download:' => 'Требования к загружаемым файлам:',
     'Available formats: ' => 'Доступные форматы: ',

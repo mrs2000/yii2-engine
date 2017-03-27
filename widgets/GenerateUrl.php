@@ -1,8 +1,10 @@
-<?
+<?php
+
 namespace mrssoft\engine\widgets;
 
 use mrssoft\engine\Russin2UrlAsset;
 use yii\helpers\Html;
+use yii\web\View;
 use yii\widgets\InputWidget;
 
 class GenerateUrl extends InputWidget
@@ -13,6 +15,9 @@ class GenerateUrl extends InputWidget
 
     public $source;
 
+    /**
+     *
+     */
     public function run()
     {
         $id = $this->getId();
@@ -44,6 +49,6 @@ class GenerateUrl extends InputWidget
         $('" . $this->source . "').blur(function () { if ($('#" . $id . "').val() == '') generate(); });";
 
         Russin2UrlAsset::register($this->view);
-        $this->view->registerJs($js, \yii\web\View::POS_END);
+        $this->view->registerJs($js, View::POS_END);
     }
 }

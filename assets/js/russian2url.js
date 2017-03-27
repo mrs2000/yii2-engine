@@ -45,7 +45,7 @@ function russian2url(str) {
 
     for (var i = 0; i < str.length; i++) {
 
-        ch = str.charAt(i);
+        var ch = str.charAt(i);
         var newCh = '';
 
         for (var j = 0; j < cyr2latChars.length; j++) {

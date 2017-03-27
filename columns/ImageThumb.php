@@ -31,8 +31,8 @@ class ImageThumb extends DataColumn
 
         if ($this->enablePreview) {
             return Html::a($img, $model->getImage(), ['class' => 'mrs2000box']);
-        } else {
-            return $img;
         }
+
+        return $img;
     }
 }

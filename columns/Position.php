@@ -2,7 +2,6 @@
 
 namespace mrssoft\engine\columns;
 
-use yii;
 use yii\grid\DataColumn;
 
 class Position extends DataColumn

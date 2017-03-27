@@ -1,4 +1,4 @@
-<?
+<?php
 namespace mrssoft\engine\behaviors;
 
 use yii;

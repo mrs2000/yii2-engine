@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @var \mrssoft\engine\ActiveRecord $model
  * @var $this \yii\web\View

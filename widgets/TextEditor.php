@@ -1,4 +1,5 @@
-<?
+<?php
+
 namespace mrssoft\engine\widgets;
 
 class TextEditor extends \mihaildev\ckeditor\CKEditor

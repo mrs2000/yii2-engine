@@ -1,6 +1,7 @@
 <?php
 namespace mrssoft\engine\behaviors;
 
+use dosamigos\transliterator\TransliteratorHelper;
 use yii;
 use yii\db\ActiveRecord;
 
@@ -146,9 +147,9 @@ class File extends \yii\base\Behavior
             } while (is_file($path . $name));
 
             return $name;
-        } else {
-            return \dosamigos\transliterator\TransliteratorHelper::process($filename);
         }
+
+        return TransliteratorHelper::process($filename);
     }
 
     private function createPath($path)

@@ -47,9 +47,9 @@ class LoginForm extends Model
     {
         if ($this->validate()) {
             return Yii::$app->user->login($this->getUser());
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**

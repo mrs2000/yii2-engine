@@ -1,1 +1,1 @@
-<? echo mrssoft\engine\widgets\Grid::widget(['model' => $model]);
+<?php echo mrssoft\engine\widgets\Grid::widget(['model' => $model]);

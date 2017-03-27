@@ -1,4 +1,4 @@
-<?
+<?php
 namespace mrssoft\engine\behaviors;
 
 use yii;
@@ -200,9 +200,9 @@ class ImageFunctions extends Behavior
             $n = strrpos($filename, '.');
             if ($n === false) {
                 return $filename . $suffix;
-            } else {
-                return substr_replace($filename, $suffix, $n, 0);
             }
+
+            return substr_replace($filename, $suffix, $n, 0);
         }
 
         return null;
@@ -218,7 +218,7 @@ class ImageFunctions extends Behavior
     {
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
         do {
-            $name = substr(mb_strtolower(md5(uniqid(mt_rand(), true))), 0, $this->nameLenght) . '.' . $ext;
+            $name = mb_strtolower(substr(md5(uniqid(mt_rand(), true)), 0, $this->nameLenght)) . '.' . $ext;
         } while (is_file($path . $name));
 
         return $name;

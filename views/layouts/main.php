@@ -4,8 +4,12 @@
  * @var $content string
  */
 
+use mrssoft\engine\Asset;
+use mrssoft\engine\widgets\MessageWidget;
+use yii\helpers\Html;
+
 $this->title = Yii::t('admin/main', 'Control Panel');
-\mrssoft\engine\Asset::register($this);
+Asset::register($this);
 ?>
 
 <?php $this->beginPage() ?>
@@ -14,16 +18,20 @@ $this->title = Yii::t('admin/main', 'Control Panel');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?= \yii\helpers\Html::csrfMetaTags() ?>
-    <title><?= \yii\helpers\Html::encode($this->title) ?></title>
+    <?=Html::csrfMetaTags();?>
+    <title><?=Html::encode($this->title);?></title>
     <?php $this->head() ?>
 </head>
 <body>
     <?php $this->beginBody() ?>
     <div class="wrap">
-        <?php if (Yii::$app->user->can('cp')) echo $this->render('@app/modules/admin/views/layouts/menu'); ?>
+        <?php
+            if (Yii::$app->user->can('cp')) {
+                echo $this->render('@app/modules/admin/views/layouts/menu');
+            }
+        ?>
         <div class="container">
-            <?=\mrssoft\engine\widgets\MessageWidget::widget();?>
+            <?=MessageWidget::widget();?>
             <?=$content;?>
         </div>
     </div>
