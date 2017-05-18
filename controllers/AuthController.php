@@ -4,13 +4,23 @@ namespace mrssoft\engine\controllers;
 
 use mrssoft\engine\models\LoginForm;
 use Yii;
-use yii\base\UserException;
 use yii\web\MethodNotAllowedHttpException;
 
+/**
+ * Авторизация в ПУ
+ */
 class AuthController extends \yii\web\Controller
 {
+    /**
+     * Вход
+     * @return string|\yii\web\Response
+     */
     public function actionLogin()
     {
+        if (Yii::$app->user->isGuest === false) {
+            return $this->redirect(['/' . $this->module->id]);
+        }
+
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->redirect(['/' . $this->module->id]);
@@ -19,22 +29,23 @@ class AuthController extends \yii\web\Controller
         $model->username = '';
         $model->password = '';
 
-        return $this->render('login', [
-            'model' => $model,
-        ]);
+        return $this->render('login', ['model' => $model]);
     }
 
+    /**
+     * Выход
+     * @return \yii\web\Response
+     * @throws \yii\web\MethodNotAllowedHttpException
+     */
     public function actionLogout()
     {
         if (Yii::$app->request->isPost === false) {
             throw new MethodNotAllowedHttpException();
         }
-
-        if (Yii::$app->user->isGuest) {
-            throw new UserException('User not found.');
+        if (Yii::$app->user->isGuest === false) {
+            Yii::$app->user->logout();
         }
 
-        Yii::$app->user->logout();
-        $this->redirect(['/' . $this->module->id]);
+        return $this->redirect(['/' . $this->module->id]);
     }
 }
