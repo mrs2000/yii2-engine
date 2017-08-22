@@ -2,6 +2,8 @@
 
 namespace mrssoft\engine\widgets;
 
+use Yii;
+
 class Breadcrumbs extends \yii\base\Widget
 {
     /**
@@ -9,22 +11,31 @@ class Breadcrumbs extends \yii\base\Widget
      */
     public $model;
 
+    /**
+     * @var string
+     */
     public $attributeParentID = 'parent_id';
 
+    /**
+     * @var string
+     */
     public $attributeTitle = 'title';
 
+    /**
+     * @var string
+     */
     public $route;
 
     public function run()
     {
-        $parentID = \Yii::$app->request->get($this->attributeParentID);
+        $parentId = (int)Yii::$app->request->get($this->attributeParentID);
 
-        $route = $this->route ?: \Yii::$app->controller->id . '/index';
+        $route = $this->route ?: Yii::$app->controller->id . '/index';
 
-        while (!empty($parentID)) {
-            $item = $this->model->find()
+        while (!empty($parentId)) {
+            $item = $this->model::find()
                                 ->select(['id', $this->attributeParentID, $this->attributeTitle])
-                                ->where('id=' . $parentID)
+                                ->where(['id' => $parentId])
                                 ->one();
 
             if (empty($item)) {
@@ -36,7 +47,7 @@ class Breadcrumbs extends \yii\base\Widget
                 'url' => [$route, $this->attributeParentID => $item->getPrimaryKey()]
             ];
 
-            $parentID = $item->{$this->attributeParentID};
+            $parentId = $item->{$this->attributeParentID};
         }
 
         if (empty($links)) {
@@ -46,7 +57,7 @@ class Breadcrumbs extends \yii\base\Widget
         echo \yii\widgets\Breadcrumbs::widget([
             'links' => array_reverse($links),
             'homeLink' => [
-                'label' => \Yii::t('admin/main', 'Root'),
+                'label' => Yii::t('admin/main', 'Root'),
                 'url' => [$route]
             ]
         ]);

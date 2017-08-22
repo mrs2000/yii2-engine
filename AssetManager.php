@@ -4,13 +4,30 @@ namespace mrssoft\engine;
 
 class AssetManager extends \yii\web\AssetManager
 {
+    /**
+     * Исключить
+     * @var array
+     */
+    public $exlude = [];
+
+    /**
+     * Добавить дату модификации в адрес файлу
+     * @param \yii\web\AssetBundle $bundle
+     * @param string $asset
+     * @return string
+     */
     public function getAssetUrl($bundle, $asset)
     {
         $url = parent::getAssetUrl($bundle, $asset);
-        if (!(strpos($url, '//') === 0) && !(strpos($url, 'http') === 0) && !(strpos($url, '/assets/') === 0 && \Yii::$app->controller->module->id == 'admin')) {
-            $url = '/' . filemtime('.' . $url) . $url;
+
+        $this->exlude[] = '//';
+
+        foreach ($this->exlude as $exclude) {
+            if ((mb_strpos($url, $exclude) !== false)) {
+                return $url;
+            }
         }
 
-        return $url;
+        return '/' . filemtime('.' . $url) . $url;
     }
 }
