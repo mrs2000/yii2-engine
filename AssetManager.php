@@ -8,7 +8,7 @@ class AssetManager extends \yii\web\AssetManager
      * Исключить
      * @var array
      */
-    public $exlude = [];
+    public $exclude = [];
 
     /**
      * Добавить дату модификации в адрес файлу
@@ -20,10 +20,10 @@ class AssetManager extends \yii\web\AssetManager
     {
         $url = parent::getAssetUrl($bundle, $asset);
 
-        $this->exlude[] = '//';
+        $this->exclude[] = '//';
 
-        foreach ($this->exlude as $exclude) {
-            if ((mb_strpos($url, $exclude) !== false)) {
+        foreach ($this->exclude as $exclude) {
+            if (mb_strpos($url, $exclude) !== false) {
                 return $url;
             }
         }
