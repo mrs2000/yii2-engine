@@ -23,7 +23,7 @@ class Edit extends DataColumn
         $url = [$controller->id . '/edit', 'id' => $model->{$this->attributeID}];
         $url = array_merge($url, $controller->urlParams);
 
-        $title = $this->getDataCellValue($model, $key, $index);
+        $title = Html::encode($this->getDataCellValue($model, $key, $index));
         if ($title === '' || $title === null) {
             $title = '[&nbsp;' . Yii::t('admin/main', 'missing') . '&nbsp;]';
         }

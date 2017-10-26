@@ -15,9 +15,13 @@ use yii\bootstrap\ActiveForm;
 class EditForm extends Widget
 {
     public $title;
+
     public $model;
-    public $buttons;
+
+    public $buttons = ['save', 'apply', 'cancel'];
+
     public $enctype;
+
     public $parentKeys;
 
     /**
