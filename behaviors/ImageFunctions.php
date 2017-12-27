@@ -8,6 +8,14 @@ use mrssoft\image\ImageHandler;
 
 /**
  * Поведение для работы с изображениеями модели
+ *
+ * @property int $imageWidth
+ * @property string $image
+ * @property string $thumb
+ * @property string $imagePath
+ * @property int $imageThumbHeight
+ * @property int $imageHeight
+ * @property int $imageThumbWidth
  */
 class ImageFunctions extends Behavior
 {
@@ -121,9 +129,13 @@ class ImageFunctions extends Behavior
     {
         if ($this->width && $this->height) {
             return $this->width . 'x' . $this->height . 'px';
-        } elseif ($this->width) {
+        }
+
+        if ($this->width) {
             return Yii::t('admin/main', 'width') . ': ' . $this->width . ' px';
-        } elseif ($this->height) {
+        }
+
+        if ($this->height) {
             return Yii::t('admin/main', 'height') . ': ' . $this->height . ' px';
         }
         return '';

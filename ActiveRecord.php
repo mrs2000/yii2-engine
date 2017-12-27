@@ -11,7 +11,7 @@ namespace mrssoft\engine;
  */
 class ActiveRecord extends \yii\db\ActiveRecord
 {
-    const EVENT_COPY = 'copy';
+    public const EVENT_COPY = 'copy';
 
     public function init()
     {
@@ -40,6 +40,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
      */
     public static function active()
     {
-        return static::find()->where('public=1');
+        return static::find()
+                     ->where('public=1');
     }
 }

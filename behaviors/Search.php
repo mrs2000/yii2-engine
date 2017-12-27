@@ -57,12 +57,13 @@ class Search extends \yii\base\Behavior
             }
         }
 
-        $query = $this->owner->find();
+        $query = $this->owner::find();
 
         /**
          * Условия отбора относительно родителя
          */
         if (property_exists($this->owner, 'relativeAttributes')) {
+            /** @noinspection ForeachSourceInspection */
             foreach ($this->owner->{'relativeAttributes'} as $attribute) {
                 $value = Yii::$app->request->get($attribute);
                 if ($value === null) {

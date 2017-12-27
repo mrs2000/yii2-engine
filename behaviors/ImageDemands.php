@@ -3,6 +3,7 @@ namespace mrssoft\engine\behaviors;
 
 use yii;
 use yii\helpers\Html;
+use yii\i18n\PhpMessageSource;
 
 /**
  * Требования к изображениям на основе правил модели
@@ -19,7 +20,7 @@ class ImageDemands extends \yii\base\Behavior
     public function init()
     {
         Yii::$app->i18n->translations['image-demands'] = [
-            'class' => 'yii\i18n\PhpMessageSource',
+            'class' => PhpMessageSource::class,
             'sourceLanguage' => 'en-US',
             'basePath' => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR .   'messages',
             'fileMap' => [

@@ -36,7 +36,7 @@ class MainElement extends Behavior
     {
         if (array_key_exists($this->attribute, $this->owner->dirtyAttributes) && $this->owner->{$this->attribute} == 1) {
             Yii::$app->db->createCommand()
-                         ->update($this->owner->tableName(), [$this->attribute => 0], $this->getRelationCondition())
+                         ->update($this->owner::tableName(), [$this->attribute => 0], $this->getRelationCondition())
                          ->execute();
         }
     }
@@ -44,7 +44,7 @@ class MainElement extends Behavior
     public function afterDelete()
     {
         if ($this->hasMain() === false) {
-            $obj = $this->owner->find()
+            $obj = $this->owner::find()
                                ->where($this->getRelationCondition())
                                ->one();
             if ($obj) {
@@ -59,7 +59,7 @@ class MainElement extends Behavior
      */
     private function hasMain()
     {
-        $query = (new Query())->from($this->owner->tableName())
+        $query = (new Query())->from($this->owner::tableName())
                               ->where($this->getRelationCondition())
                               ->andWhere([$this->attribute => 1])
                               ->count();

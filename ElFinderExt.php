@@ -1,7 +1,7 @@
 <?php
 namespace mrssoft\engine;
 
-class ElFinderExt extends \yii\base\Object
+class ElFinderExt extends \yii\base\BaseObject
 {
     public $imageMinWidth = false;
     public $imageMinHeight = false;

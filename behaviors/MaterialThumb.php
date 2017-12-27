@@ -9,6 +9,8 @@ use mrssoft\image\ImageHandler;
 
 /**
  * Поведение создаёт эскиз из первого изображения в указанном тексте
+ *
+ * @property null|string $thumbnail
  */
 class MaterialThumb extends Behavior
 {

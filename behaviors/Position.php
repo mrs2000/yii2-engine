@@ -40,7 +40,7 @@ class Position extends Behavior
     public function getMaxPosition()
     {
         $query = (new Query())->select('MAX(' . $this->attribute . ') AS maxColumn')
-                              ->from($this->owner->tableName());
+                              ->from($this->owner::tableName());
         foreach ($this->relativeAttributes as $name) {
             if ($this->owner->{$name} === null) {
                 $query->andWhere($name . ' IS NULL');
@@ -56,6 +56,9 @@ class Position extends Behavior
      * Изменение позиции
      * @param $value
      * @throws \Exception
+     * @throws \Throwable
+     * @throws \yii\db\Exception
+     * @throws \yii\db\StaleObjectException
      */
     public function changePosition($value)
     {
@@ -99,6 +102,7 @@ class Position extends Behavior
     /**
      * @param array $where
      * @param string $direction
+     * @throws \yii\db\Exception
      */
     private function executeCommand($where, $direction)
     {
@@ -120,7 +124,7 @@ class Position extends Behavior
         }
 
         $cmd = Yii::$app->db->createCommand()
-                            ->update($this->owner->tableName(), [$this->attribute => new Expression($this->attribute . $direction)], implode(' AND ', array_keys($where)), $params);
+                            ->update($this->owner::tableName(), [$this->attribute => new Expression($this->attribute . $direction)], implode(' AND ', array_keys($where)), $params);
 
         $cmd->execute();
     }

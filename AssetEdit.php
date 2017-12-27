@@ -13,6 +13,6 @@ class AssetEdit extends AssetBundle
     ];
 
     public $depends = [
-        'mrssoft\engine\Asset'
+        Asset::class
     ];
 }

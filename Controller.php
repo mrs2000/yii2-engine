@@ -12,6 +12,8 @@ use yii\web\HttpException;
 
 /**
  * Базовый класс для контроллеров админ. панели
+ *
+ * @property array $selectedItems
  */
 class Controller extends \yii\web\Controller
 {
@@ -95,9 +97,11 @@ class Controller extends \yii\web\Controller
         $model->attachBehavior('search', \mrssoft\engine\behaviors\Search::className());
 
         if (Yii::$app->request->isAjax) {
+            /** @noinspection MissedViewInspection */
             return $this->renderPartial('grid', ['model' => $model]);
         }
 
+        /** @noinspection MissedViewInspection */
         return $this->render('table', [
             'model' => $model,
             'title' => $this->title,
@@ -160,6 +164,7 @@ class Controller extends \yii\web\Controller
     {
         AssetEdit::register($this->view);
         $this->view->registerJs("$('input[name *= \"title\"]').typograf(); $('[data-typograf=\"on\"]').typograf();");
+        /** @noinspection MissedViewInspection */
         return $this->render('edit', ['model' => $model]);
     }
 
@@ -181,7 +186,6 @@ class Controller extends \yii\web\Controller
 
     /**
      * Создание копий объектов
-     * @throws HttpException
      */
     public function actionCopy()
     {
@@ -212,6 +216,7 @@ class Controller extends \yii\web\Controller
      * Удаление записей
      * @throws HttpException
      * @throws \Exception
+     * @throws \Throwable
      */
     public function actionDelete()
     {
@@ -261,11 +266,12 @@ class Controller extends \yii\web\Controller
 
         foreach ($this->getSelectedItems() as $id) {
             $obj = $model::findOne($id);
-            $obj->{$attribute} = $value;
-            if (!$obj->save()) {
-                Admin::error($obj);
-
-                return $this->redir();
+            if ($obj) {
+                $obj->{$attribute} = $value;
+                if (!$obj->save()) {
+                    Admin::error($obj);
+                    return $this->redir();
+                }
             }
         }
 
@@ -345,7 +351,7 @@ class Controller extends \yii\web\Controller
      * Загрузка или создание новой модели
      * @param int $id
      * @param string|null $scenario
-     * @return \mrssoft\engine\ActiveRecord
+     * @return \mrssoft\engine\ActiveRecord|\yii\db\ActiveRecord|\yii\web\Response
      */
     protected function getModel($id = 0, $scenario = null)
     {

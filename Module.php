@@ -4,14 +4,16 @@ namespace mrssoft\engine;
 
 use Yii;
 use yii\helpers\Url;
+use mihaildev\elfinder\Controller;
+use yii\i18n\PhpMessageSource;
 
 class Module extends \yii\base\Module
 {
     public $controllerNamespace = 'app\modules\admin\controllers';
 
-    public $authController = '\mrssoft\engine\controllers\AuthController';
-    public $defaultController = '\mrssoft\engine\controllers\DefaultController';
-    public $filesController = '\mrssoft\engine\controllers\FilesController';
+    public $authController = controllers\AuthController::class;
+    public $defaultController = controllers\DefaultController::class;
+    public $filesController = controllers\FilesController::class;
 
     /**
      * ElFinder options
@@ -27,7 +29,7 @@ class Module extends \yii\base\Module
         parent::init();
 
         Yii::$app->i18n->translations['admin/main'] = [
-            'class' => 'yii\i18n\PhpMessageSource',
+            'class' => PhpMessageSource::class,
             'sourceLanguage' => 'en-US',
             'basePath' => __DIR__ . DIRECTORY_SEPARATOR . 'messages',
             'fileMap' => [
@@ -36,7 +38,7 @@ class Module extends \yii\base\Module
         ];
 
         Yii::$app->i18n->translations['admin/menu'] = [
-            'class' => 'yii\i18n\PhpMessageSource',
+            'class' => PhpMessageSource::class,
             'sourceLanguage' => 'en-US',
             'basePath' => '@app/modules/admin/messages',
             'fileMap' => [
@@ -49,7 +51,7 @@ class Module extends \yii\base\Module
             'default' => $this->defaultController,
             'files' => $this->filesController,
             'elfinder' => [
-                'class' => 'mihaildev\elfinder\Controller',
+                'class' => Controller::class,
                 'access' => ['moderator'],
                 'disabledCommands' => ['netmount', 'archive', 'extract', 'duplicate'],
                 'roots' => [
@@ -63,7 +65,7 @@ class Module extends \yii\base\Module
                 ],
                 'bind' => [
                     'upload mkdir rename' => [
-                        'class' => '\mrssoft\engine\ElFinderExt',
+                        'class' => ElFinderExt::class,
                         'action' => 'change',
                         'imageMaxWidth' => $this->elfinderMaxImageWidth,
                         'imageMaxHeight' => $this->elfinderMaxImageHeight,

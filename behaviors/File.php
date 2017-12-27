@@ -7,6 +7,11 @@ use yii\db\ActiveRecord;
 
 /**
  * Обработка загрузки файлов
+ *
+ * @property mixed $uploadPath
+ * @property string $fileUrl
+ * @property void $oldValue
+ * @property null|\mrssoft\engine\behaviors\ImageFunctions $imageFunctionsBehavior
  */
 class File extends \yii\base\Behavior
 {
@@ -71,6 +76,7 @@ class File extends \yii\base\Behavior
                     $this->owner->{$this->attribute} = $filename;
 
                     if ($this->owner->hasMethod('afterUploadFile')) {
+                        /** @noinspection PhpUndefinedMethodInspection */
                         $this->owner->afterUploadFile($this->attribute);
                     }
                 }
@@ -96,7 +102,7 @@ class File extends \yii\base\Behavior
             if ($behaviorOptions['class'] == \mrssoft\engine\behaviors\ImageFunctions::className()) {
                 /** @var \mrssoft\engine\behaviors\ImageFunctions $imageFunctions */
                 $imageFunctions = $this->owner->getBehavior($name);
-                if ($imageFunctions->attribute == $this->attribute) {
+                if ($imageFunctions && $imageFunctions->attribute == $this->attribute) {
                     return $imageFunctions;
                 }
             }
@@ -143,7 +149,7 @@ class File extends \yii\base\Behavior
         if ($this->uniqueFilename) {
             $ext = pathinfo($filename, PATHINFO_EXTENSION);
             do {
-                $name = substr(mb_strtolower(md5(uniqid())), 0, $this->nameLenght) . '.' . $ext;
+                $name = mb_strtolower(substr(md5(uniqid('', true)), 0, $this->nameLenght)) . '.' . $ext;
             } while (is_file($path . $name));
 
             return $name;
@@ -158,10 +164,8 @@ class File extends \yii\base\Behavior
         $p = '';
         foreach ($parts as $part) {
             $p .= $part . '/';
-            if (!file_exists($p)) {
-                if (!mkdir($p)) {
-                    return false;
-                }
+            if (!file_exists($p) && !mkdir($p)) {
+                return false;
             }
         }
 
@@ -170,11 +174,9 @@ class File extends \yii\base\Behavior
 
     private function getOldValue()
     {
-        $obj = $this->owner->findOne($this->owner->primaryKey);
-        if ($obj) {
+        $this->owner->{$this->attribute} = null;
+        if ($obj = $this->owner::findOne($this->owner->primaryKey)) {
             $this->owner->{$this->attribute} = $obj->{$this->attribute};
-        } else {
-            $this->owner->{$this->attribute} = null;
         }
     }
 }
