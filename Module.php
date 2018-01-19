@@ -53,13 +53,27 @@ class Module extends \yii\base\Module
             'elfinder' => [
                 'class' => Controller::class,
                 'access' => ['moderator'],
-                'disabledCommands' => ['netmount', 'archive', 'extract', 'duplicate'],
+                'commands' => [
+                    'back',
+                    'copy',
+                    'cut',
+                    'getfile',
+                    'info',
+                    'mkdir',
+                    'paste',
+                    'rename',
+                    'rm',
+                    'search',
+                    'sort',
+                    'upload',
+                    'up',
+                ],
                 'roots' => [
                     [
                         'baseUrl' => '@web',
                         'basePath' => '@webroot',
                         'path' => 'content',
-                        'name' => Yii::t('admin/main', 'Root folder'),
+                        'name' => 'Content',
                         'uploadMaxSize' => $this->elfinderUploadMaxSize,
                     ]
                 ],
