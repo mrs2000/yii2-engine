@@ -1,7 +1,8 @@
 <?php
+
 namespace mrssoft\engine\behaviors;
 
-use dosamigos\transliterator\TransliteratorHelper;
+use yii\helpers\Inflector;
 use yii;
 use yii\db\ActiveRecord;
 
@@ -69,7 +70,7 @@ class File extends \yii\base\Behavior
             $path = $this->preparePath($this->getUploadPath());
 
             if ($this->createPath($path)) {
-                $filename = $this->createFilename($path, $this->file->name);
+                $filename = $this->createFilename($path, $this->file);
 
                 if ($this->file->saveAs($path . $filename)) {
                     $this->deleteFile();
@@ -84,7 +85,7 @@ class File extends \yii\base\Behavior
         }
     }
 
-    private function getUploadPath()
+    private function getUploadPath(): string
     {
         if (empty($this->path) && ($imageFunctions = $this->getImageFunctionsBehavior())) {
             return $imageFunctions->getImagePath();
@@ -96,7 +97,7 @@ class File extends \yii\base\Behavior
     /**
      * @return \mrssoft\engine\behaviors\ImageFunctions|null
      */
-    private function getImageFunctionsBehavior()
+    private function getImageFunctionsBehavior(): ?ImageFunctions
     {
         foreach ($this->owner->behaviors() as $name => $behaviorOptions) {
             if ($behaviorOptions['class'] == \mrssoft\engine\behaviors\ImageFunctions::className()) {
@@ -120,7 +121,6 @@ class File extends \yii\base\Behavior
     {
         if ($imageFunctions = $this->getImageFunctionsBehavior()) {
             $imageFunctions->deleteImages();
-
             return;
         }
 
@@ -132,39 +132,48 @@ class File extends \yii\base\Behavior
         }
     }
 
-    private function preparePath($path)
+    private function preparePath($path): string
     {
         $path = '.' . ltrim($path, '.');
 
         return rtrim($path, '/') . '/';
     }
 
-    public function getFileUrl()
+    public function getFileUrl(): string
     {
         return Yii::$app->request->baseUrl . rtrim($this->path, '/') . '/' . $this->owner->{$this->attribute};
     }
 
-    private function createFilename($path, $filename)
+    private function createFilename(string $path, yii\web\UploadedFile $file): string
     {
         if ($this->uniqueFilename) {
-            $ext = pathinfo($filename, PATHINFO_EXTENSION);
             do {
-                $name = mb_strtolower(substr(md5(uniqid('', true)), 0, $this->nameLenght)) . '.' . $ext;
+                $code = mb_strtolower(substr(md5(uniqid('', true)), 0, $this->nameLenght));
+                $name = $code . '.' . $file->extension;
             } while (is_file($path . $name));
 
             return $name;
         }
 
-        return TransliteratorHelper::process($filename);
+        $base = Inflector::slug($file->baseName);
+        $suffix = '';
+        $count = 0;
+        do {
+            $name = $base . $suffix . '.' . $file->extension;
+            $count++;
+            $suffix = '-' . $count;
+        } while (is_file($path . $name));
+
+        return $name;
     }
 
-    private function createPath($path)
+    private function createPath(string $path): string
     {
         $parts = explode('/', $path);
         $p = '';
         foreach ($parts as $part) {
             $p .= $part . '/';
-            if (!file_exists($p) && !mkdir($p)) {
+            if (!is_dir($p) && !mkdir($p) && !is_dir($p)) {
                 return false;
             }
         }
