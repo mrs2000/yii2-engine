@@ -167,7 +167,7 @@ class File extends \yii\base\Behavior
         return $name;
     }
 
-    private function createPath(string $path): string
+    private function createPath(string $path): bool
     {
         $parts = explode('/', $path);
         $p = '';
