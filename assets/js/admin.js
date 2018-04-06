@@ -57,8 +57,13 @@ function change_action_and_submit(action, search) {
     if (mas[1].length < 3) mas[4] = action; else mas[3] = action;
     var loc_serach = location.search ? location.search + '&' : '?';
     search = search ? loc_serach + search : location.search;
+    var path = mas.join('/'),
+        suffix = $('#url-suffix').attr('content');
+    if (suffix && path.substr(path.length - 1) != suffix) {
+        path += suffix;
+    }
     $('#command-form')
-        .attr('action', mas.join('/') + search)
+        .attr('action', path + search)
         .submit();
 }
 
