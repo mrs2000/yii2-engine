@@ -2,19 +2,49 @@
 
 namespace mrssoft\engine\widgets;
 
+use yii\helpers\ArrayHelper;
+
 class TextEditor extends \mihaildev\ckeditor\CKEditor
 {
-    public function init()
+    public $options;
+
+    private function defaultOptions()
     {
-        $this->editorOptions = \mihaildev\elfinder\ElFinder::ckeditorOptions('admin/elfinder', [
+        return [
             'forcePasteAsPlainText' => true,
             'pasteFromWordRemoveFontStyles' => true,
             'allowedContent' => true,
             'height' => 300,
             'toolbar' => [
                 ['name' => 'clipboard', 'items' => ['Cut', 'Copy', 'Paste', '-', 'Undo', 'Redo']],
-                ['name' => 'basicstyles', 'items' => ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat']],
-                ['name' => 'paragraph', 'items' => ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']],
+                [
+                    'name' => 'basicstyles',
+                    'items' => [
+                        'Bold',
+                        'Italic',
+                        'Underline',
+                        'Strike',
+                        'Subscript',
+                        'Superscript',
+                        '-',
+                        'RemoveFormat'
+                    ]
+                ],
+                [
+                    'name' => 'paragraph',
+                    'items' => [
+                        'NumberedList',
+                        'BulletedList',
+                        '-',
+                        'Outdent',
+                        'Indent',
+                        '-',
+                        'JustifyLeft',
+                        'JustifyCenter',
+                        'JustifyRight',
+                        'JustifyBlock'
+                    ]
+                ],
                 ['name' => 'links', 'items' => ['Link', 'Unlink', 'Anchor']],
                 ['name' => 'styles', 'items' => ['Format']],
                 ['name' => 'colors', 'items' => ['TextColor', 'BGColor']],
@@ -23,7 +53,13 @@ class TextEditor extends \mihaildev\ckeditor\CKEditor
                 ['name' => 'document', 'items' => ['Source']],
             ],
             'format_tags' => 'p;h2;h3'
-        ]);
+        ];
+    }
+
+    public function init()
+    {
+        $options = ArrayHelper::merge($this->defaultOptions(), $this->options);
+        $this->editorOptions = \mihaildev\elfinder\ElFinder::ckeditorOptions('admin/elfinder', $options);
 
         parent::init();
     }
