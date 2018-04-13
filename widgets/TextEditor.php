@@ -58,7 +58,7 @@ class TextEditor extends \mihaildev\ckeditor\CKEditor
 
     public function init()
     {
-        $options = ArrayHelper::merge($this->defaultOptions(), $this->options);
+        $options = ArrayHelper::merge($this->defaultOptions(), $this->options ?? []);
         $this->editorOptions = \mihaildev\elfinder\ElFinder::ckeditorOptions('admin/elfinder', $options);
 
         parent::init();
