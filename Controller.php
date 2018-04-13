@@ -317,7 +317,7 @@ class Controller extends \yii\web\Controller
     public function getModelName()
     {
         if (empty($this->modelName)) {
-            $value = self::class;
+            $value = self::className(); //так надо
             $n = mb_strrpos($value, '\\');
             if ($n !== false) {
                 $value = substr($value, $n + 1);
