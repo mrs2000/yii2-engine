@@ -43,7 +43,7 @@ class Controller extends \yii\web\Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
+                'class' => AccessControl::class,
                 'rules' => [
                     [
                         'allow' => true,
@@ -94,7 +94,7 @@ class Controller extends \yii\web\Controller
         $model = new $class(['scenario' => 'search']);
 
         $model->load(Yii::$app->request->get());
-        $model->attachBehavior('search', \mrssoft\engine\behaviors\Search::className());
+        $model->attachBehavior('search', \mrssoft\engine\behaviors\Search::class);
 
         if (Yii::$app->request->isAjax) {
             /** @noinspection MissedViewInspection */
@@ -317,7 +317,7 @@ class Controller extends \yii\web\Controller
     public function getModelName()
     {
         if (empty($this->modelName)) {
-            $value = self::className();
+            $value = self::class;
             $n = mb_strrpos($value, '\\');
             if ($n !== false) {
                 $value = substr($value, $n + 1);

@@ -17,12 +17,12 @@ class AuthController extends \yii\web\Controller
      */
     public function actionLogin()
     {
-        if (Yii::$app->user->isGuest === false) {
+        if (Yii::$app->user->can('cp')) {
             return $this->redirect(['/' . $this->module->id]);
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->redirect(['/' . $this->module->id]);
         }
 

@@ -100,7 +100,7 @@ class File extends \yii\base\Behavior
     private function getImageFunctionsBehavior(): ?ImageFunctions
     {
         foreach ($this->owner->behaviors() as $name => $behaviorOptions) {
-            if ($behaviorOptions['class'] == \mrssoft\engine\behaviors\ImageFunctions::className()) {
+            if ($behaviorOptions['class'] == ImageFunctions::class) {
                 /** @var \mrssoft\engine\behaviors\ImageFunctions $imageFunctions */
                 $imageFunctions = $this->owner->getBehavior($name);
                 if ($imageFunctions && $imageFunctions->attribute == $this->attribute) {

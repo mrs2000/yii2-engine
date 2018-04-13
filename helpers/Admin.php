@@ -75,7 +75,7 @@ class Admin
     public static function columnEdit($attribute = 'title', $attributeID = 'id')
     {
         return [
-            'class' => Edit::className(),
+            'class' => Edit::class,
             'attribute' => $attribute,
             'attributeID' => $attributeID
         ];
@@ -91,7 +91,7 @@ class Admin
     public static function columnEditCategory($attribute = 'title', $attributeID = 'id', $attributeParentID = 'parent_id')
     {
         return [
-            'class' => EditCategory::className(),
+            'class' => EditCategory::class,
             'attribute' => $attribute,
             'attributeID' => $attributeID,
             'attributeParentID' => $attributeParentID
@@ -105,7 +105,7 @@ class Admin
     public static function columnSerial()
     {
         return [
-            'class' => SerialColumn::className(),
+            'class' => SerialColumn::class,
             'header' => '№',
             'headerOptions' => ['class' => 'column-small'],
             'contentOptions' => ['class' => 'center column-small'],
@@ -119,7 +119,7 @@ class Admin
     public static function columnCheckbox()
     {
         return [
-            'class' => CheckboxColumn::className(),
+            'class' => CheckboxColumn::class,
             'checkboxOptions' => ['class' => 'select-on-check'],
             'contentOptions' => ['class' => 'center'],
             'headerOptions' => ['class' => 'center column-small'],
@@ -147,7 +147,7 @@ class Admin
     public static function columnPublic()
     {
         return [
-            'class' => Switcher::className(),
+            'class' => Switcher::class,
         ];
     }
 
@@ -189,7 +189,7 @@ class Admin
     public static function columnPosition($attribute = 'position')
     {
         return [
-            'class' => Position::className(),
+            'class' => Position::class,
             'attribute' => $attribute
         ];
     }
