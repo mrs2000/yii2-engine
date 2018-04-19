@@ -6,8 +6,6 @@ use yii\helpers\ArrayHelper;
 
 class TextEditor extends \mihaildev\ckeditor\CKEditor
 {
-    public $editorOptions;
-
     private function defaultOptions()
     {
         return [
