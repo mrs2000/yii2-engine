@@ -24,7 +24,7 @@ class Admin
 
     /**
      * Вывод сообщения об ошибке
-     * @param string $message |CActiveRecord
+     * @param string $message
      */
     public static function error($message)
     {
@@ -148,6 +148,9 @@ class Admin
     {
         return [
             'class' => Switcher::class,
+            'encodeLabel' => false,
+            'headerOptions' => ['class' => 'text-center'],
+            'label' => yii\bootstrap\Html::icon('ok-sign', ['title' => 'Опубликовано'])
         ];
     }
 
