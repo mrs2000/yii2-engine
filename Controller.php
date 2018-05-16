@@ -2,6 +2,7 @@
 
 namespace mrssoft\engine;
 
+use mrssoft\engine\behaviors\Search;
 use mrssoft\engine\helpers\Admin;
 use Yii;
 use yii\base\Exception;
@@ -94,7 +95,7 @@ class Controller extends \yii\web\Controller
         $model = new $class(['scenario' => 'search']);
 
         $model->load(Yii::$app->request->get());
-        $model->attachBehavior('search', \mrssoft\engine\behaviors\Search::class);
+        $model->attachBehavior('search', Search::class);
 
         if (Yii::$app->request->isAjax) {
             /** @noinspection MissedViewInspection */
@@ -317,6 +318,7 @@ class Controller extends \yii\web\Controller
     public function getModelName()
     {
         if (empty($this->modelName)) {
+            /** @noinspection PhpDeprecationInspection */
             $value = self::className(); //так надо
             $n = mb_strrpos($value, '\\');
             if ($n !== false) {
@@ -394,7 +396,7 @@ class Controller extends \yii\web\Controller
             $params = '?' . $params;
         }
 
-        return $this->redirect([$this->id . '/' . $action . $params]);
+        return $this->redirect('/' . $this->module->id . '/' . $this->id . '/' . $action . Yii::$app->urlManager->suffix . $params);
     }
 
     /**
