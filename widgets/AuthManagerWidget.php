@@ -33,6 +33,8 @@ class AuthManagerWidget extends Widget
      */
     public $defaultRole;
 
+    private $userRoles = [];
+
     public function run()
     {
         $labelUser = Html::label('Доступ пользователя');
@@ -56,7 +58,7 @@ class AuthManagerWidget extends Widget
         echo Html::tag('div', $labelRoles . $listRoles, ['class' => 'auth-widget-list']);
         echo Html::endTag('div');
 
-        echo Html::hiddenInput('access-list', '', ['id' => 'input-access-list']);
+        echo Html::hiddenInput('access-list', implode(',', $this->userRoles), ['id' => 'input-access-list']);
 
         AssetAuthManager::register($this->view);
     }
@@ -72,17 +74,20 @@ class AuthManagerWidget extends Widget
             if (in_array('role', $this->types)) {
                 foreach (Yii::$app->authManager->getRolesByUser($this->userId) as $role) {
                     $accessList['Роли'][$role->name] = $role->description;
+                    $this->userRoles[] = $role->name;
                 }
             }
             if (in_array('permission', $this->types)) {
                 foreach (Yii::$app->authManager->getPermissionsByUser($this->userId) as $permission) {
                     $accessList['Разрешения'][$permission->name] = $permission->description;
+                    $this->userRoles[] = $permission->name;
                 }
             }
         } elseif ($this->defaultRole) {
             $role = Yii::$app->authManager->getRole($this->defaultRole);
             if ($role) {
                 $accessList['Роли'][$role->name] = $role->description;
+                $this->userRoles[] = $role->name;
             } else {
                 throw new InvalidArgumentException("Default role [$this->defaultRole] not found.");
             }
