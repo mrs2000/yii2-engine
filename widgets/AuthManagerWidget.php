@@ -4,6 +4,7 @@ namespace mrssoft\engine\widgets;
 
 use mrssoft\engine\AssetAuthManager;
 use Yii;
+use yii\base\InvalidArgumentException;
 use yii\base\Widget;
 use yii\bootstrap\Html;
 
@@ -15,14 +16,22 @@ class AuthManagerWidget extends Widget
     public $userId;
 
     /**
+     * Exclude roles and permissions
      * @var array
      */
     public $exclude = ['cp'];
 
     /**
+     * Enabled types
      * @var array ['role', 'permission']
      */
     public $types = ['role'];
+
+    /**
+     * Default role name
+     * @var string
+     */
+    public $defaultRole;
 
     public function run()
     {
@@ -52,6 +61,9 @@ class AuthManagerWidget extends Widget
         AssetAuthManager::register($this->view);
     }
 
+    /**
+     * @return array
+     */
     private function userAccessList(): array
     {
         $accessList = $this->root();
@@ -66,6 +78,13 @@ class AuthManagerWidget extends Widget
                 foreach (Yii::$app->authManager->getPermissionsByUser($this->userId) as $permission) {
                     $accessList['Разрешения'][$permission->name] = $permission->description;
                 }
+            }
+        } elseif ($this->defaultRole) {
+            $role = Yii::$app->authManager->getRole($this->defaultRole);
+            if ($role) {
+                $accessList['Роли'][$role->name] = $role->description;
+            } else {
+                throw new InvalidArgumentException("Default role [$this->defaultRole] not found.");
             }
         }
 
