@@ -1,0 +1,16 @@
+/*Auth Widget*/
+.auth-widget {
+    display: table;
+}
+.auth-widget-list {
+    width: 392px;
+}
+.auth-widget-list select {
+    height: 170px;
+}
+.auth-widget-control {
+    display: table-cell;
+    width: 60px;
+    padding: 0 10px;
+    vertical-align: middle;
+}
