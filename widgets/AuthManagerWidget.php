@@ -4,9 +4,9 @@ namespace mrssoft\engine\widgets;
 
 use mrssoft\engine\AssetAuthManager;
 use Yii;
-use yii\base\InvalidArgumentException;
 use yii\base\Widget;
 use yii\bootstrap\Html;
+use yii\helpers\ArrayHelper;
 
 class AuthManagerWidget extends Widget
 {
@@ -28,10 +28,16 @@ class AuthManagerWidget extends Widget
     public $types = ['role'];
 
     /**
-     * Default role name
+     * Default roles
      * @var string
      */
-    public $defaultRole;
+    public $defaultRoles;
+
+    /**
+     * Default permissions
+     * @var string
+     */
+    public $defaultPermissions;
 
     private $userRoles = [];
 
@@ -64,38 +70,55 @@ class AuthManagerWidget extends Widget
     }
 
     /**
+     * Права пользователя
      * @return array
      */
     private function userAccessList(): array
     {
         $accessList = $this->root();
 
-        if ($this->userId) {
-            if (in_array('role', $this->types)) {
-                foreach (Yii::$app->authManager->getRolesByUser($this->userId) as $role) {
-                    $accessList['Роли'][$role->name] = $role->description;
-                    $this->userRoles[] = $role->name;
-                }
-            }
-            if (in_array('permission', $this->types)) {
-                foreach (Yii::$app->authManager->getPermissionsByUser($this->userId) as $permission) {
-                    $accessList['Разрешения'][$permission->name] = $permission->description;
-                    $this->userRoles[] = $permission->name;
-                }
-            }
-        } elseif ($this->defaultRole) {
-            $role = Yii::$app->authManager->getRole($this->defaultRole);
-            if ($role) {
-                $accessList['Роли'][$role->name] = $role->description;
-                $this->userRoles[] = $role->name;
+        if (Yii::$app->request->isPost) {
+            $roles = explode(',', Yii::$app->request->post('access-list'));
+            $this->initDefault($roles, $roles, $accessList);
+        } else {
+            if ($this->userId) {
+                $roles = ArrayHelper::getColumn(Yii::$app->authManager->getRolesByUser($this->userId), 'name');
+                $permissions = ArrayHelper::getColumn(Yii::$app->authManager->getPermissionsByUser($this->userId), 'name');
+                $this->initDefault($roles, $permissions, $accessList);
             } else {
-                throw new InvalidArgumentException("Default role [$this->defaultRole] not found.");
+                $this->initDefault($this->defaultRoles, $this->defaultPermissions, $accessList);
             }
         }
 
         return $accessList;
     }
 
+    private function initDefault($roles, $permissions, array &$accessList)
+    {
+        if (in_array('role', $this->types) && $roles) {
+            foreach ((array)$roles as $defaultRole) {
+                $role = Yii::$app->authManager->getRole($defaultRole);
+                if ($role) {
+                    $accessList['Роли'][$role->name] = $role->description;
+                    $this->userRoles[] = $role->name;
+                }
+            }
+        }
+        if (in_array('permission', $this->types) && $permissions) {
+            foreach ((array)$permissions as $defaultPermission) {
+                $permission = Yii::$app->authManager->getPermission($defaultPermission);
+                if ($permission) {
+                    $accessList['Разрешения'][$permission->name] = $permission->description;
+                    $this->userRoles[] = $permission->name;
+                }
+            }
+        }
+    }
+
+    /**
+     * Доступные права
+     * @return array
+     */
     private function accessList(): array
     {
         $accessList = $this->root();
