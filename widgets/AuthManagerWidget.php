@@ -39,6 +39,11 @@ class AuthManagerWidget extends Widget
      */
     public $defaultPermissions;
 
+    /**
+     * @var integer
+     */
+    public $height;
+
     private $userRoles = [];
 
     public function run()
@@ -46,8 +51,13 @@ class AuthManagerWidget extends Widget
         $labelUser = Html::label('Доступ пользователя');
         $labelRoles = Html::label('Все роли и разрешения');
 
-        $listUserRoles = Html::listBox('access', null, $this->userAccessList(), ['class' => 'form-control']);
-        $listRoles = Html::listBox('roles', null, $this->accessList(), ['class' => 'form-control']);
+        $options = ['class' => 'form-control'];
+        if ($this->height) {
+            $options['style'] = 'height: ' . $this->height . 'px';
+        }
+
+        $listUserRoles = Html::listBox('access', null, $this->userAccessList(), $options);
+        $listRoles = Html::listBox('roles', null, $this->accessList(), $options);
 
         $btnAdd = Html::button(Html::icon('chevron-left'), [
             'class' => 'btn btn-success btn-add btn-block',
@@ -98,7 +108,7 @@ class AuthManagerWidget extends Widget
         if (in_array('role', $this->types) && $roles) {
             foreach ((array)$roles as $defaultRole) {
                 $role = Yii::$app->authManager->getRole($defaultRole);
-                if ($role) {
+                if ($role && in_array($role->name, $this->exclude) === false) {
                     $accessList['Роли'][$role->name] = $role->description;
                     $this->userRoles[] = $role->name;
                 }
@@ -107,7 +117,7 @@ class AuthManagerWidget extends Widget
         if (in_array('permission', $this->types) && $permissions) {
             foreach ((array)$permissions as $defaultPermission) {
                 $permission = Yii::$app->authManager->getPermission($defaultPermission);
-                if ($permission) {
+                if ($permission && in_array($permission->name, $this->exclude) === false) {
                     $accessList['Разрешения'][$permission->name] = $permission->description;
                     $this->userRoles[] = $permission->name;
                 }
@@ -125,7 +135,9 @@ class AuthManagerWidget extends Widget
 
         if (in_array('role', $this->types)) {
             foreach (Yii::$app->authManager->getRoles() as $role) {
-                $accessList['Роли'][$role->name] = $role->description;
+                if (in_array($role->name, $this->exclude) === false) {
+                    $accessList['Роли'][$role->name] = $role->description;
+                }
             }
         }
         if (in_array('permission', $this->types)) {
