@@ -14,7 +14,7 @@
     "require": {
         "yiisoft/yii2": "*",
         "mrssoft/yii2-image": "dev-master",
-        "mrssoft/yii2-mrs2000box": "dev-master",
+        "mrssoft/yii2-mrs2000box": "*",
         "mrssoft/yii2-elfinder": "dev-master",
         "mihaildev/yii2-ckeditor": "*",
         "2amigos/yii2-transliterator-helper": "*"
