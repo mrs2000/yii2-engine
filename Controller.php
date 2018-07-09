@@ -372,6 +372,7 @@ class Controller extends \yii\web\Controller
             }
         }
 
+        $model->ensureBehaviors();
         return $model;
     }
 
