@@ -268,6 +268,9 @@ class Controller extends \yii\web\Controller
         foreach ($this->getSelectedItems() as $id) {
             $obj = $model::findOne($id);
             if ($obj) {
+                if (array_key_exists('change-state', $obj->scenarios())) {
+                    $obj->scenario = 'change-state';
+                }
                 $obj->{$attribute} = $value;
                 if (!$obj->save()) {
                     Admin::error($obj);
