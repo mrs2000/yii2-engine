@@ -268,7 +268,10 @@ class Controller extends \yii\web\Controller
         foreach ($this->getSelectedItems() as $id) {
             $obj = $model::findOne($id);
             if ($obj) {
+<<<<<<< HEAD
                 //Сценарий для изменения статусного поля
+=======
+>>>>>>> 2d93bc1363e82992b7240651d36dde1bc10244b8
                 if (array_key_exists('change-state', $obj->scenarios())) {
                     $obj->scenario = 'change-state';
                 }
