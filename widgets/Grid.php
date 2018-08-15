@@ -20,6 +20,8 @@ class Grid extends \yii\base\Widget
 
     public $addCommonRows = true;
 
+    public $pjax = true;
+
     public function run()
     {
         //Добавить частоиспользуемые колонки
@@ -53,14 +55,20 @@ class Grid extends \yii\base\Widget
             $this->columns = array_merge($startColumns, $this->columns, $endColumns);
         }
 
-        Pjax::begin(['linkSelector' => 'a[data-page], a[data-sort]', 'id' => 'pjax-container']);
+        if ($this->pjax) {
+            Pjax::begin(['linkSelector' => 'a[data-page], a[data-sort]', 'id' => 'pjax-container']);
+        }
+
         echo \yii\grid\GridView::widget([
             'dataProvider' => $this->model->search(),
             'filterModel' => $this->filter === true ? $this->model : $this->filter,
             'columns' => $this->columns,
             'layout' => "{pager}\n{summary}\n{items}\n{pager}"
         ]);
-        Pjax::end();
+
+        if ($this->pjax) {
+            Pjax::end();
+        }
     }
 
     private function hasColumn($atribute)
