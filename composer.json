@@ -1,6 +1,6 @@
 {
     "name": "mrssoft/yii2-engine",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Engine",
     "type": "yii2-extension",
     "keywords": ["yii2","extension","engine"],

@@ -148,9 +148,10 @@ class Admin
     {
         return [
             'class' => Switcher::class,
+            'attribute' => 'public',
             'encodeLabel' => false,
             'headerOptions' => ['class' => 'text-center'],
-            'label' => yii\bootstrap\Html::icon('ok-sign', ['title' => 'Опубликовано'])
+            'label' => yii\bootstrap\Html::icon('ok-sign', ['title' => 'Опубликовано']),
         ];
     }
 

@@ -9,6 +9,7 @@ use yii\base\Exception;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use yii\web\Cookie;
 use yii\web\HttpException;
 
 /**
@@ -295,6 +296,27 @@ class Controller extends \yii\web\Controller
         if (!empty($id) && ($model = $this->getModel($id)) && $model->hasMethod('changePosition')) {
             $model->changePosition($position[$id]);
         }
+
+        return $this->redir();
+    }
+
+    /**
+     * Сохранение видимости колонок таблицы
+     * @return \yii\web\Response
+     */
+    public function actionTableConfig()
+    {
+        $columns = Yii::$app->request->post('table-config', []);
+        $visible = Yii::$app->request->post('table-config-visible', []);
+        $hidden = array_diff($columns, $visible);
+
+        $cookieName = 'egc-' . Yii::$app->controller->id;
+
+        Yii::$app->response->cookies->add(new Cookie([
+            'name' => $cookieName,
+            'value' => $hidden,
+            'expire' => time() + 2592000
+        ]));
 
         return $this->redir();
     }

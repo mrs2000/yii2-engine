@@ -3,6 +3,10 @@
 namespace mrssoft\engine\widgets;
 
 use mrssoft\engine\helpers\Admin;
+use Yii;
+use yii\bootstrap\Html;
+use yii\bootstrap\Modal;
+use yii\db\ActiveRecord;
 use yii\widgets\Pjax;
 
 /**
@@ -22,6 +26,10 @@ class Grid extends \yii\base\Widget
 
     public $pjax = true;
 
+    public $enableSelectColumns = false;
+
+    public $defaultHiddenColumns = [];
+
     public function run()
     {
         //Добавить частоиспользуемые колонки
@@ -30,7 +38,6 @@ class Grid extends \yii\base\Widget
                 Admin::columnSerial(),
                 Admin::columnCheckbox()
             ];
-
             if (empty($this->columns) && $this->model->hasAttribute('title')) {
                 $this->columns = [Admin::columnEdit()];
             }
@@ -39,20 +46,21 @@ class Grid extends \yii\base\Widget
             if (empty($this->columns['public']) && $this->model->hasAttribute('public')) {
                 $endColumns[] = Admin::columnPublic();
             }
-
             if (empty($this->columns['position']) && $this->model->hasAttribute('position')) {
                 $endColumns[] = Admin::columnPosition();
             }
-
-            if ($this->model->hasAttribute('date') && !$this->hasColumn('date')) {
+            if ($this->model->hasAttribute('date') && $this->hasColumn('date') === false) {
                 $endColumns[] = Admin::columnDate();
             }
-
-            if ($this->model->hasAttribute('id') && !$this->hasColumn('id')) {
+            if ($this->model->hasAttribute('id') && $this->hasColumn('id') === false) {
                 $endColumns[] = Admin::columnID();
             }
 
             $this->columns = array_merge($startColumns, $this->columns, $endColumns);
+        }
+
+        if ($this->enableSelectColumns) {
+            $this->renderConfigWindow($this->columns);
         }
 
         if ($this->pjax) {
@@ -71,18 +79,80 @@ class Grid extends \yii\base\Widget
         }
     }
 
-    private function hasColumn($atribute)
+    private function hasColumn(string $atribute): bool
     {
         if (!empty($this->columns[$atribute])) {
             return true;
         }
 
         foreach ($this->columns as $column) {
-            if (!empty($column['attribute']) && $column['attribute'] === $atribute) {
+            if (isset($column['attribute']) && $column['attribute'] === $atribute) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    private function renderConfigWindow(array &$columns)
+    {
+        $cookieName = 'egc-' . Yii::$app->controller->id;
+
+        $cookie = Yii::$app->request->cookies[$cookieName];
+        if ($cookie) {
+            $hiddenColumns = $cookie->value;
+        } else {
+            $hiddenColumns = $this->defaultHiddenColumns;
+        }
+
+        if (!empty($hiddenColumns)) {
+            foreach ($this->columns as $index => &$column) {
+                $attribute = (string)($column['attribute'] ?? $index);
+                if (in_array($attribute, $hiddenColumns)) {
+                    $column['visible'] = false;
+                }
+            }
+            unset($column);
+        }
+
+        Modal::begin([
+            'size' => Modal::SIZE_SMALL,
+            'header' => 'Параметры таблицы',
+            'toggleButton' => [
+                'label' => Html::icon('cog'),
+                'class' => 'btn btn-default pull-right',
+                'style' => 'margin: 20px 0 5px',
+                'title' => 'Параметры'
+            ],
+            'footer' => Html::button('Ok', ['class' => 'btn btn-primary action', 'data-action' => 'table-config'])
+        ]);
+
+        $model = $this->filter instanceof ActiveRecord ? $this->filter : $this->model;
+
+        $list = [];
+        $selected = [];
+        foreach ($columns as $index => $column) {
+            if ($column['attribute'] || $column['label']) {
+                if (empty($column['attribute'])) {
+                    $column['attribute'] = $index;
+                }
+                if ($column['attribute'] === 'public') {
+                    $label = Yii::t('admin/main', 'Public');
+                } else {
+                    $label = $column['label'] ?? $model->getAttributeLabel($column['attribute']);
+                }
+                if ($label) {
+                    $list[$column['attribute']] = $label;
+                    if (isset($column['visible']) === false || $column['visible']) {
+                        $selected[] = $column['attribute'];
+                    }
+                    echo Html::hiddenInput('table-config[]', $column['attribute']);
+                }
+            }
+        }
+
+        echo Html::checkboxList('table-config-visible', $selected, $list);
+
+        Modal::end();
     }
 }
