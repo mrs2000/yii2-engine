@@ -10,6 +10,13 @@ class AssetManager extends \yii\web\AssetManager
      */
     public $exclude = [];
 
+    public function init()
+    {
+        parent::init();
+
+        $this->exclude[] = '//';
+    }
+
     /**
      * Добавить дату модификации в адрес файлу
      * @param \yii\web\AssetBundle $bundle
@@ -19,8 +26,6 @@ class AssetManager extends \yii\web\AssetManager
     public function getAssetUrl($bundle, $asset)
     {
         $url = parent::getAssetUrl($bundle, $asset);
-
-        $this->exclude[] = '//';
 
         foreach ($this->exclude as $exclude) {
             if (mb_strpos($url, $exclude) !== false) {
