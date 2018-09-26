@@ -40,7 +40,7 @@ class Module extends \yii\base\Module
         Yii::$app->i18n->translations['admin/menu'] = [
             'class' => PhpMessageSource::class,
             'sourceLanguage' => 'en-US',
-            'basePath' => __DIR__ . DIRECTORY_SEPARATOR . 'messages',
+            'basePath' => Yii::getAlias('@app') . '/modules/' . $this->id . '/messages',
             'fileMap' => [
                 'admin/menu' => 'menu.php',
             ],
