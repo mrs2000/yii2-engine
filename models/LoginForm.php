@@ -6,6 +6,9 @@ use yii;
 use app\models\User;
 use yii\base\Model;
 
+/**
+ * @property \yii\web\IdentityInterface|\app\models\User|null $user
+ */
 class LoginForm extends Model
 {
     public $username;

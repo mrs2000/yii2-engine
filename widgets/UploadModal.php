@@ -8,6 +8,10 @@ use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\web\View;
 
+/**
+ *
+ * @property string $demands
+ */
 class UploadModal extends Widget
 {
     /**

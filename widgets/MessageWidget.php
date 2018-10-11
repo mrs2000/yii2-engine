@@ -7,6 +7,8 @@ use yii\helpers\Html;
 
 /**
  * Вывод сообщений
+ *
+ * @property mixed $closeButton
  */
 class MessageWidget extends Widget
 {

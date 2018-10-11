@@ -90,14 +90,12 @@ class AuthManagerWidget extends Widget
         if (Yii::$app->request->isPost) {
             $roles = explode(',', Yii::$app->request->post('access-list'));
             $this->initDefault($roles, $roles, $accessList);
+        } else if ($this->userId) {
+            $roles = ArrayHelper::getColumn(Yii::$app->authManager->getRolesByUser($this->userId), 'name');
+            $permissions = ArrayHelper::getColumn(Yii::$app->authManager->getPermissionsByUser($this->userId), 'name');
+            $this->initDefault($roles, $permissions, $accessList);
         } else {
-            if ($this->userId) {
-                $roles = ArrayHelper::getColumn(Yii::$app->authManager->getRolesByUser($this->userId), 'name');
-                $permissions = ArrayHelper::getColumn(Yii::$app->authManager->getPermissionsByUser($this->userId), 'name');
-                $this->initDefault($roles, $permissions, $accessList);
-            } else {
-                $this->initDefault($this->defaultRoles, $this->defaultPermissions, $accessList);
-            }
+            $this->initDefault($this->defaultRoles, $this->defaultPermissions, $accessList);
         }
 
         return $accessList;

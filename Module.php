@@ -3,6 +3,7 @@
 namespace mrssoft\engine;
 
 use Yii;
+use yii\bootstrap\BootstrapAsset;
 use yii\helpers\Url;
 use mihaildev\elfinder\Controller;
 use yii\i18n\PhpMessageSource;
@@ -87,6 +88,8 @@ class Module extends \yii\base\Module
                 ]
             ]
         ];
+
+        Yii::$app->assetManager->bundles[BootstrapAsset::class]['css'] = ['css/bootstrap.min.css'];
 
         Yii::$app->session->name = 'PHPSESSBACKID';
         Yii::$app->user->loginUrl = Url::toRoute('/' . $this->id . '/auth/login');

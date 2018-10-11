@@ -25,16 +25,20 @@ class Header extends Widget
 
     public function run()
     {
-        $content = Html::tag('div', Html::tag('h2', $this->title), ['class' => 'col-md-6']) . Html::tag('div', $this->createButtons($this->buttons), ['class' => 'col-md-6']);
-        echo Html::tag('div', $content, ['class' => 'row']);
+        $title = Html::tag('div', Html::tag('h2', $this->title), ['class' => 'col-md-6']);
+        $buttons = Html::tag('div', $this->createButtons($this->buttons), ['class' => 'col-md-6']);
+        $row =  Html::tag('div', $title . $buttons, ['class' => 'row']);
+
+        return Html::tag('div', $row, ['class' => 'header-line']);
     }
 
     /**
      * Создать кнопки
      * @param array|string $list
      * @return string
+     * @throws \yii\base\Exception
      */
-    private function createButtons($list)
+    private function createButtons(array $list): string
     {
         $out = '';
 
@@ -42,10 +46,10 @@ class Header extends Widget
             if (is_array($button)) {
                 $out .= $this->createButton($button);
             } else {
-                
+
                 /** @var Controller $controller */
                 $controller = Yii::$app->controller;
-                
+
                 switch ($button) {
                     case 'add':
                         $button = [
@@ -143,7 +147,7 @@ class Header extends Widget
      * @return string
      * @throws Exception
      */
-    private function createButton($params)
+    private function createButton(array $params): string
     {
         if (!isset($params['title'])) {
             throw new Exception('Unknown header command button.');

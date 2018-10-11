@@ -7,6 +7,9 @@ use yii\base\Behavior;
 use yii\db\ActiveRecord;
 use yii\db\Query;
 
+/**
+ * @property array $relationCondition
+ */
 class MainElement extends Behavior
 {
     /** @var ActiveRecord */

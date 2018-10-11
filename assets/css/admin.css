@@ -10,7 +10,7 @@ html, body {
 }
 
 .wrap > .container {
-    padding: 70px 15px 20px;
+    padding: 60px 15px 20px;
 }
 
 .footer {
@@ -85,6 +85,10 @@ h1, h2 {
     vertical-align: middle;
 }
 
+.grid-view > .pagination {
+    margin-top: 0;
+}
+
 .filters .form-control {
     min-width: 60px;
 }
@@ -126,4 +130,9 @@ input.state {
     content: '*';
     margin-left: 5px;
     color: #d00;
+}
+
+.header-line {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
 }

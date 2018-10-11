@@ -44,17 +44,15 @@ class Search extends \yii\base\Behavior
          */
         if ($this->owner->canGetProperty('defaultOrder', true, false)) {
             $defaultOrder = $this->owner->{'defaultOrder'};
+        } else if ($this->owner->hasAttribute('position')) {
+            $defaultOrder = ['position' => SORT_ASC];
+        } elseif ($this->owner->hasAttribute('date')) {
+            $defaultOrder = ['date' => SORT_DESC];
+        } elseif ($this->owner->hasAttribute('title')) {
+            $defaultOrder = ['title' => SORT_ASC];
         } else {
-            if ($this->owner->hasAttribute('position')) {
-                $defaultOrder = ['position' => SORT_ASC];
-            } elseif ($this->owner->hasAttribute('date')) {
-                $defaultOrder = ['date' => SORT_DESC];
-            } elseif ($this->owner->hasAttribute('title')) {
-                $defaultOrder = ['title' => SORT_ASC];
-            } else {
-                $primary = $this->owner->getPrimaryKey(true);
-                $defaultOrder = [key($primary) => SORT_ASC];
-            }
+            $primary = $this->owner->getPrimaryKey(true);
+            $defaultOrder = [key($primary) => SORT_ASC];
         }
 
         $query = $this->owner::find();
@@ -117,12 +115,10 @@ class Search extends \yii\base\Behavior
         }
         if ($partialMatch) {
             $query->andWhere(['like', $attribute, $value]);
+        } else if ($value === null) {
+            $query->andWhere($attribute . ' IS NULL');
         } else {
-            if ($value === null) {
-                $query->andWhere($attribute . ' IS NULL');
-            } else {
-                $query->andWhere([$attribute => $value]);
-            }
+            $query->andWhere([$attribute => $value]);
         }
     }
 

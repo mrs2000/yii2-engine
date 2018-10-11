@@ -11,6 +11,7 @@ use yii\db\Query;
 /**
  * Обслуживание поля модели position
  *
+ * @property int $maxPosition
  * @property \yii\db\ActiveRecord $owner
  */
 class Position extends Behavior

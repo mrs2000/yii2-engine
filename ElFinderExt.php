@@ -52,6 +52,7 @@ class ElFinderExt extends \yii\base\BaseObject
      * @param $args
      * @param \elFinder $elfinder
      * @return bool
+     * @throws \elFinderAbortException
      */
     public function change($cmd, $result, $args, $elfinder)
     {
