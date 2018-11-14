@@ -12,7 +12,7 @@ class Asset extends AssetBundle
     public $sourcePath = __DIR__ . '/assets';
 
     public $css = [
-        'css/bootstrap.min.css',
+        'css/admin-bootstrap.min.css',
         'css/admin.css',
     ];
 
