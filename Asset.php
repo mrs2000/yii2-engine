@@ -3,6 +3,7 @@
 namespace mrssoft\engine;
 
 use yii;
+use yii\bootstrap\BootstrapAsset;
 use yii\web\AssetBundle;
 use yii\web\YiiAsset;
 
@@ -17,6 +18,7 @@ class Asset extends AssetBundle
 
     public $depends = [
         YiiAsset::class,
+        BootstrapAsset::class,
     ];
 
     public function init()

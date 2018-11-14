@@ -89,8 +89,6 @@ class Module extends \yii\base\Module
             ]
         ];
 
-        Yii::$app->assetManager->bundles[BootstrapAsset::class]['css'] = ['css/bootstrap.min.css'];
-
         Yii::$app->session->name = 'PHPSESSBACKID';
         Yii::$app->user->loginUrl = Url::toRoute('/' . $this->id . '/auth/login');
         Yii::$app->errorHandler->errorAction = '/' . $this->id . '/default/error';
