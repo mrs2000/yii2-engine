@@ -10,6 +10,12 @@ class AssetManager extends \yii\web\AssetManager
      */
     public $exclude = [];
 
+    /**
+     * Добавлять время в параметр запроса
+     * @var bool
+     */
+    public $queryPatam = false;
+
     public function init()
     {
         parent::init();
@@ -18,7 +24,7 @@ class AssetManager extends \yii\web\AssetManager
     }
 
     /**
-     * Добавить дату модификации в адрес файлу
+     * Добавить дату модификации в адрес файла
      * @param \yii\web\AssetBundle $bundle
      * @param string $asset
      * @return string
@@ -33,6 +39,10 @@ class AssetManager extends \yii\web\AssetManager
             }
         }
 
-        return '/' . filemtime('.' . $url) . $url;
+        $time = filemtime('.' . $url);
+        if ($this->queryPatam) {
+            return $url . '?v' . $time;
+        }
+        return '/' . $time . $url;
     }
 }
