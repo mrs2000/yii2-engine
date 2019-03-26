@@ -39,7 +39,7 @@ class AssetManager extends \yii\web\AssetManager
     public function getAssetUrl($bundle, $asset)
     {
         if ($this->enableJsDeffer) {
-            $bundle->jsOptions['deffer'] = '';
+            $bundle->jsOptions['deffer'] = true;
         }
 
         $url = parent::getAssetUrl($bundle, $asset);
