@@ -5,16 +5,23 @@ namespace mrssoft\engine;
 class AssetManager extends \yii\web\AssetManager
 {
     /**
-     * Исключить
+     * Исключить файлы по маске
      * @var array
      */
     public $exclude = [];
 
     /**
      * Добавлять время в параметр запроса
+     * Иначе в первый сегмент URI
      * @var bool
      */
     public $queryPatam = false;
+
+    /**
+     * Добавить атрибут deffer для всех javascript файлов
+     * @var bool
+     */
+    public $enableJsDeffer = true;
 
     public function init()
     {
@@ -31,6 +38,10 @@ class AssetManager extends \yii\web\AssetManager
      */
     public function getAssetUrl($bundle, $asset)
     {
+        if ($this->enableJsDeffer) {
+            $bundle->jsOptions['deffer'] = '';
+        }
+
         $url = parent::getAssetUrl($bundle, $asset);
 
         foreach ($this->exclude as $exclude) {
