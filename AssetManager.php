@@ -21,7 +21,7 @@ class AssetManager extends \yii\web\AssetManager
      * Добавить атрибут deffer для всех javascript файлов
      * @var bool
      */
-    public $enableJsDeffer = true;
+    public $enableJsDeffer = false;
 
     public function init()
     {
