@@ -2,10 +2,10 @@
 
 namespace mrssoft\engine\widgets;
 
-use yii\base\Widget;
+use yii\bootstrap\InputWidget;
 use yii\helpers\Html;
 
-class FileInput extends Widget
+class FileInput extends InputWidget
 {
     /**
      * @var \yii\db\ActiveRecord
