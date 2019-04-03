@@ -63,7 +63,7 @@ class Header extends Widget
                     case 'cancel':
                         $button = [
                             'title' => Yii::t('admin/main', 'Close'),
-                            'class' => 'btn-danger',
+                            'class' => 'btn-default',
                             'icon' => ' glyphicon-off glyphicon-white',
                             'href' => $controller->createUrl('index')
                         ];
