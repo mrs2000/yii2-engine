@@ -3,6 +3,11 @@
 namespace mrssoft\engine;
 
 /**
+ * @property array $searchAttributes
+ * @property array|string $defaultOrder
+ * @property array|string $searchCondition
+ * @property array $relativeAttributes
+ *
  * @method search()
  * @method addCondition($query, $attribute, $partialMatch = false)
  * @method addWithCondition($query, $attribute, $relation, $targetAttribute, $partialMatch)

@@ -8,8 +8,8 @@ use yii\bootstrap\ActiveForm;
 
 
 ?>
-<h1><?=Yii::t('admin/main','Singin');?></h1>
-<p><?=Yii::t('admin/main', 'Enter your login and password.');?></p>
+<h1><?=Yii::t('admin/main','Singin')?></h1>
+<p><?=Yii::t('admin/main', 'Enter your login and password.')?></p>
 
 <?php $form = ActiveForm::begin([
     'id' => 'login-form',
@@ -21,8 +21,8 @@ use yii\bootstrap\ActiveForm;
     ],
 ]); ?>
 
-<?=$form->field($model, 'username')->textInput(['required' => 'on', 'autofocus' => 'on', 'autocomplete' => 'off']);?>
-<?=$form->field($model, 'password')->passwordInput(['required' => 'on', 'autocomplete' => 'off']);?>
+<?=$form->field($model, 'username')->textInput(['required' => 'on', 'autofocus' => 'on', 'autocomplete' => 'off'])?>
+<?=$form->field($model, 'password')->passwordInput(['required' => 'on', 'autocomplete' => 'off'])?>
 
 <div class="form-group">
     <div class="col-md-offset-1 col-md-11">

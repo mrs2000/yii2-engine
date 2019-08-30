@@ -19,6 +19,7 @@ class Position extends DataColumn
     protected function renderDataCellContent($model, $key, $index)
     {
         if ($this->list === null) {
+            /** @noinspection PhpUndefinedMethodInspection */
             $max = $model->getMaxPosition();
             $this->list = [];
             for ($i = 1; $i <= $max; $i++) {

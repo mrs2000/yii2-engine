@@ -18,9 +18,9 @@ Asset::register($this);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="url-suffix" content="<?=Yii::$app->urlManager->suffix;?>" id="url-suffix">
-    <?=Html::csrfMetaTags();?>
-    <title><?=Html::encode($this->title);?></title>
+    <meta name="url-suffix" content="<?=Yii::$app->urlManager->suffix?>" id="url-suffix">
+    <?=Html::csrfMetaTags()?>
+    <title><?=Html::encode($this->title)?></title>
     <?php $this->head() ?>
 </head>
 <body>
@@ -32,13 +32,13 @@ Asset::register($this);
             }
         ?>
         <div class="container">
-            <?=MessageWidget::widget();?>
-            <?=$content;?>
+            <?=MessageWidget::widget()?>
+            <?=$content?>
         </div>
     </div>
     <footer class="footer">
         <div class="container">
-            <p class="pull-left">&copy; <?=Yii::$app->controller->module->copyright;?>, 2014 &mdash; <?=date('Y');?></p>
+            <p class="pull-left">&copy; <?=Yii::$app->controller->module->copyright?>, 2014 &mdash; <?=date('Y')?></p>
         </div>
     </footer>
     <?php $this->endBody() ?>
