@@ -2,6 +2,8 @@
 
 namespace mrssoft\engine;
 
+use mrssoft\engine\events\AfterCopyEvent;
+
 /**
  * @property array $searchAttributes
  * @property array|string $defaultOrder
@@ -17,6 +19,7 @@ namespace mrssoft\engine;
 class ActiveRecord extends \yii\db\ActiveRecord
 {
     public const EVENT_COPY = 'copy';
+    public const EVENT_AFTER_COPY = 'afterCopy';
 
     public function init()
     {
@@ -41,11 +44,20 @@ class ActiveRecord extends \yii\db\ActiveRecord
     }
 
     /**
+     * This method is called at the end of copy a record.
+     * @param ActiveRecord $source
+     */
+    public function afterCopy($source)
+    {
+        $this->trigger(self::EVENT_AFTER_COPY, new AfterCopyEvent(['source' => $source]));
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public static function active()
     {
         return static::find()
-                     ->where('public=1');
+                     ->where(['public' => 1]);
     }
 }

@@ -195,7 +195,7 @@ class Controller extends \yii\web\Controller
 
         foreach ($this->getSelectedItems() as $id) {
             $source = $this->getModel($id);
-            if (!empty($source)) {
+            if (empty($source) === false) {
                 $source->copy();
 
                 $attributes = $source->getAttributes();
@@ -203,10 +203,13 @@ class Controller extends \yii\web\Controller
                     unset($attributes['id']);
                 }
 
-                /** @var \yii\db\ActiveRecord $copy */
+                /** @var ActiveRecord $copy */
                 $copy = new $className();
                 $copy->setAttributes($attributes, false);
                 $copy->save(false);
+                if ($copy->hasMethod('afterCopy')) {
+                    $copy->afterCopy($source);
+                }
                 break;
             }
         }
@@ -388,7 +391,7 @@ class Controller extends \yii\web\Controller
         $class = $this->getModelClass();
         $model = new $class($options);
 
-        if (!empty($id)) {
+        if (empty($id) === false) {
             $model = $model::findOne($id);
             if (empty($model)) {
                 Admin::error(Yii::t('admin/main', 'Record with ID [ {0} ] not found.', $id));
@@ -405,7 +408,7 @@ class Controller extends \yii\web\Controller
      * Отмеченные позиции
      * @return array
      */
-    protected function getSelectedItems()
+    protected function getSelectedItems(): array
     {
         return Yii::$app->request->post('selection', []);
     }

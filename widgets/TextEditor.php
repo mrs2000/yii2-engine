@@ -9,7 +9,7 @@ class TextEditor extends \mihaildev\ckeditor\CKEditor
     private function defaultOptions()
     {
         return [
-            'forcePasteAsPlainText' => true,
+            'pasteFromWordRemoveStyles' => true,
             'pasteFromWordRemoveFontStyles' => true,
             'allowedContent' => true,
             'height' => 300,
