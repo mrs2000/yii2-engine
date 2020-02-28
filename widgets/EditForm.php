@@ -65,7 +65,7 @@ class EditForm extends Widget
         ]);
 
         //Ошибки
-        if (!is_array($config['model']) && !empty($config['model'])) {
+        if (isset($config['model']) && is_array($config['model']) === false && empty($config['model']) === false) {
             echo Html::errorSummary($config['model'], ['class' => 'alert alert-danger', 'header' => false]);
         }
 

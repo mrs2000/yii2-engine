@@ -132,7 +132,7 @@ class Grid extends \yii\base\Widget
         $list = [];
         $selected = [];
         foreach ($columns as $index => $column) {
-            if ($column['attribute'] || $column['label']) {
+            if (isset($column['attribute']) || isset($column['label'])) {
                 if (empty($column['attribute'])) {
                     $column['attribute'] = $index;
                 }
