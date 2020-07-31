@@ -99,11 +99,9 @@ class Controller extends \yii\web\Controller
         $model->attachBehavior('search', Search::class);
 
         if (Yii::$app->request->isAjax) {
-            /** @noinspection MissedViewInspection */
             return $this->renderPartial('grid', ['model' => $model]);
         }
 
-        /** @noinspection MissedViewInspection */
         return $this->render('table', [
             'model' => $model,
             'title' => $this->title,
@@ -166,7 +164,6 @@ class Controller extends \yii\web\Controller
     {
         AssetEdit::register($this->view);
         $this->view->registerJs("$('input[name *= \"title\"]').typograf(); $('[data-typograf=\"on\"]').typograf();");
-        /** @noinspection MissedViewInspection */
         return $this->render('edit', ['model' => $model]);
     }
 
