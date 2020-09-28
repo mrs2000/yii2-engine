@@ -62,6 +62,7 @@ class File extends \yii\base\Behavior
         }
     }
 
+    /** @noinspection PhpUndefinedMethodInspection */
     public function beforeSave()
     {
         $this->getOldValue();
@@ -73,11 +74,15 @@ class File extends \yii\base\Behavior
                 $filename = $this->createFilename($path, $this->file);
 
                 if ($this->file->saveAs($path . $filename)) {
+
+                    if ($this->owner->hasMethod('beforeUploadFile')) {
+                        $this->owner->beforeUploadFile($this->attribute);
+                    }
+
                     $this->deleteFile();
                     $this->owner->{$this->attribute} = $filename;
 
                     if ($this->owner->hasMethod('afterUploadFile')) {
-                        /** @noinspection PhpUndefinedMethodInspection */
                         $this->owner->afterUploadFile($this->attribute);
                     }
                 }
