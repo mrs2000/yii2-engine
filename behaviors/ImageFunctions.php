@@ -1,4 +1,5 @@
 <?php
+
 namespace mrssoft\engine\behaviors;
 
 use yii;
@@ -19,27 +20,70 @@ use mrssoft\image\ImageHandler;
  */
 class ImageFunctions extends Behavior
 {
+    /**
+     * @var string
+     */
     public $attribute = 'image';
 
+    /**
+     * @var int
+     */
     public $width = 800;
 
+    /**
+     * @var int
+     */
     public $height = 600;
 
+    /**
+     * @var int
+     */
     public $thumbWidth;
 
+    /**
+     * @var int
+     */
     public $thumbHeight;
 
+    /**
+     * @var int
+     */
     public $thumbQuality = 100;
 
+    /**
+     * @var int
+     */
     public $quality = 100;
 
-    public $path = '@web/img/';
+    /**
+     * @var string
+     */
+    public $path;
 
+    /**
+     * @var string
+     */
     public $thumbSuffix = '_thumb';
 
+    /**
+     * @var int
+     */
     public $nameLenght = 6;
 
-    private $_path;
+    /**
+     * @var bool
+     */
+    public $enableWebp = false;
+
+    /**
+     * @var string
+     */
+    private $basePath;
+
+    /**
+     * @var string
+     */
+    private $baseUrl;
 
     public function events()
     {
@@ -53,18 +97,26 @@ class ImageFunctions extends Behavior
      * Полный путь к изображению
      * @return string
      */
-    public function getImage()
+    public function getImage(): ?string
     {
-        return $this->owner->{$this->attribute} ? $this->getImagePath() . $this->owner->{$this->attribute} : null;
+        if ($this->owner->{$this->attribute}) {
+            $this->initPath();
+            return $this->baseUrl . $this->owner->{$this->attribute};
+        }
+        return null;
     }
 
     /**
      * Полный путь к эскизу изображения
      * @return string
      */
-    public function getThumb()
+    public function getThumb(): ?string
     {
-        return self::thumbPath($this->getImage(), $this->thumbSuffix);
+        if ($this->owner->{$this->attribute}) {
+            $this->initPath();
+            return self::thumbPath($this->getImage(), $this->thumbSuffix);
+        }
+        return null;
     }
 
     /**
@@ -141,35 +193,56 @@ class ImageFunctions extends Behavior
         return '';
     }
 
-    /**
-     * Путь к изображению
-     * @return string
-     */
-    public function getImagePath()
+    private function getImagePath(): ?string
     {
-        if ($this->_path === null) {
-            $this->_path = rtrim($this->path, '/') . '/';
+        if ($this->owner->{$this->attribute}) {
+            $this->initPath();
+            return $this->baseUrl . $this->owner->{$this->attribute};
+        }
+        return null;
+    }
 
-            if (preg_match_all('#{(.*)}#U', $this->_path, $matches)) {
-                foreach ($matches[1] as $i => $param) {
-                    $this->_path = str_replace($matches[0][$i], $this->owner->{$param}, $this->_path);
+    private function initPath(): void
+    {
+        if ($this->baseUrl === null) {
+
+            $path = rtrim($this->path, '/') . '/';
+
+            if (mb_strpos($path, '@') === 0) {
+                $n = mb_strpos($path, '/');
+                if ($n) {
+                    $path = mb_substr($path, $n);
                 }
             }
-        }
 
-        return Yii::getAlias($this->_path);
+            if (preg_match_all('#{(.*)}#U', $path, $matches)) {
+                foreach ($matches[1] as $i => $param) {
+                    $path = str_replace($matches[0][$i], $this->owner->{$param}, $path);
+                }
+            }
+
+            $this->baseUrl = Yii::getAlias('@web') . $this->baseUrl;
+            $this->basePath = Yii::getAlias('@webroot') . $this->baseUrl;
+        }
+    }
+
+    private function webpPath(string $path): string
+    {
+        return basename($path) . pathinfo($path, PATHINFO_FILENAME) . '.webp';
     }
 
     /**
      * Копирование модели
      */
-    public function copy()
+    public function copy(): void
     {
-        $path = '.' . $this->getImagePath();
+        $this->initPath();
+
+        $path = $this->basePath;
         $copyName = $this->createFilename($path, $this->owner->{$this->attribute});
         @copy($path . $this->owner->{$this->attribute}, $path . $copyName);
 
-        if (!($this->thumbHeight === null || $this->thumbHeight === null)) {
+        if ($this->thumbWidth || $this->thumbHeight) {
             @copy($path . self::thumbPath($this->owner->{$this->attribute}, $this->thumbSuffix), $path . self::thumbPath($copyName, $this->thumbSuffix));
         }
 
@@ -179,7 +252,7 @@ class ImageFunctions extends Behavior
     /**
      * Обработка удаления модели
      */
-    public function afterDelete()
+    public function afterDelete(): void
     {
         $this->deleteImages();
     }
@@ -187,7 +260,7 @@ class ImageFunctions extends Behavior
     /**
      * Удалить связанные с моделью изображения
      */
-    public function deleteImages()
+    public function deleteImages(): void
     {
         $path = '.' . $this->getImage();
         if (is_file($path)) {
@@ -206,7 +279,7 @@ class ImageFunctions extends Behavior
      * @param string $suffix - суффикс эскиза
      * @return string
      */
-    public static function thumbPath($filename, $suffix = '_thumb')
+    public static function thumbPath(?string $filename, string $suffix = '_thumb'): ?string
     {
         if ($filename) {
             $n = strrpos($filename, '.');
@@ -226,7 +299,7 @@ class ImageFunctions extends Behavior
      * @param string $filename - базовое имя
      * @return string
      */
-    private function createFilename($path, $filename)
+    private function createFilename(string $path, string $filename): string
     {
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
         do {
@@ -244,7 +317,7 @@ class ImageFunctions extends Behavior
      * @return \mrssoft\image\ImageHandler
      * @throws \yii\base\Exception
      */
-    public function createThumb($imageHandler = null, $adaptive = true, $proportional = true)
+    public function createThumb(ImageHandler $imageHandler = null, bool $adaptive = true, bool $proportional = true): ImageHandler
     {
         if ($imageHandler === null) {
             $imageHandler = new ImageHandler();
@@ -271,11 +344,11 @@ class ImageFunctions extends Behavior
      * @return \mrssoft\image\ImageHandler
      * @throws \yii\base\Exception
      */
-    public function resize($imageHandler = null, $proportional = true)
+    public function resize(ImageHandler $imageHandler = null, bool $proportional = true): ImageHandler
     {
         if ($imageHandler === null) {
             $imageHandler = new ImageHandler();
-            $imageHandler->load('.' . $this->getImage());
+            $imageHandler->load($this->getImagePath());
         }
 
         if ($imageHandler->getWidth() != $this->width || $imageHandler->getHeight() != $this->height) {

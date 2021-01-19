@@ -93,7 +93,7 @@ class File extends \yii\base\Behavior
     private function getUploadPath(): string
     {
         if (empty($this->path) && ($imageFunctions = $this->getImageFunctionsBehavior())) {
-            return $imageFunctions->getImagePath();
+            return $imageFunctions->initPath();
         }
 
         return Yii::getAlias($this->path);

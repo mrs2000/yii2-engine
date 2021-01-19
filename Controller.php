@@ -226,14 +226,16 @@ class Controller extends \yii\web\Controller
             $items = Yii::$app->request->post('selection');
             foreach ($items as $id) {
                 $model = $this->getModel($id);
-                try {
-                    if (!$model->delete()) {
-                        Admin::error($model);
+                if ($model instanceof \yii\db\ActiveRecord) {
+                    try {
+                        if ($model->delete() !== false) {
+                            Admin::error($model);
+                            return $this->redir();
+                        }
+                    } catch (Exception $e) {
+                        Admin::error(Yii::t('admin/main', 'Failed to delete the record. Perhaps at it is referenced by other objects.'));
                         return $this->redir();
                     }
-                } catch (Exception $e) {
-                    Admin::error(Yii::t('admin/main', 'Failed to delete the record. Perhaps at it is referenced by other objects.'));
-                    return $this->redir();
                 }
             }
             Admin::success(Yii::t('admin/main', 'Data successfully deleted.'));
