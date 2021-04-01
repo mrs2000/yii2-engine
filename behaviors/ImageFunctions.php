@@ -123,7 +123,7 @@ class ImageFunctions extends Behavior
      * Ширина изображения
      * @return int
      */
-    public function getImageWidth()
+    public function getImageWidth(): int
     {
         return $this->width;
     }
@@ -132,7 +132,7 @@ class ImageFunctions extends Behavior
      * Высота изображения
      * @return int
      */
-    public function getImageHeight()
+    public function getImageHeight(): int
     {
         return $this->height;
     }
@@ -141,7 +141,7 @@ class ImageFunctions extends Behavior
      * Ширина эскиза
      * @return int
      */
-    public function getImageThumbWidth()
+    public function getImageThumbWidth(): ?int
     {
         return $this->thumbWidth;
     }
@@ -150,7 +150,7 @@ class ImageFunctions extends Behavior
      * Высота эскиза
      * @return int
      */
-    public function getImageThumbHeight()
+    public function getImageThumbHeight(): ?int
     {
         return $this->thumbHeight;
     }
@@ -159,7 +159,7 @@ class ImageFunctions extends Behavior
      * Качество сохранения
      * @return int
      */
-    public function getQuality()
+    public function getQuality(): int
     {
         return $this->quality;
     }
@@ -168,7 +168,7 @@ class ImageFunctions extends Behavior
      * Качество сохранения эскиза
      * @return int
      */
-    public function getThumbQuality()
+    public function getThumbQuality(): int
     {
         return $this->thumbQuality;
     }
@@ -177,7 +177,7 @@ class ImageFunctions extends Behavior
      * Необходимые размеры изображения
      * @return string
      */
-    public function needSize()
+    public function needSize(): string
     {
         if ($this->width && $this->height) {
             return $this->width . 'x' . $this->height . 'px';
@@ -221,14 +221,9 @@ class ImageFunctions extends Behavior
                 }
             }
 
-            $this->baseUrl = Yii::getAlias('@web') . $this->baseUrl;
-            $this->basePath = Yii::getAlias('@webroot') . $this->baseUrl;
+            $this->baseUrl = Yii::getAlias('@web') . $path;
+            $this->basePath = Yii::getAlias('@webroot') . $path;
         }
-    }
-
-    private function webpPath(string $path): string
-    {
-        return basename($path) . pathinfo($path, PATHINFO_FILENAME) . '.webp';
     }
 
     /**
@@ -275,7 +270,7 @@ class ImageFunctions extends Behavior
 
     /**
      * Сформировать путь к эскизу
-     * @param string $filename - имя исходного файла
+     * @param string|null $filename - имя исходного файла
      * @param string $suffix - суффикс эскиза
      * @return string
      */
