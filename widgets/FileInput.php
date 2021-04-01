@@ -37,7 +37,12 @@ class FileInput extends InputWidget
         }
 
         $id = $this->getId();
-        $file = Html::activeFileInput($this->model, $this->attribute, $this->inputOptions);
+        if ($this->model) {
+            $file = Html::activeFileInput($this->model, $this->attribute, $this->inputOptions);
+        } else {
+            $file = Html::fileInput($this->name, $this->value, $this->inputOptions);
+        }
+
         $selected = Html::tag('div', '', ['class' => 'selected']);
         echo Html::tag('div', $this->label . $file, ['class' => 'btn-file btn-block btn btn-primary', 'id' => $id]);
         echo $selected;

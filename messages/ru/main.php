@@ -51,6 +51,7 @@ return [
     'Off' => 'Выкл',
     'Save' => 'Сохранить',
     'Apply' => 'Применить',
+    'Preview' => 'Просмотр',
     'Download' => 'Загрузить',
     'Are you sure you want to remove the selected items?' => 'Вы действительно хотите удалить выделенные элементы?',
     'missing' => 'отсутствует',

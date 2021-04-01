@@ -34,9 +34,10 @@ class AssetManager extends \yii\web\AssetManager
      * Добавить дату модификации в адрес файла
      * @param \yii\web\AssetBundle $bundle
      * @param string $asset
+     * @param null $appendTimestamp
      * @return string
      */
-    public function getAssetUrl($bundle, $asset)
+    public function getAssetUrl($bundle, $asset, $appendTimestamp = null)
     {
         if ($this->enableJsDeffer) {
             $bundle->jsOptions['deffer'] = true;
