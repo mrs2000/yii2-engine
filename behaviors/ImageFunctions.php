@@ -197,9 +197,15 @@ class ImageFunctions extends Behavior
     {
         if ($this->owner->{$this->attribute}) {
             $this->initPath();
-            return $this->baseUrl . $this->owner->{$this->attribute};
+            return $this->basePath . $this->owner->{$this->attribute};
         }
         return null;
+    }
+
+    public function getBasePath(): string
+    {
+        $this->initPath();
+        return $this->basePath;
     }
 
     public function initPath(): void

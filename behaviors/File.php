@@ -5,6 +5,7 @@ namespace mrssoft\engine\behaviors;
 use yii\helpers\Inflector;
 use yii;
 use yii\db\ActiveRecord;
+use yii\web\UploadedFile;
 
 /**
  * Обработка загрузки файлов
@@ -51,7 +52,7 @@ class File extends \yii\base\Behavior
 
     public function beforeValidate()
     {
-        $this->file = \yii\web\UploadedFile::getInstance($this->owner, $this->attribute);
+        $this->file = UploadedFile::getInstance($this->owner, $this->attribute);
         $this->owner->{$this->attribute} = $this->file;
     }
 
@@ -68,7 +69,7 @@ class File extends \yii\base\Behavior
         $this->getOldValue();
 
         if (!empty($this->file->size)) {
-            $path = $this->preparePath($this->getUploadPath());
+            $path = $this->getUploadPath();
 
             if ($this->createPath($path)) {
                 $filename = $this->createFilename($path, $this->file);
@@ -83,7 +84,7 @@ class File extends \yii\base\Behavior
                     $this->owner->{$this->attribute} = $filename;
 
                     if ($this->owner->hasMethod('afterUploadFile')) {
-                        $this->owner->afterUploadFile($this->attribute);
+                        $this->owner->{'afterUploadFile'}($this->attribute);
                     }
                 }
             }
@@ -93,10 +94,10 @@ class File extends \yii\base\Behavior
     private function getUploadPath(): string
     {
         if (empty($this->path) && ($imageFunctions = $this->getImageFunctionsBehavior())) {
-            return $imageFunctions->initPath();
+            return $imageFunctions->getBasePath();
         }
 
-        return Yii::getAlias($this->path);
+        return $this->preparePath(Yii::getAlias($this->path));
     }
 
     /**
@@ -117,12 +118,12 @@ class File extends \yii\base\Behavior
         return null;
     }
 
-    public function beforeDelete()
+    public function beforeDelete(): void
     {
         $this->deleteFile();
     }
 
-    public function deleteFile()
+    public function deleteFile(): void
     {
         if ($imageFunctions = $this->getImageFunctionsBehavior()) {
             $imageFunctions->deleteImages();
@@ -140,7 +141,6 @@ class File extends \yii\base\Behavior
     private function preparePath($path): string
     {
         $path = '.' . ltrim($path, '.');
-
         return rtrim($path, '/') . '/';
     }
 
@@ -149,7 +149,7 @@ class File extends \yii\base\Behavior
         return Yii::$app->request->baseUrl . rtrim($this->path, '/') . '/' . $this->owner->{$this->attribute};
     }
 
-    private function createFilename(string $path, yii\web\UploadedFile $file): string
+    private function createFilename(string $path, UploadedFile $file): string
     {
         if ($this->uniqueFilename) {
             do {
