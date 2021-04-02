@@ -202,7 +202,7 @@ class ImageFunctions extends Behavior
         return null;
     }
 
-    private function initPath(): void
+    public function initPath(): void
     {
         if ($this->baseUrl === null) {
 
