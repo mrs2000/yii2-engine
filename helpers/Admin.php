@@ -17,16 +17,16 @@ class Admin
      * Вывод сообщения об успешном выполнении операции
      * @param string $message
      */
-    public static function success($message)
+    public static function success(string $message): void
     {
         Yii::$app->session->setFlash('msg-success', $message);
     }
 
     /**
      * Вывод сообщения об ошибке
-     * @param string $message
+     * @param string|ActiveRecord $message
      */
-    public static function error($message)
+    public static function error($message): void
     {
         if ($message instanceof ActiveRecord) {
             $message = self::formatModelErrors($message);
@@ -34,9 +34,9 @@ class Admin
         Yii::$app->session->setFlash('msg-error', $message);
     }
 
-    public function getMessage()
+    public function getMessage(): ?string
     {
-        Yii::$app->session->getFlash('msg-error');
+        return Yii::$app->session->getFlash('msg-error');
     }
 
     /**
@@ -44,7 +44,7 @@ class Admin
      * @param bool $applyAlert
      * @return string
      */
-    public static function formatModelErrors($model, $applyAlert = false)
+    public static function formatModelErrors(ActiveRecord $model, bool $applyAlert = false): string
     {
         $errors = $model->getErrors();
         $result = '';
@@ -72,7 +72,7 @@ class Admin
      * @param string $attributeID
      * @return array
      */
-    public static function columnEdit($attribute = 'title', $attributeID = 'id')
+    public static function columnEdit($attribute = 'title', $attributeID = 'id'): array
     {
         return [
             'class' => Edit::class,
@@ -88,7 +88,7 @@ class Admin
      * @param string $attributeParentID
      * @return array
      */
-    public static function columnEditCategory($attribute = 'title', $attributeID = 'id', $attributeParentID = 'parent_id')
+    public static function columnEditCategory($attribute = 'title', $attributeID = 'id', $attributeParentID = 'parent_id'): array
     {
         return [
             'class' => EditCategory::class,
@@ -102,7 +102,7 @@ class Admin
      * Колонка с порядковым номером
      * @return array
      */
-    public static function columnSerial()
+    public static function columnSerial(): array
     {
         return [
             'class' => SerialColumn::class,
@@ -116,7 +116,7 @@ class Admin
      * Колонка с чекбоксом
      * @return array
      */
-    public static function columnCheckbox()
+    public static function columnCheckbox(): array
     {
         return [
             'class' => CheckboxColumn::class,
@@ -131,7 +131,7 @@ class Admin
      * @param string $attribute
      * @return array
      */
-    public static function columnID($attribute = 'id')
+    public static function columnID($attribute = 'id'): array
     {
         return [
             'attribute' => $attribute,
@@ -144,7 +144,7 @@ class Admin
      * Колонка "Опубликовано"
      * @return array
      */
-    public static function columnPublic()
+    public static function columnPublic(): array
     {
         return [
             'class' => Switcher::class,
@@ -160,7 +160,7 @@ class Admin
      * @param string $attribute
      * @return array
      */
-    public static function columnDate($attribute = 'date')
+    public static function columnDate($attribute = 'date'): array
     {
         return [
             'attribute' => $attribute,
@@ -175,7 +175,7 @@ class Admin
      * @param string $attribute
      * @return array
      */
-    public static function columnDateTime($attribute = 'date')
+    public static function columnDateTime($attribute = 'date'): array
     {
         return [
             'attribute' => $attribute,
@@ -190,7 +190,7 @@ class Admin
      * @param string $attribute
      * @return array
      */
-    public static function columnPosition($attribute = 'position')
+    public static function columnPosition($attribute = 'position'): array
     {
         return [
             'class' => Position::class,
@@ -205,7 +205,7 @@ class Admin
      * @param $view
      * @return string
      */
-    public static function getView($view)
+    public static function getView($view): string
     {
         if (strpos($view, '//') === 0) {
             return $view;

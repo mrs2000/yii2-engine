@@ -33,7 +33,7 @@ class ImageDemands extends \yii\base\Behavior
      * Получить требования на основе правил валидации
      * @return string
      */
-    public function getDemands()
+    public function getDemands(): string
     {
         $demands = $this->getList();
         if (empty($demands)) {
@@ -43,7 +43,7 @@ class ImageDemands extends \yii\base\Behavior
         return Html::tag('ul', implode('', $demands));
     }
 
-    public function getList($attribute = null)
+    public function getList($attribute = null): array
     {
         $demands = [];
 
@@ -72,7 +72,7 @@ class ImageDemands extends \yii\base\Behavior
         return $demands;
     }
 
-    public function getMultiple()
+    public function getMultiple(): bool
     {
         return $this->_multiple;
     }

@@ -38,7 +38,7 @@ class Position extends Behavior
      * Максимальное значение позиции
      * @return int
      */
-    public function getMaxPosition()
+    public function getMaxPosition(): int
     {
         $query = (new Query())->select('MAX(' . $this->attribute . ') AS maxColumn')
                               ->from($this->owner::tableName());
@@ -50,7 +50,7 @@ class Position extends Behavior
             }
         }
 
-        return $query->scalar();
+        return (int)$query->scalar();
     }
 
     /**
@@ -61,7 +61,7 @@ class Position extends Behavior
      * @throws \yii\db\Exception
      * @throws \yii\db\StaleObjectException
      */
-    public function changePosition($value)
+    public function changePosition(int $value): void
     {
         $where = [];
         $params = [':p1' => $value, ':p2' => $this->owner->{$this->attribute}];
@@ -83,7 +83,7 @@ class Position extends Behavior
     /**
      * Переместить на одну позицию вверх
      */
-    public function moveUp()
+    public function moveUp(): void
     {
         if ($this->owner->{$this->attribute} > 1) {
             $this->changePosition($this->owner->{$this->attribute} - 1);
@@ -93,7 +93,7 @@ class Position extends Behavior
     /**
      * Переместить на одну позицию вниз
      */
-    public function moveDown()
+    public function moveDown(): void
     {
         if ($this->owner->{$this->attribute} < $this->getMaxPosition()) {
             $this->changePosition($this->owner->{$this->attribute} + 1);
@@ -105,7 +105,7 @@ class Position extends Behavior
      * @param string $direction
      * @throws \yii\db\Exception
      */
-    private function executeCommand($where, $direction)
+    private function executeCommand(array $where, string $direction): void
     {
         foreach ($this->relativeAttributes as $name) {
             if ($this->owner->{$name} === null) {
@@ -133,7 +133,7 @@ class Position extends Behavior
     /**
      * Создание модели
      */
-    public function beforeInsert()
+    public function beforeInsert(): void
     {
         $this->owner->{$this->attribute} = $this->getMaxPosition() + 1;
     }
@@ -141,7 +141,7 @@ class Position extends Behavior
     /**
      * Удаление модели
      */
-    public function afterDelete()
+    public function afterDelete(): void
     {
         $this->executeCommand([$this->attribute . '>:p0' => [':p0' => $this->owner->{$this->attribute}]], '-1');
     }

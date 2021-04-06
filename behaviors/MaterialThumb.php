@@ -100,7 +100,7 @@ class MaterialThumb extends Behavior
      * Путь к эскизу
      * @return string|null
      */
-    public function getThumbnail()
+    public function getThumbnail(): ?string
     {
         $image = $this->owner->{$this->attributeImage};
         if (empty($image)) {

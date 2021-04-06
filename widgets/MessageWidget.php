@@ -1,4 +1,5 @@
 <?php
+
 namespace mrssoft\engine\widgets;
 
 use yii;
@@ -15,7 +16,7 @@ class MessageWidget extends Widget
     public $title = '';
     public $buttons = [];
 
-    private function getCloseButton()
+    private function getCloseButton(): string
     {
         return Html::button('&times;', ['class' => 'close', 'data-dismiss' => 'alert']);
     }

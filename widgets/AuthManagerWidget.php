@@ -149,7 +149,7 @@ class AuthManagerWidget extends Widget
         return $accessList;
     }
 
-    private function root()
+    private function root(): array
     {
         $groups = [];
         if (in_array('role', $this->types)) {

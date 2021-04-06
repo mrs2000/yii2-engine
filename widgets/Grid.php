@@ -17,6 +17,9 @@ class Grid extends \yii\base\Widget
     /** @var \mrssoft\engine\ActiveRecord */
     public $model;
 
+    /**
+     * @var \mrssoft\engine\ActiveRecord
+     */
     public $filter = true;
 
     /** @var array */
@@ -94,16 +97,12 @@ class Grid extends \yii\base\Widget
         return false;
     }
 
-    private function renderConfigWindow(array &$columns)
+    private function renderConfigWindow(array $columns): void
     {
         $cookieName = 'egc-' . Yii::$app->controller->id;
 
         $cookie = Yii::$app->request->cookies[$cookieName];
-        if ($cookie) {
-            $hiddenColumns = $cookie->value;
-        } else {
-            $hiddenColumns = $this->defaultHiddenColumns;
-        }
+        $hiddenColumns = $cookie->value ?? $this->defaultHiddenColumns;
 
         if (!empty($hiddenColumns)) {
             foreach ($this->columns as $index => &$column) {

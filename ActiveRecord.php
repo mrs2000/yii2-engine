@@ -3,6 +3,7 @@
 namespace mrssoft\engine;
 
 use mrssoft\engine\events\AfterCopyEvent;
+use yii\db\ActiveQuery;
 
 /**
  * @property array $searchAttributes
@@ -47,7 +48,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
      * This method is called at the end of copy a record.
      * @param ActiveRecord $source
      */
-    public function afterCopy($source)
+    public function afterCopy(ActiveRecord $source)
     {
         $this->trigger(self::EVENT_AFTER_COPY, new AfterCopyEvent(['source' => $source]));
     }
@@ -55,7 +56,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public static function active()
+    public static function active(): ActiveQuery
     {
         return static::find()
                      ->where(['public' => 1]);

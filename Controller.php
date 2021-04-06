@@ -11,6 +11,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\web\Cookie;
 use yii\web\HttpException;
+use yii\web\Response;
 
 /**
  * Базовый класс для контроллеров админ. панели
@@ -69,17 +70,17 @@ class Controller extends \yii\web\Controller
         return parent::beforeAction($action);
     }
 
-    public function renderDefault($view, array $params = [])
+    public function renderDefault($view, array $params = []): string
     {
         return parent::render($view, $params);
     }
 
-    public function render($view, $params = [])
+    public function render($view, $params = []): string
     {
         return parent::render(Admin::getView($view), $params);
     }
 
-    public function renderPartial($view, $params = [])
+    public function renderPartial($view, $params = []): string
     {
         return parent::renderPartial(Admin::getView($view), $params);
     }
@@ -128,7 +129,7 @@ class Controller extends \yii\web\Controller
     /**
      * @throws HttpException
      */
-    protected function update()
+    protected function update(): array
     {
         $result['result'] = false;
         if (Yii::$app->request->isPost) {
@@ -160,7 +161,7 @@ class Controller extends \yii\web\Controller
         return $this->edit($result['model']);
     }
 
-    protected function edit($model)
+    protected function edit($model): string
     {
         AssetEdit::register($this->view);
         $this->view->registerJs("$('input[name *= \"title\"]').typograf(); $('[data-typograf=\"on\"]').typograf();");
@@ -228,8 +229,9 @@ class Controller extends \yii\web\Controller
                 $model = $this->getModel($id);
                 if ($model instanceof \yii\db\ActiveRecord) {
                     try {
-                        if ($model->delete() !== false) {
-                            Admin::error($model);
+                        $result = $model->delete();
+                        if ($result === false || $result === 0) {
+                            Admin::error('Ошибка удадения записи ' . $model->primaryKey);
                             return $this->redir();
                         }
                     } catch (Exception $e) {
@@ -251,7 +253,7 @@ class Controller extends \yii\web\Controller
      */
     public function actionCancel()
     {
-        $this->redir();
+        return $this->redir();
     }
 
     /**
@@ -260,7 +262,7 @@ class Controller extends \yii\web\Controller
      * @param string $value - новое состояние
      * @return \yii\web\Response
      */
-    public function actionState($attribute, $value)
+    public function actionState(string $attribute, string $value)
     {
         /* @var $model \yii\db\ActiveRecord */
         /* @var $obj \yii\db\ActiveRecord */
@@ -342,7 +344,7 @@ class Controller extends \yii\web\Controller
      * Название модели на основе названия текущего контроллера
      * @return string
      */
-    public function getModelName()
+    public function getModelName(): string
     {
         if (empty($this->modelName)) {
             /** @noinspection PhpDeprecationInspection */
@@ -362,7 +364,7 @@ class Controller extends \yii\web\Controller
      * Вначале ищет [\app\modules\admin\models\xxx.php], если нет - возвращает \app\models\xxx
      * @return string
      */
-    public function getModelClass()
+    public function getModelClass(): string
     {
         if (empty($this->modelClass)) {
             $name = $this->getModelName();
@@ -417,7 +419,7 @@ class Controller extends \yii\web\Controller
      * @param string $action
      * @return \yii\web\Response
      */
-    public function redir($action = 'index')
+    public function redir($action = 'index'): Response
     {
         $params = Yii::$app->request->post('urlParams', '');
         if (!empty($params)) {
@@ -432,7 +434,7 @@ class Controller extends \yii\web\Controller
      * @param null|array $params
      * @return string
      */
-    public function createUrl($route, $params = null)
+    public function createUrl($route, $params = null): string
     {
         if ($params !== null) {
             $params = ArrayHelper::merge($this->urlParams, $params);

@@ -7,6 +7,7 @@ use ReflectionClass;
 use yii;
 use yii\base\Behavior;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
 
 /**
  * Поведение добавляет функции поиска модели
@@ -107,7 +108,7 @@ class Search extends Behavior
      * @param string $attribute Searched attribute name
      * @param boolean $partialMatch Matching type
      */
-    public function addCondition($query, $attribute, $partialMatch = false): void
+    public function addCondition(yii\db\Query $query, string $attribute, bool $partialMatch = false): void
     {
         $value = $this->owner->{$attribute};
         if (trim($value) === '') {
@@ -131,7 +132,7 @@ class Search extends Behavior
      * @param string $targetAttribute Target attribute name
      * @param boolean $partialMatch matching type
      */
-    public function addWithCondition($query, $attribute, $relation, $targetAttribute, $partialMatch = false): void
+    public function addWithCondition(ActiveQuery $query, string $attribute, string $relation, string $targetAttribute, bool $partialMatch = false): void
     {
         $value = $this->owner->{$attribute};
         if (trim($value) === '') {

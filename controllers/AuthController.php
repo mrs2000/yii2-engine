@@ -5,6 +5,7 @@ namespace mrssoft\engine\controllers;
 use mrssoft\engine\models\LoginForm;
 use Yii;
 use yii\web\MethodNotAllowedHttpException;
+use yii\web\Response;
 
 /**
  * Авторизация в ПУ
@@ -37,7 +38,7 @@ class AuthController extends \yii\web\Controller
      * @return \yii\web\Response
      * @throws \yii\web\MethodNotAllowedHttpException
      */
-    public function actionLogout()
+    public function actionLogout(): Response
     {
         if (Yii::$app->request->isPost === false) {
             throw new MethodNotAllowedHttpException();

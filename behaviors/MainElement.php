@@ -60,7 +60,7 @@ class MainElement extends Behavior
     /**
      * @return bool
      */
-    private function hasMain()
+    private function hasMain():bool
     {
         $query = (new Query())->from($this->owner::tableName())
                               ->where($this->getRelationCondition())
@@ -72,7 +72,7 @@ class MainElement extends Behavior
     /**
      * @return array
      */
-    private function getRelationCondition()
+    private function getRelationCondition(): array
     {
         $condition = [];
         foreach ($this->relativeAttributes as $attribute) {

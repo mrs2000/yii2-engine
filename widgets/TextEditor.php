@@ -6,7 +6,7 @@ use yii\helpers\ArrayHelper;
 
 class TextEditor extends \mihaildev\ckeditor\CKEditor
 {
-    private function defaultOptions()
+    private function defaultOptions(): array
     {
         return [
             'pasteFromWordRemoveStyles' => true,
