@@ -7,7 +7,7 @@ use app\models\User;
 use yii\base\Model;
 
 /**
- * @property \yii\web\IdentityInterface|\app\models\User|null $user
+ * @property \yii\web\IdentityInterface|User|null $user
  */
 class LoginForm extends Model
 {
@@ -56,7 +56,7 @@ class LoginForm extends Model
     }
 
     /**
-     * @return null|\yii\web\IdentityInterface|\app\models\User
+     * @return null|\yii\web\IdentityInterface|User
      */
     public function getUser()
     {

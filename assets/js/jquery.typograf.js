@@ -112,10 +112,10 @@
                     .replace(/\u0020-(\d)/g, "\u0020−$1")
 
                     // Dash
-                    .replace(/(^|\n|\s|>)\-(\s)/g, "$1—$2")
+                    .replace(/(^|\n|\s|>)-(\s)/g, "$1—$2")
 
                     // Double hyphen
-                    .replace(/\-{2} /g, function(){
+                    .replace(/-{2} /g, function(){
                         caretPosition--;
                         return "— ";
                     })
@@ -173,11 +173,11 @@
                     .replace(/(\d)[xх](\d)/ig, "$1×$2")
 
                     // Open quote
-                    .replace(/\"([a-zа-я0-9…])/ig,
+                    .replace(/"([a-zа-я0-9…])/ig,
                     options.leftQuote + "$1")
 
                     // Close quote
-                    .replace(/([a-zа-я0-9…?!])\"/ig,
+                    .replace(/([a-zа-я0-9…?!])"/ig,
                     "$1" + options.rightQuote)
 
                     // Open quote

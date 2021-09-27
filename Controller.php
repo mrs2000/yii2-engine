@@ -260,7 +260,7 @@ class Controller extends \yii\web\Controller
      * Изменение состояния атрибута
      * @param string $attribute - название поля
      * @param string $value - новое состояние
-     * @return \yii\web\Response
+     * @return Response
      */
     public function actionState(string $attribute, string $value)
     {
@@ -306,7 +306,7 @@ class Controller extends \yii\web\Controller
 
     /**
      * Сохранение видимости колонок таблицы
-     * @return \yii\web\Response
+     * @return Response
      */
     public function actionTableConfig()
     {
@@ -327,7 +327,7 @@ class Controller extends \yii\web\Controller
 
     /**
      * @param \app\components\UploadFilesAction $action
-     * @return \yii\web\Response
+     * @return Response
      */
     public function afterUpload($action)
     {
@@ -382,7 +382,7 @@ class Controller extends \yii\web\Controller
      * Загрузка или создание новой модели
      * @param int $id
      * @param string|null $scenario
-     * @return \mrssoft\engine\ActiveRecord|\yii\db\ActiveRecord|\yii\web\Response
+     * @return ActiveRecord|\yii\db\ActiveRecord|Response
      */
     protected function getModel($id = 0, $scenario = null)
     {
@@ -417,7 +417,7 @@ class Controller extends \yii\web\Controller
     /**
      * Редирект после действия
      * @param string $action
-     * @return \yii\web\Response
+     * @return Response
      */
     public function redir($action = 'index'): Response
     {

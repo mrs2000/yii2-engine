@@ -42,14 +42,14 @@ class ElFinderExt extends \yii\base\BaseObject
 
     /**
      * Отслеживаем перемещение и переименование
-     * @param $cmd
-     * @param $result
+     * @param string $cmd
+     * @param array $result
      * @param $args
      * @param \elFinder $elfinder
      * @return bool
      * @throws \elFinderAbortException
      */
-    public function change(string $cmd, array $result, $args, $elfinder)
+    public function change(string $cmd, array $result, $args, \elFinder $elfinder): bool
     {
         foreach ($result['added'] as $file) {
             $path = $elfinder->realpath($file['phash']);
@@ -103,6 +103,6 @@ class ElFinderExt extends \yii\base\BaseObject
     private function translite($str): string
     {
         $str = \dosamigos\transliterator\TransliteratorHelper::process($str);
-        return preg_replace('/[^-A-Za-z0-9_\.]+/', '', $str);
+        return preg_replace('/[^-A-Za-z0-9_.]+/', '', $str);
     }
 }

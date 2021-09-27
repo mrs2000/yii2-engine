@@ -47,9 +47,9 @@ class MaterialThumb extends Behavior
     public function events()
     {
         return [
-            ActiveRecord::EVENT_AFTER_DELETE => 'afterDelete',
-            ActiveRecord::EVENT_BEFORE_INSERT => 'beforeSave',
-            ActiveRecord::EVENT_BEFORE_UPDATE => 'beforeSave'
+            yii\db\BaseActiveRecord::EVENT_AFTER_DELETE => 'afterDelete',
+            yii\db\BaseActiveRecord::EVENT_BEFORE_INSERT => 'beforeSave',
+            yii\db\BaseActiveRecord::EVENT_BEFORE_UPDATE => 'beforeSave'
         ];
     }
 
@@ -62,7 +62,7 @@ class MaterialThumb extends Behavior
             $this->owner->{$this->attributeImage} = '';
         }
 
-        $pattern = "#img.*src=(?:\"|')(.*)(?:\"|')#isU";
+        $pattern = "#img.*src=[\"'](.*)[\"']#isU";
         preg_match_all($pattern, $this->owner->{$this->attributeText}, $matches);
 
         if (isset($matches[1][0])) {

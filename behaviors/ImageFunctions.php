@@ -88,14 +88,14 @@ class ImageFunctions extends Behavior
     public function events()
     {
         return [
-            ActiveRecord::EVENT_AFTER_DELETE => 'afterDelete',
+            yii\db\BaseActiveRecord::EVENT_AFTER_DELETE => 'afterDelete',
             ActiveRecord::EVENT_COPY => 'copy'
         ];
     }
 
     /**
      * Полный путь к изображению
-     * @return string
+     * @return string|null
      */
     public function getImage(): ?string
     {
@@ -108,7 +108,7 @@ class ImageFunctions extends Behavior
 
     /**
      * Полный путь к эскизу изображения
-     * @return string
+     * @return string|null
      */
     public function getThumb(): ?string
     {
@@ -139,7 +139,7 @@ class ImageFunctions extends Behavior
 
     /**
      * Ширина эскиза
-     * @return int
+     * @return int|null
      */
     public function getImageThumbWidth(): ?int
     {
@@ -148,7 +148,7 @@ class ImageFunctions extends Behavior
 
     /**
      * Высота эскиза
-     * @return int
+     * @return int|null
      */
     public function getImageThumbHeight(): ?int
     {
@@ -278,7 +278,7 @@ class ImageFunctions extends Behavior
      * Сформировать путь к эскизу
      * @param string|null $filename - имя исходного файла
      * @param string $suffix - суффикс эскиза
-     * @return string
+     * @return string|null
      */
     public static function thumbPath(?string $filename, string $suffix = '_thumb'): ?string
     {
@@ -312,10 +312,10 @@ class ImageFunctions extends Behavior
 
     /**
      * Создать эскиз изображения
-     * @param null|\mrssoft\image\ImageHandler $imageHandler
+     * @param null|ImageHandler $imageHandler
      * @param bool $adaptive
      * @param bool $proportional
-     * @return \mrssoft\image\ImageHandler
+     * @return ImageHandler
      * @throws \yii\base\Exception
      */
     public function createThumb(ImageHandler $imageHandler = null, bool $adaptive = true, bool $proportional = true): ImageHandler
@@ -340,9 +340,9 @@ class ImageFunctions extends Behavior
 
     /**
      * Изменение размера изображения
-     * @param null|\mrssoft\image\ImageHandler $imageHandler
+     * @param null|ImageHandler $imageHandler
      * @param bool $proportional
-     * @return \mrssoft\image\ImageHandler
+     * @return ImageHandler
      * @throws \yii\base\Exception
      */
     public function resize(ImageHandler $imageHandler = null, bool $proportional = true): ImageHandler

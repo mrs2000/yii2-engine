@@ -22,9 +22,9 @@ class MainElement extends Behavior
     public function events()
     {
         return [
-            ActiveRecord::EVENT_BEFORE_UPDATE => 'beforeUpdate',
-            ActiveRecord::EVENT_BEFORE_INSERT => 'beforeInsert',
-            ActiveRecord::EVENT_AFTER_DELETE => 'afterDelete',
+            yii\db\BaseActiveRecord::EVENT_BEFORE_UPDATE => 'beforeUpdate',
+            yii\db\BaseActiveRecord::EVENT_BEFORE_INSERT => 'beforeInsert',
+            yii\db\BaseActiveRecord::EVENT_AFTER_DELETE => 'afterDelete',
         ];
     }
 

@@ -34,7 +34,7 @@ class Search extends Behavior
     }
 
     /**
-     * @return \yii\data\ActiveDataProvider
+     * @return ActiveDataProvider
      */
     public function search(): ActiveDataProvider
     {
@@ -126,7 +126,7 @@ class Search extends Behavior
     /**
      * Add inner join with criteria.
      *
-     * @param \yii\db\ActiveQuery $query Query instance
+     * @param ActiveQuery $query Query instance
      * @param string $attribute Serched attribute name
      * @param string $relation Relation name
      * @param string $targetAttribute Target attribute name

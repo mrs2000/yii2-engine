@@ -14,7 +14,7 @@ class AuthController extends \yii\web\Controller
 {
     /**
      * Вход
-     * @return string|\yii\web\Response
+     * @return string|Response
      */
     public function actionLogin()
     {
@@ -35,8 +35,8 @@ class AuthController extends \yii\web\Controller
 
     /**
      * Выход
-     * @return \yii\web\Response
-     * @throws \yii\web\MethodNotAllowedHttpException
+     * @return Response
+     * @throws MethodNotAllowedHttpException
      */
     public function actionLogout(): Response
     {

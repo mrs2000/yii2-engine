@@ -34,9 +34,9 @@ class Header extends Widget
 
     /**
      * Создать кнопки
-     * @param array|string $list
+     * @param array $list
      * @return string
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     private function createButtons(array $list): string
     {
@@ -143,7 +143,7 @@ class Header extends Widget
 
     /**
      * Создать коммандную кнопку
-     * @param $params
+     * @param array $params
      * @return string
      * @throws Exception
      */

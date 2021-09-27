@@ -13,7 +13,7 @@ use yii\web\UploadedFile;
  * @property mixed $uploadPath
  * @property string $fileUrl
  * @property void $oldValue
- * @property null|\mrssoft\engine\behaviors\ImageFunctions $imageFunctionsBehavior
+ * @property null|ImageFunctions $imageFunctionsBehavior
  */
 class File extends \yii\base\Behavior
 {
@@ -35,18 +35,18 @@ class File extends \yii\base\Behavior
     public $owner;
 
     /**
-     * @var \yii\web\UploadedFile
+     * @var UploadedFile
      */
     private $file;
 
     public function events()
     {
         return [
-            ActiveRecord::EVENT_BEFORE_VALIDATE => 'beforeValidate',
-            ActiveRecord::EVENT_AFTER_VALIDATE => 'afterValidate',
-            ActiveRecord::EVENT_BEFORE_INSERT => 'beforeSave',
-            ActiveRecord::EVENT_BEFORE_UPDATE => 'beforeSave',
-            ActiveRecord::EVENT_BEFORE_DELETE => 'beforeDelete',
+            yii\base\Model::EVENT_BEFORE_VALIDATE => 'beforeValidate',
+            yii\base\Model::EVENT_AFTER_VALIDATE => 'afterValidate',
+            yii\db\BaseActiveRecord::EVENT_BEFORE_INSERT => 'beforeSave',
+            yii\db\BaseActiveRecord::EVENT_BEFORE_UPDATE => 'beforeSave',
+            yii\db\BaseActiveRecord::EVENT_BEFORE_DELETE => 'beforeDelete',
         ];
     }
 
@@ -101,13 +101,13 @@ class File extends \yii\base\Behavior
     }
 
     /**
-     * @return \mrssoft\engine\behaviors\ImageFunctions|null
+     * @return ImageFunctions|null
      */
     private function getImageFunctionsBehavior(): ?ImageFunctions
     {
         foreach ($this->owner->behaviors() as $name => $behaviorOptions) {
             if ($behaviorOptions['class'] == ImageFunctions::class) {
-                /** @var \mrssoft\engine\behaviors\ImageFunctions $imageFunctions */
+                /** @var ImageFunctions $imageFunctions */
                 $imageFunctions = $this->owner->getBehavior($name);
                 if ($imageFunctions && $imageFunctions->attribute == $this->attribute) {
                     return $imageFunctions;

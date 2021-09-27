@@ -54,7 +54,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public static function active(): ActiveQuery
     {

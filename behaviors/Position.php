@@ -12,7 +12,7 @@ use yii\db\Query;
  * Обслуживание поля модели position
  *
  * @property int $maxPosition
- * @property \yii\db\ActiveRecord $owner
+ * @property ActiveRecord $owner
  */
 class Position extends Behavior
 {
@@ -29,8 +29,8 @@ class Position extends Behavior
     public function events()
     {
         return [
-            ActiveRecord::EVENT_BEFORE_INSERT => 'beforeInsert',
-            ActiveRecord::EVENT_AFTER_DELETE => 'afterDelete'
+            yii\db\BaseActiveRecord::EVENT_BEFORE_INSERT => 'beforeInsert',
+            yii\db\BaseActiveRecord::EVENT_AFTER_DELETE => 'afterDelete'
         ];
     }
 
@@ -55,11 +55,10 @@ class Position extends Behavior
 
     /**
      * Изменение позиции
-     * @param $value
-     * @throws \Exception
+     * @param int $value
      * @throws \Throwable
-     * @throws \yii\db\Exception
-     * @throws \yii\db\StaleObjectException
+     * @throws yii\db\Exception
+     * @throws yii\db\StaleObjectException
      */
     public function changePosition(int $value): void
     {

@@ -38,7 +38,7 @@ class Dropdown extends DataColumn
             $options['data-action'] = $this->action;
             $options['data-id'] = $key;
 
-            return \yii\helpers\Html::dropDownList($this->attribute, $model->{$this->attribute}, $this->getDataCellValue($model, $key, $index), $options);
+            return Html::dropDownList($this->attribute, $model->{$this->attribute}, $this->getDataCellValue($model, $key, $index), $options);
         }
 
         return Html::tag('span', $value, $options);
