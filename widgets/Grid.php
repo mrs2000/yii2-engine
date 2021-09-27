@@ -105,13 +105,14 @@ class Grid extends \yii\base\Widget
         $hiddenColumns = $cookie->value ?? $this->defaultHiddenColumns;
 
         if (!empty($hiddenColumns)) {
-            foreach ($this->columns as $index => &$column) {
-                $attribute = (string)($column['attribute'] ?? $index);
+            foreach ($this->columns as $index => &$c) {
+                $attribute = (string)($c['attribute'] ?? $index);
                 if (in_array($attribute, $hiddenColumns)) {
-                    $column['visible'] = false;
+                    $c['visible'] = false;
+                    $columns[$index]['visible'] = false;
                 }
             }
-            unset($column);
+            unset($c);
         }
 
         Modal::begin([

@@ -51,7 +51,7 @@ class ElFinderExt extends \yii\base\BaseObject
      */
     public function change(string $cmd, array $result, $args, $elfinder)
     {
-        foreach ($result['added'] as &$file) {
+        foreach ($result['added'] as $file) {
             $path = $elfinder->realpath($file['phash']);
 
             if ($cmd === 'upload' && $file['mime'] !== 'directory') {

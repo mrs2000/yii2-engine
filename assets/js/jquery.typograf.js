@@ -23,9 +23,9 @@
         }, options);
 
         return this.each(function(){
-            var $this = $(this),
-                obj = $this.get(0),
-                exclude = false,
+            const $this = $(this),
+                obj = $this.get(0);
+            let exclude = false,
                 selected = false,
                 caretPosition = 0,
                 original;
@@ -104,7 +104,7 @@
             }
 
             function typograf (textField){
-                var text = textField.val();
+                let text = textField.val();
                 caretPosition = getCaretPosition(obj);
 
                 text = text
@@ -210,7 +210,7 @@
         });
 
         function getCaretPosition(ctrl) {
-            var CaretPos = 0, // IE Support
+            let CaretPos = 0, // IE Support
                 Sel;
 
             if (document.selection) {
@@ -233,7 +233,7 @@
                 ctrl.focus();
                 ctrl.setSelectionRange(pos, pos);
             } else if (ctrl.createTextRange) {
-                var range = ctrl.createTextRange();
+                const range = ctrl.createTextRange();
                 range.collapse(true);
                 range.moveEnd("character", pos);
                 range.moveStart("character", pos);
@@ -242,7 +242,7 @@
         }
 
         function getSelectionText(){
-            var t = "";
+            let t = "";
 
             if (window.getSelection) {
                 t = window.getSelection();

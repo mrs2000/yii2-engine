@@ -32,7 +32,7 @@ class Switcher extends DataColumn
     {
         return Html::checkbox($this->attribute, (bool)$model->{$this->attribute}, [
             'class' => 'state',
-            'value' => (bool)$model->{$this->attribute} ? '0' : '1',
+            'value' => $model->{$this->attribute} ? '0' : '1',
             'data-id' => $key,
             'data-action' => $this->action
         ]);
