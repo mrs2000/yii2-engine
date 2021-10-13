@@ -6,6 +6,7 @@ use Yii;
 use yii\helpers\Url;
 use mihaildev\elfinder\Controller;
 use yii\i18n\PhpMessageSource;
+use yii\web\JqueryAsset;
 
 class Module extends \yii\base\Module
 {
@@ -98,5 +99,9 @@ class Module extends \yii\base\Module
         Yii::$app->urlManager->addRules([
             '/' . $this->id . '/<controller:\w+>' => '/' . $this->id . '/<controller>/index',
         ], false);
+
+        Yii::$app->assetManager->bundles[JqueryAsset::class]['js'] = [
+            '//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js'
+        ];
     }
 }
