@@ -45,15 +45,9 @@ class ImageFunctions extends Behavior
 
     public bool $enableWebp = false;
 
-    /**
-     * @var string
-     */
-    private string $basePath = '';
+    private string|null $basePath = null;
 
-    /**
-     * @var string
-     */
-    private string $baseUrl = '';
+    private string|null $baseUrl = null;
 
     public function events()
     {
@@ -180,7 +174,7 @@ class ImageFunctions extends Behavior
 
     public function initPath(): void
     {
-        if ($this->baseUrl === '') {
+        if ($this->baseUrl === null) {
 
             $path = rtrim($this->path, '/') . '/';
 
