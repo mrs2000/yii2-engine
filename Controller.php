@@ -113,11 +113,11 @@ class Controller extends \yii\web\Controller
 
     /**
      * Редактирование записи
-     * @param int|string $id
+     * @param string $id
      * @return string
      * @throws HttpException
      */
-    public function actionEdit(int|string $id = 0)
+    public function actionEdit(string $id = '0')
     {
         $model = $this->getModel($id, 'create');
         if ($model) {
@@ -381,11 +381,11 @@ class Controller extends \yii\web\Controller
 
     /**
      * Загрузка или создание новой модели
-     * @param int|string $id
+     * @param int|string|null $id
      * @param string|null $scenario
      * @return ActiveRecord|\yii\db\ActiveRecord|Response
      */
-    protected function getModel(int|string $id = 0, string $scenario = null)
+    protected function getModel(int|string|null $id = null, string $scenario = null)
     {
         $options = empty($scenario) ? null : ['scenario' => $scenario];
 

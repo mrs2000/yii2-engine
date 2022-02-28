@@ -31,7 +31,7 @@ class File extends \yii\base\Behavior
     /** @var ActiveRecord */
     public $owner;
 
-    private UploadedFile $file;
+    private UploadedFile|null $file = null;
 
     public function events()
     {
