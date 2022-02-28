@@ -14,10 +14,7 @@ class LoginForm extends Model
     public $username;
     public $password;
 
-    /**
-     * @var bool User
-     */
-    private $_user = false;
+    private \app\models\User|bool|null $_user = false;
 
     public function rules()
     {

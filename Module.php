@@ -12,18 +12,18 @@ class Module extends \yii\base\Module
 {
     public $controllerNamespace = 'app\modules\admin\controllers';
 
-    public $authController = controllers\AuthController::class;
-    public $defaultController = controllers\DefaultController::class;
-    public $filesController = controllers\FilesController::class;
+    public string $authController = controllers\AuthController::class;
+    public string $defaultController = controllers\DefaultController::class;
+    public string $filesController = controllers\FilesController::class;
 
     /**
      * ElFinder options
      */
-    public $elfinderMaxImageWidth = 800;
-    public $elfinderMaxImageHeight = 600;
-    public $elfinderUploadMaxSize = '5M';
+    public int $elfinderMaxImageWidth = 800;
+    public int $elfinderMaxImageHeight = 600;
+    public string $elfinderUploadMaxSize = '5M';
 
-    public $copyright = 'MRSSOFT';
+    public string $copyright = 'MRSSOFT';
 
     public function init()
     {

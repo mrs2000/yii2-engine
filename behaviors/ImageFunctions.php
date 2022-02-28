@@ -23,67 +23,37 @@ class ImageFunctions extends Behavior
     /**
      * @var string
      */
-    public $attribute = 'image';
+    public string $attribute = 'image';
 
-    /**
-     * @var int
-     */
-    public $width = 800;
+    public int|bool $width = 800;
 
-    /**
-     * @var int
-     */
-    public $height = 600;
+    public int|bool $height = 600;
 
-    /**
-     * @var int
-     */
-    public $thumbWidth;
+    public int|null $thumbWidth = null;
 
-    /**
-     * @var int
-     */
-    public $thumbHeight;
+    public int|null $thumbHeight = null;
 
-    /**
-     * @var int
-     */
-    public $thumbQuality = 100;
+    public int $thumbQuality = 100;
 
-    /**
-     * @var int
-     */
-    public $quality = 100;
+    public int $quality = 100;
+
+    public string $path = '';
+
+    public string $thumbSuffix = '_thumb';
+
+    public int $nameLenght = 6;
+
+    public bool $enableWebp = false;
 
     /**
      * @var string
      */
-    public $path;
+    private string $basePath = '';
 
     /**
      * @var string
      */
-    public $thumbSuffix = '_thumb';
-
-    /**
-     * @var int
-     */
-    public $nameLenght = 6;
-
-    /**
-     * @var bool
-     */
-    public $enableWebp = false;
-
-    /**
-     * @var string
-     */
-    private $basePath;
-
-    /**
-     * @var string
-     */
-    private $baseUrl;
+    private string $baseUrl = '';
 
     public function events()
     {
@@ -210,11 +180,11 @@ class ImageFunctions extends Behavior
 
     public function initPath(): void
     {
-        if ($this->baseUrl === null) {
+        if ($this->baseUrl === '') {
 
             $path = rtrim($this->path, '/') . '/';
 
-            if (mb_strpos($path, '@') === 0) {
+            if (str_starts_with($path, '@')) {
                 $n = mb_strpos($path, '/');
                 if ($n) {
                     $path = mb_substr($path, $n);
@@ -237,17 +207,20 @@ class ImageFunctions extends Behavior
      */
     public function copy(): void
     {
-        $this->initPath();
+        if ($this->owner->{$this->attribute}) {
 
-        $path = $this->basePath;
-        $copyName = $this->createFilename($path, $this->owner->{$this->attribute});
-        @copy($path . $this->owner->{$this->attribute}, $path . $copyName);
+            $this->initPath();
 
-        if ($this->thumbWidth || $this->thumbHeight) {
-            @copy($path . self::thumbPath($this->owner->{$this->attribute}, $this->thumbSuffix), $path . self::thumbPath($copyName, $this->thumbSuffix));
+            $path = $this->basePath;
+            $copyName = $this->createFilename($path, $this->owner->{$this->attribute});
+            @copy($path . $this->owner->{$this->attribute}, $path . $copyName);
+
+            if ($this->thumbWidth || $this->thumbHeight) {
+                @copy($path . self::thumbPath($this->owner->{$this->attribute}, $this->thumbSuffix), $path . self::thumbPath($copyName, $this->thumbSuffix));
+            }
+
+            $this->owner->{$this->attribute} = $copyName;
         }
-
-        $this->owner->{$this->attribute} = $copyName;
     }
 
     /**

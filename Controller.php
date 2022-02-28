@@ -2,6 +2,7 @@
 
 namespace mrssoft\engine;
 
+use app\components\UploadFilesAction;
 use mrssoft\engine\behaviors\Search;
 use mrssoft\engine\helpers\Admin;
 use Yii;
@@ -23,24 +24,24 @@ class Controller extends \yii\web\Controller
     /**
      * @var string Заголовок страницы
      */
-    protected $title = '';
+    protected string $title = '';
 
     /**
      * @var array Кнопки действий в списке объктов
      */
-    protected $buttons = ['add', 'copy', 'delete', 'public'];
+    protected array $buttons = ['add', 'copy', 'delete', 'public'];
 
     /**
-     * @var null Класс модели
+     * @var string Класс модели
      */
-    protected $modelClass;
+    protected string $modelClass = '';
 
     /**
-     * @var null Название модели
+     * @var string Название модели
      */
-    protected $modelName;
+    protected string $modelName = '';
 
-    public $urlParams = [];
+    public array $urlParams = [];
 
     public function behaviors()
     {
@@ -112,11 +113,11 @@ class Controller extends \yii\web\Controller
 
     /**
      * Редактирование записи
-     * @param $id
+     * @param int|string $id
      * @return string
      * @throws HttpException
      */
-    public function actionEdit($id = 0)
+    public function actionEdit(int|string $id = 0)
     {
         $model = $this->getModel($id, 'create');
         if ($model) {
@@ -203,12 +204,12 @@ class Controller extends \yii\web\Controller
 
                 /** @var ActiveRecord $copy */
                 $copy = new $className();
+                $copy->scenario = 'copy';
                 $copy->setAttributes($attributes, false);
-                $copy->save(false);
+                $copy->save();
                 if ($copy->hasMethod('afterCopy')) {
                     $copy->afterCopy($source);
                 }
-                break;
             }
         }
 
@@ -234,7 +235,7 @@ class Controller extends \yii\web\Controller
                             Admin::error('Ошибка удадения записи ' . $model->primaryKey);
                             return $this->redir();
                         }
-                    } catch (Exception $e) {
+                    } catch (Exception) {
                         Admin::error(Yii::t('admin/main', 'Failed to delete the record. Perhaps at it is referenced by other objects.'));
                         return $this->redir();
                     }
@@ -329,7 +330,7 @@ class Controller extends \yii\web\Controller
      * @param \app\components\UploadFilesAction $action
      * @return Response
      */
-    public function afterUpload($action)
+    public function afterUpload(UploadFilesAction $action)
     {
         if ($action->error) {
             Admin::error($action->error);
@@ -380,11 +381,11 @@ class Controller extends \yii\web\Controller
 
     /**
      * Загрузка или создание новой модели
-     * @param int $id
+     * @param int|string $id
      * @param string|null $scenario
      * @return ActiveRecord|\yii\db\ActiveRecord|Response
      */
-    protected function getModel($id = 0, $scenario = null)
+    protected function getModel(int|string $id = 0, string $scenario = null)
     {
         $options = empty($scenario) ? null : ['scenario' => $scenario];
 
@@ -419,7 +420,7 @@ class Controller extends \yii\web\Controller
      * @param string $action
      * @return Response
      */
-    public function redir($action = 'index'): Response
+    public function redir(string $action = 'index'): Response
     {
         $params = Yii::$app->request->post('urlParams', '');
         if (!empty($params)) {
@@ -434,7 +435,7 @@ class Controller extends \yii\web\Controller
      * @param null|array $params
      * @return string
      */
-    public function createUrl($route, $params = null): string
+    public function createUrl($route, ?array $params = null): string
     {
         if ($params !== null) {
             $params = ArrayHelper::merge($this->urlParams, $params);

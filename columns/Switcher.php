@@ -14,7 +14,7 @@ class Switcher extends DataColumn
 
     public $contentOptions = ['class' => 'center'];
 
-    public $action = 'state';
+    public string $action = 'state';
 
     public function init()
     {

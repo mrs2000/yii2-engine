@@ -20,24 +20,18 @@ class File extends \yii\base\Behavior
     /**
      * @var string Path to upload
      */
-    public $path = '';
+    public string $path = '';
 
-    /**
-     * @var string model attribute to save failename
-     */
-    public $attribute = 'file';
+    public string $attribute = 'file';
 
-    public $nameLenght = 6;
+    public int $nameLenght = 6;
 
-    public $uniqueFilename = true;
+    public bool $uniqueFilename = true;
 
     /** @var ActiveRecord */
     public $owner;
 
-    /**
-     * @var UploadedFile
-     */
-    private $file;
+    private UploadedFile $file;
 
     public function events()
     {
@@ -52,12 +46,20 @@ class File extends \yii\base\Behavior
 
     public function beforeValidate()
     {
+        if ($this->owner->scenario === 'copy') {
+            return;
+        }
+
         $this->file = UploadedFile::getInstance($this->owner, $this->attribute);
         $this->owner->{$this->attribute} = $this->file;
     }
 
     public function afterValidate()
     {
+        if ($this->owner->scenario === 'copy') {
+            return;
+        }
+
         if ($this->owner->hasErrors($this->attribute)) {
             $this->getOldValue();
         }
@@ -66,6 +68,10 @@ class File extends \yii\base\Behavior
     /** @noinspection PhpUndefinedMethodInspection */
     public function beforeSave()
     {
+        if ($this->owner->scenario === 'copy') {
+            return;
+        }
+
         $this->getOldValue();
 
         if (!empty($this->file->size)) {

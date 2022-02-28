@@ -26,7 +26,7 @@ class Admin
      * Вывод сообщения об ошибке
      * @param string|ActiveRecord $message
      */
-    public static function error($message): void
+    public static function error(string|ActiveRecord $message): void
     {
         if ($message instanceof ActiveRecord) {
             $message = self::formatModelErrors($message);
@@ -72,7 +72,7 @@ class Admin
      * @param string $attributeID
      * @return array
      */
-    public static function columnEdit($attribute = 'title', $attributeID = 'id'): array
+    public static function columnEdit(string $attribute = 'title', string $attributeID = 'id'): array
     {
         return [
             'class' => Edit::class,
@@ -88,7 +88,7 @@ class Admin
      * @param string $attributeParentID
      * @return array
      */
-    public static function columnEditCategory($attribute = 'title', $attributeID = 'id', $attributeParentID = 'parent_id'): array
+    public static function columnEditCategory(string $attribute = 'title', string $attributeID = 'id', string $attributeParentID = 'parent_id'): array
     {
         return [
             'class' => EditCategory::class,
@@ -131,7 +131,7 @@ class Admin
      * @param string $attribute
      * @return array
      */
-    public static function columnID($attribute = 'id'): array
+    public static function columnID(string $attribute = 'id'): array
     {
         return [
             'attribute' => $attribute,
@@ -160,7 +160,7 @@ class Admin
      * @param string $attribute
      * @return array
      */
-    public static function columnDate($attribute = 'date'): array
+    public static function columnDate(string $attribute = 'date'): array
     {
         return [
             'attribute' => $attribute,
@@ -175,7 +175,7 @@ class Admin
      * @param string $attribute
      * @return array
      */
-    public static function columnDateTime($attribute = 'date'): array
+    public static function columnDateTime(string $attribute = 'date'): array
     {
         return [
             'attribute' => $attribute,
@@ -190,7 +190,7 @@ class Admin
      * @param string $attribute
      * @return array
      */
-    public static function columnPosition($attribute = 'position'): array
+    public static function columnPosition(string $attribute = 'position'): array
     {
         return [
             'class' => Position::class,
@@ -207,7 +207,7 @@ class Admin
      */
     public static function getView($view): string
     {
-        if (strpos($view, '//') === 0) {
+        if (str_starts_with($view, '//')) {
             return $view;
         }
 

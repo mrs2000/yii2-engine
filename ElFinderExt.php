@@ -4,10 +4,10 @@ namespace mrssoft\engine;
 
 class ElFinderExt extends \yii\base\BaseObject
 {
-    public $imageMinWidth = false;
-    public $imageMinHeight = false;
-    public $imageMaxWidth = false;
-    public $imageMaxHeight = false;
+    public bool $imageMinWidth = false;
+    public bool $imageMinHeight = false;
+    public bool $imageMaxWidth = false;
+    public bool $imageMaxHeight = false;
 
     public function resize(string $path): void
     {

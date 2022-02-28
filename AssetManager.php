@@ -8,20 +8,20 @@ class AssetManager extends \yii\web\AssetManager
      * Исключить файлы по маске
      * @var array
      */
-    public $exclude = [];
+    public array $exclude = [];
 
     /**
      * Добавлять время в параметр запроса
      * Иначе в первый сегмент URI
      * @var bool
      */
-    public $queryPatam = false;
+    public bool $queryParam = false;
 
     /**
      * Добавить атрибут deffer для всех javascript файлов
      * @var bool
      */
-    public $enableJsDeffer = false;
+    public bool $enableJsDeffer = false;
 
     public function init()
     {
@@ -46,13 +46,13 @@ class AssetManager extends \yii\web\AssetManager
         $url = parent::getAssetUrl($bundle, $asset);
 
         foreach ($this->exclude as $exclude) {
-            if (mb_strpos($url, $exclude) !== false) {
+            if (str_contains($url, $exclude)) {
                 return $url;
             }
         }
 
         $time = filemtime('.' . $url);
-        if ($this->queryPatam) {
+        if ($this->queryParam) {
             return $url . '?v' . $time;
         }
         return '/' . $time . $url;

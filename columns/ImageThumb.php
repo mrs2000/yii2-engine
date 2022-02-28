@@ -16,7 +16,7 @@ class ImageThumb extends DataColumn
 
     public $filter = false;
 
-    public $enablePreview = true;
+    public bool $enablePreview = true;
 
     public function init()
     {

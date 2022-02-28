@@ -19,12 +19,12 @@ class Position extends Behavior
     /**
      * @var string аттрибут модели
      */
-    public $attribute = 'position';
+    public string $attribute = 'position';
 
     /**
      * @var array позиция относительно указанных полей
      */
-    public $relativeAttributes = [];
+    public array $relativeAttributes = [];
 
     public function events()
     {

@@ -15,7 +15,7 @@ class ImageDemands extends \yii\base\Behavior
     /** @var  \yii\base\Model */
     public $owner;
 
-    private $_multiple = false;
+    private bool $_multiple = false;
 
     public function init()
     {

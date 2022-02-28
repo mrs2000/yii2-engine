@@ -17,7 +17,7 @@ class Search extends Behavior
     /**
      * @var array атрибуты фильтров по умолчанию
      */
-    public $searchAttributes = [
+    public array $searchAttributes = [
         'title' => true,
         'public' => false,
         'position' => false,

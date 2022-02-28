@@ -19,18 +19,18 @@ $(function () {
         $input.val(values.join(','));
     }
 
-    $widget.find('.btn-add').click(function () {
-        $listAccess.dblclick();
+    $widget.find('.btn-add').on('click',function () {
+        $listAccess.trigger('dblclick');
     });
 
-    $widget.find('.btn-remove').click(function () {
-        $listUser.dblclick();
+    $widget.find('.btn-remove').on('click',function () {
+        $listUser.trigger('dblclick');
     });
 
     /**
      * Add access
      */
-    $listAccess.dblclick(function () {
+    $listAccess.on('dblclick',function () {
         const value = $(this).val();
         if ($listUser.find('option[value="' + value + '"]').length == 0) {
             const $option = $(this).find('option[value="' + value + '"]');
@@ -44,7 +44,7 @@ $(function () {
     /**
      * Remove access
      */
-    $listUser.dblclick(function () {
+    $listUser.on('dblclick',function () {
         const value = $(this).val();
         if (value) {
             $listUser.find('option[value="' + value + '"]').remove();

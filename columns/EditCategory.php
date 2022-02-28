@@ -10,11 +10,11 @@ class EditCategory extends DataColumn
 {
     public $attribute = 'title';
 
-    public $attributeID = 'id';
+    public string $attributeID = 'id';
 
-    public $attributeParentID = 'parent_id';
+    public string $attributeParentID = 'parent_id';
 
-    public $condition;
+    public array|null $condition = null;
 
     /**
      * Enable open subcategories

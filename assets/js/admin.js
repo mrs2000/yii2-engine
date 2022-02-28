@@ -10,7 +10,7 @@ function create_window(callback) {
             '<button type="button" class="btn btn-default modal-no">' + strings.no + '</button>' +
             '</div></div></div></div>');
 
-        $wnd.find('.btn').click(function () {
+        $wnd.find('.btn').on('click', function () {
             $wnd.modal('toggle');
             callback($(this).hasClass('modal-yes'));
             return false;

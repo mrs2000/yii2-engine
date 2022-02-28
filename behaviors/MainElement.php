@@ -15,9 +15,9 @@ class MainElement extends Behavior
     /** @var ActiveRecord */
     public $owner;
 
-    public $attribute = 'main';
+    public string $attribute = 'main';
 
-    public $relativeAttributes = [];
+    public array $relativeAttributes = [];
 
     public function events()
     {

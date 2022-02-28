@@ -2,10 +2,9 @@
 
 namespace mrssoft\engine\behaviors;
 
+use mrssoft\image\ImageHandler;
 use yii;
 use yii\base\Behavior;
-use yii\db\ActiveRecord;
-use mrssoft\image\ImageHandler;
 
 /**
  * Поведение создаёт эскиз из первого изображения в указанном тексте
@@ -16,33 +15,28 @@ class MaterialThumb extends Behavior
 {
     /**
      * Поле с исходным текстом
-     * @var string
      */
-    public $attributeText = 'text';
+    public string $attributeText = 'text';
 
     /**
      * Поле изображения
-     * @var string
      */
-    public $attributeImage = 'image';
+    public string $attributeImage = 'image';
 
     /**
      * Папка для изображений
-     * @var string
      */
-    public $path = '/img/news/';
+    public string $path = '/img/news/';
 
     /**
      * Ширина эскиза
-     * @var int|bool
      */
-    public $thumbWidth = 100;
+    public int|bool $thumbWidth = 100;
 
     /**
      * Высота эскиза
-     * @var int|bool
      */
-    public $thumbHeight = 100;
+    public int|bool $thumbHeight = 100;
 
     public function events()
     {
@@ -67,7 +61,7 @@ class MaterialThumb extends Behavior
 
         if (isset($matches[1][0])) {
             $src = '.' . $matches[1][0];
-            if (mb_strpos($src, 'http') === false && file_exists($src)) {
+            if (!str_contains($src, 'http') && file_exists($src)) {
                 $this->owner->{$this->attributeImage} = md5($src) . '.jpg';
 
                 $ih = new ImageHandler();

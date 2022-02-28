@@ -10,7 +10,7 @@ class Edit extends DataColumn
 {
     public $attribute = 'title';
 
-    public $attributeID = 'id';
+    public string $attributeID = 'id';
 
     /**
      * @inheritdoc
