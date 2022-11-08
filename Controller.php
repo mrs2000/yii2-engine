@@ -121,7 +121,10 @@ class Controller extends \yii\web\Controller
     {
         $model = $this->getModel($id, 'create');
         if ($model) {
-            return $this->edit($model);
+            if ($model instanceof \yii\db\ActiveRecord) {
+                return $this->edit($model);
+            }
+            return $model;
         }
 
         throw new HttpException(404, Yii::t('yii', 'Page not found.'));
