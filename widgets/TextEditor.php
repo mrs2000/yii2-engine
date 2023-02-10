@@ -11,6 +11,7 @@ class TextEditor extends \mihaildev\ckeditor\CKEditor
         return [
             'pasteFromWordRemoveStyles' => true,
             'pasteFromWordRemoveFontStyles' => true,
+            'disableNativeSpellChecker' => false,
             'allowedContent' => true,
             'height' => 300,
             'toolbar' => [
