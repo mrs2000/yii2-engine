@@ -2,10 +2,10 @@
 
 namespace mrssoft\engine\behaviors;
 
-use yii;
-use yii\base\Behavior;
 use mrssoft\engine\ActiveRecord;
 use mrssoft\image\ImageHandler;
+use yii;
+use yii\base\Behavior;
 
 /**
  * Поведение для работы с изображениеями модели
@@ -43,8 +43,6 @@ class ImageFunctions extends Behavior
 
     public int $nameLenght = 6;
 
-    public bool $enableWebp = false;
-
     private string|null $basePath = null;
 
     private string|null $baseUrl = null;
@@ -59,7 +57,6 @@ class ImageFunctions extends Behavior
 
     /**
      * Полный путь к изображению
-     * @return string|null
      */
     public function getImage(): ?string
     {
@@ -72,7 +69,6 @@ class ImageFunctions extends Behavior
 
     /**
      * Полный путь к эскизу изображения
-     * @return string|null
      */
     public function getThumb(): ?string
     {
@@ -85,7 +81,6 @@ class ImageFunctions extends Behavior
 
     /**
      * Ширина изображения
-     * @return int
      */
     public function getImageWidth(): int
     {
@@ -94,7 +89,6 @@ class ImageFunctions extends Behavior
 
     /**
      * Высота изображения
-     * @return int
      */
     public function getImageHeight(): int
     {
@@ -103,7 +97,6 @@ class ImageFunctions extends Behavior
 
     /**
      * Ширина эскиза
-     * @return int|null
      */
     public function getImageThumbWidth(): ?int
     {
@@ -112,7 +105,6 @@ class ImageFunctions extends Behavior
 
     /**
      * Высота эскиза
-     * @return int|null
      */
     public function getImageThumbHeight(): ?int
     {
@@ -121,7 +113,6 @@ class ImageFunctions extends Behavior
 
     /**
      * Качество сохранения
-     * @return int
      */
     public function getQuality(): int
     {
@@ -130,7 +121,6 @@ class ImageFunctions extends Behavior
 
     /**
      * Качество сохранения эскиза
-     * @return int
      */
     public function getThumbQuality(): int
     {
@@ -139,7 +129,6 @@ class ImageFunctions extends Behavior
 
     /**
      * Необходимые размеры изображения
-     * @return string
      */
     public function needSize(): string
     {
@@ -245,7 +234,6 @@ class ImageFunctions extends Behavior
      * Сформировать путь к эскизу
      * @param string|null $filename - имя исходного файла
      * @param string $suffix - суффикс эскиза
-     * @return string|null
      */
     public static function thumbPath(?string $filename, string $suffix = '_thumb'): ?string
     {
@@ -265,7 +253,6 @@ class ImageFunctions extends Behavior
      * Создать уникальное имя файла
      * @param string $path - путь к файлу
      * @param string $filename - базовое имя
-     * @return string
      */
     private function createFilename(string $path, string $filename): string
     {
@@ -279,11 +266,6 @@ class ImageFunctions extends Behavior
 
     /**
      * Создать эскиз изображения
-     * @param null|ImageHandler $imageHandler
-     * @param bool $adaptive
-     * @param bool $proportional
-     * @return ImageHandler
-     * @throws \yii\base\Exception
      */
     public function createThumb(ImageHandler $imageHandler = null, bool $adaptive = true, bool $proportional = true): ImageHandler
     {
@@ -307,10 +289,6 @@ class ImageFunctions extends Behavior
 
     /**
      * Изменение размера изображения
-     * @param null|ImageHandler $imageHandler
-     * @param bool $proportional
-     * @return ImageHandler
-     * @throws \yii\base\Exception
      */
     public function resize(ImageHandler $imageHandler = null, bool $proportional = true): ImageHandler
     {
@@ -319,7 +297,7 @@ class ImageFunctions extends Behavior
             $imageHandler->load($this->getImagePath());
         }
 
-        if ($imageHandler->getWidth() != $this->width || $imageHandler->getHeight() != $this->height) {
+        if (($this->width && $imageHandler->getWidth() != $this->width) || ($this->height && $imageHandler->getHeight() != $this->height)) {
             $imageHandler->resize($this->width, $this->height, $proportional)
                          ->save(false, false, $this->quality);
         }
