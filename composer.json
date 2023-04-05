@@ -1,26 +1,32 @@
 {
-    "name": "mrssoft/yii2-engine",
-    "description": "Engine",
-    "type": "yii2-extension",
-    "keywords": ["yii2","extension","engine"],
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Melnikov Ruslan",
-            "email": "mrs2000@inbox.ru"
-        }
-    ],
-    "require": {
-        "yiisoft/yii2": "*",
-        "mrssoft/yii2-image": "dev-master",
-        "mrssoft/yii2-mrs2000box": "*",
-        "mrssoft/yii2-elfinder": "dev-master",
-        "mihaildev/yii2-ckeditor": "*",
-        "2amigos/yii2-transliterator-helper": "*"
-    },
-    "autoload": {
-        "psr-4": {
-            "mrssoft\\engine\\": ""
-        }
+  "name": "mrssoft/yii2-engine",
+  "description": "Engine",
+  "type": "yii2-extension",
+  "keywords": [
+    "yii2",
+    "extension",
+    "engine"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Melnikov Ruslan",
+      "email": "mrs2000@inbox.ru"
     }
+  ],
+  "require": {
+    "yiisoft/yii2": "*",
+    "mrssoft/yii2-image": "dev-master",
+    "mrssoft/yii2-mrs2000box": "*",
+    "mrssoft/yii2-elfinder": "dev-master",
+    "mihaildev/yii2-ckeditor": "*",
+    "2amigos/yii2-transliterator-helper": "*",
+    "ext-intl": "*",
+    "ext-mbstring": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "mrssoft\\engine\\": ""
+    }
+  }
 }

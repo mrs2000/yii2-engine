@@ -42,7 +42,7 @@ class Header extends Widget
     {
         $out = '';
 
-        foreach ((array)$list as $button) {
+        foreach ($list as $button) {
             if (is_array($button)) {
                 $out .= $this->createButton($button);
             } else {

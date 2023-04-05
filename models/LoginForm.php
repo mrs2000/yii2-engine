@@ -2,8 +2,8 @@
 
 namespace mrssoft\engine\models;
 
-use yii;
 use app\models\User;
+use yii;
 use yii\base\Model;
 
 /**
@@ -14,7 +14,7 @@ class LoginForm extends Model
     public $username;
     public $password;
 
-    private \app\models\User|bool|null $_user = false;
+    private User|bool|null $_user = false;
 
     public function rules()
     {

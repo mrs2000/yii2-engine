@@ -111,7 +111,7 @@ class Search extends Behavior
     public function addCondition(yii\db\Query $query, string $attribute, bool $partialMatch = false): void
     {
         $value = $this->owner->{$attribute};
-        if (trim($value) === '') {
+        if ($value !== null && trim($value) === '') {
             return;
         }
         if ($partialMatch) {

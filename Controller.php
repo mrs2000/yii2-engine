@@ -114,7 +114,7 @@ class Controller extends \yii\web\Controller
     /**
      * Редактирование записи
      * @param string $id
-     * @return string
+     * @return ActiveRecord|string|\yii\db\ActiveRecord|Response
      * @throws HttpException
      */
     public function actionEdit(string $id = '0')
@@ -197,7 +197,7 @@ class Controller extends \yii\web\Controller
 
         foreach ($this->getSelectedItems() as $id) {
             $source = $this->getModel($id);
-            if (empty($source) === false) {
+            if ($source !== null) {
                 $source->copy();
 
                 $attributes = $source->getAttributes();
@@ -330,7 +330,7 @@ class Controller extends \yii\web\Controller
     }
 
     /**
-     * @param \app\components\UploadFilesAction $action
+     * @param UploadFilesAction $action
      * @return Response
      */
     public function afterUpload(UploadFilesAction $action)
@@ -398,7 +398,7 @@ class Controller extends \yii\web\Controller
 
         if (empty($id) === false) {
             $model = $model::findOne($id);
-            if (empty($model)) {
+            if ($model === null) {
                 Admin::error(Yii::t('admin/main', 'Record with ID [ {0} ] not found.', $id));
 
                 return $this->redir();
