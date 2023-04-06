@@ -111,13 +111,11 @@ class Search extends Behavior
     public function addCondition(yii\db\Query $query, string $attribute, bool $partialMatch = false): void
     {
         $value = $this->owner->{$attribute};
-        if ($value !== null && trim($value) === '') {
+        if ($value === null || trim($value) === '') {
             return;
         }
         if ($partialMatch) {
             $query->andWhere(['LIKE', $attribute, $value]);
-        } else if ($value === null) {
-            $query->andWhere($attribute . ' IS NULL');
         } else {
             $query->andWhere([$attribute => $value]);
         }
